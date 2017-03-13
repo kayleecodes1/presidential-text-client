@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import LoadingIndicator from './LoadingIndicator';
 
-class LoadingIndicator extends Component {
+class Modal extends Component {
 
     static nextId = 1;
 
@@ -8,10 +9,12 @@ class LoadingIndicator extends Component {
         title: PropTypes.string.isRequired,
         content: PropTypes.element.isRequired,
         footer: PropTypes.element,
+        isLoading: PropTypes.bool,
         closeFunction: PropTypes.func
     };
 
     static defaultProps = {
+        isLoading: false,
         closeFunction: () => {}
     };
 
@@ -35,12 +38,12 @@ class LoadingIndicator extends Component {
 
     render() {
 
-        const { title, content, footer, closeFunction } = this.props;
+        const { title, content, footer, isLoading, closeFunction } = this.props;
 
-        const titleId = `${this.id}-title`;
+        const titleId = `modal-${this.id}-title`;
 
         return (
-            <div className="modal" role="dialog" aria-labelledby={titleId} onClick={closeFunction}>
+            <div key={`modal-${this.id}`} className="modal" role="dialog" aria-labelledby={titleId} onClick={closeFunction}>
                 <div className="modal__window" onClick={(event) => event.stopPropagation()}>
                     <div className="modal__header">
                         <h1 id={titleId} className="modal__title">{title}</h1>
@@ -49,7 +52,11 @@ class LoadingIndicator extends Component {
                         </button>
                     </div>
                     <div className="modal__body">
-                        {content}
+                        {isLoading ? (
+                            <div className="modal__loading-stretcher">
+                                <LoadingIndicator />
+                            </div>
+                        ) : content}
                     </div>
                     {footer ? (
                         <div className="modal__footer">
@@ -62,4 +69,4 @@ class LoadingIndicator extends Component {
     }
 }
 
-export default LoadingIndicator;
+export default Modal;

@@ -55,7 +55,7 @@ class Login extends Component {
 
     render() {
 
-        console.log(this.props.app.currentUser);//TODO: ... this is needed to trigger update
+        this.props.app.currentUser;//TODO: ... this is needed to trigger update
 
         const { isProcessingLogin, loginErrorText } = this.props.app;
         const { email, password } = this.state;

@@ -57,6 +57,12 @@
     }*/
   }
 
+  &__loading-stretcher {
+    position: relative;
+    width: 100%;
+    height: 400px;
+  }
+
   &__body {
     box-sizing: border-box;
     max-height: calc(100% - #{$header-height + $footer-height + 2 * $outer-gutter});

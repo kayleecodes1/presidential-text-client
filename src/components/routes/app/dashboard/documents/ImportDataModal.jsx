@@ -36,7 +36,7 @@ class ImportDataModal extends Component {
 
     render() {
 
-        const { importDataModalIsVisible, hideImportDataModal } = this.props.documents;
+        const { importDataModalIsVisible, hideImportDataModal, isProcessingImportData } = this.props.documents;
         const { title, speaker, date } = this.state;
 
         const contentElement = (
@@ -64,12 +64,13 @@ class ImportDataModal extends Component {
         );
 
         return (
-            <ReactCSSTransitionGroup transitionName="fade-in-out" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+            <ReactCSSTransitionGroup transitionName="fade-in-out" transitionAppear={true} transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
                 {importDataModalIsVisible ? (
                     <Modal
                         title="Import Data"
                         content={contentElement}
                         footer={footerElement}
+                        isLoading={isProcessingImportData}
                         closeFunction={hideImportDataModal} />
                 ) : null}
             </ReactCSSTransitionGroup>

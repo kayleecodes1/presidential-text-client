@@ -4,6 +4,7 @@ class DocumentsStore {
 
     @observable documents = [];
     @observable importDataModalIsVisible = false;
+    @observable isProcessingImportData = false;
 
     constructor() {
         this.showImportDataModal = this.showImportDataModal.bind(this);
