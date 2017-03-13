@@ -1,0 +1,21 @@
+%fade-in-out {
+
+  &-appear,
+  &-enter {
+    opacity: 0.01;
+
+    &-active {
+      opacity: 1;
+      transition: opacity 200ms ease-in 200ms;
+    }
+  }
+
+  &-leave {
+    opacity: 1;
+
+    &-active {
+      opacity: 0.01;
+      transition: opacity 200ms ease-in;
+    }
+  }
+}

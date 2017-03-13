@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+
+@import 'partials/variables';
+@import 'partials/mixins';
+@import 'partials/classes';
+
+html,
+body {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.001);
+  background: $color-app-bg;
+  padding: 0;
+  margin: 0;
+}
+
+@import './transitions/fade-in-out.scss';
+@import './transitions/fade-in-out-swap.scss';
+
+@import 'components/loading-indicator';
+@import 'components/form';
+@import 'components/button';
+@import 'components/modal';
+@import 'components/table';
+@import 'components/pagination';
+
+@import 'routes/app';
+@import 'routes/login';
+@import 'routes/dashboard';
+@import 'routes/section';

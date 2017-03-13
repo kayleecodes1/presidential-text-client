@@ -1,0 +1,72 @@
+.table {
+
+  $head-cell-height: 40px;
+
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #CCC;
+
+  &__head {
+    display: table-header-group;
+  }
+
+  &__body {
+    display: table-row-group;
+  }
+
+  &__row {
+    display: table-row;
+  }
+
+  &__head-cell,
+  &__cell {
+    display: table-cell;
+    padding: 0 $spacing-standard;
+    border-right: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &--centered {
+      text-align: center;
+    }
+  }
+
+  &__row:last-child &__cell {
+    border-bottom: none;
+  }
+
+  &__head-cell {
+    height: $head-cell-height;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: $head-cell-height;
+    background: #EEE;
+  }
+
+  &__row:first-child &__head-cell:first-child {
+    border-radius: 3px 0 0 0;
+  }
+
+  &__row:first-child &__head-cell:last-child {
+    border-radius: 0 3px 0 0;
+  }
+
+  &__cell {
+    font-weight: 400;
+    font-size: 13px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  &__row:nth-child(even) &__cell {
+    background: #FEFEFE;
+  }
+}

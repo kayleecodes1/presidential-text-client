@@ -1,0 +1,62 @@
+$section-header-height: 70px;
+$section-navigation-header-height: 30px;
+
+.section {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: #FFF;
+  overflow: hidden;
+  overflow-y: auto;
+
+  &__header {
+    height: $section-header-height;
+    line-height: $section-header-height;
+    padding: 0 $gutter-standard;
+    border-bottom: 1px solid $color-border-light;
+    overflow: hidden;
+  }
+
+  &__heading {
+    float: left;
+    font-weight: 500;
+    font-size: 24px;
+    color: $color-text-dark;
+    margin: 0;
+  }
+
+  &__header-buttons {
+    float: right;
+    > .button {
+      float: left;
+      margin-top: ($section-header-height - $button-height) / 2;
+      margin-left: $spacing-standard;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__navigation-header {
+    height: $section-navigation-header-height;
+    padding: 0 $gutter-standard;
+    margin: $spacing-standard 0;
+    overflow: hidden;
+    @extend %clearfix;
+  }
+
+  &__results-per-page-holder {
+    float: left;
+  }
+
+  &__pagination-holder {
+    float: right;
+  }
+
+  &__filter-holder {
+
+  }
+
+  &__body {
+    padding: 0 $gutter-standard;
+  }
+}

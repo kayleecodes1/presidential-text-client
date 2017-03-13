@@ -1,0 +1,45 @@
+$button-height: 30px;
+
+.button {
+  vertical-align: middle;
+  display: inline-block;
+  box-sizing: border-box;
+  height: $button-height;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: $button-height;
+  color: $color-text-dark;
+  background: #EEE;
+  padding: 0 16px;
+  border-radius: 3px;
+  border: 1px solid #CCC;
+  outline: none;
+  margin: 0;
+  cursor: pointer;
+
+  /*&:focus {
+    border-color: $color-highlight;
+  }*/
+
+  &--primary {
+    color: #FFF;
+    background: linear-gradient(to top, darken($color-highlight, 5%), $color-highlight);
+    border: none;
+    /*&:focus {
+      box-shadow: 0 0 10px 0 rgba(50, 124, 255, 1);
+    }*/
+  }
+
+  &--secondary {
+    color: $color-text-medium;
+    background: none;
+    border: 1px solid #CCC;
+  }
+
+  &__icon {
+    float: left;
+    font-size: 14px;
+    line-height: $button-height;
+    margin: 0 6px 0 0;
+  }
+}

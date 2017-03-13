@@ -1,0 +1,88 @@
+.modal {
+
+  $outer-gutter: 30px;
+  $header-height: 50px;
+  $footer-height: 50px;
+  $inner-gutter: 20px;
+  $close-button-size: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba($color-text-dark, 0.5);
+
+  &__window {
+    width: 600px;
+    max-width: calc(100% - #{2 * $outer-gutter});
+    border-radius: 3px;
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  &__header {
+    position: relative;
+    height: $header-height;
+    line-height: $header-height;
+    background: #EEE;
+    border-radius: 3px 3px 0 0;
+    border-bottom: 1px solid #CCC;
+    overflow: hidden;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 20px;
+    color: $color-text-dark;
+    padding: 0 $inner-gutter;
+    margin: 0;
+  }
+
+  &__close-button {
+    position: absolute;
+    top: calc(50% - #{$close-button-size / 2}); right: $inner-gutter;
+    width: $close-button-size;
+    height: $close-button-size;
+    font-size: $close-button-size;
+    line-height: $close-button-size;
+    color: #CCC;
+    text-align: center;
+    background: none;
+    padding: 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /*&:focus {
+      text-shadow: 0 0 2px rgba(50, 124, 255, 1);
+    }*/
+  }
+
+  &__body {
+    box-sizing: border-box;
+    max-height: calc(100% - #{$header-height + $footer-height + 2 * $outer-gutter});
+    background: #FFF;
+    padding: $inner-gutter;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    height: $footer-height;
+    background: #EEE;
+    padding: 0 $inner-gutter;
+    border-radius: 0 0 3px 3px;
+    border-top: 1px solid #CCC;
+    overflow: hidden;
+  }
+
+  &__button-row {
+    float: right;
+    > .button {
+      margin-top: ($footer-height - $button-height) / 2;
+      margin-left: $spacing-standard;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}
