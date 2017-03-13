@@ -11,7 +11,6 @@ $section-navigation-header-height: 30px;
   &__header {
     height: $section-header-height;
     line-height: $section-header-height;
-    padding: 0 $gutter-standard;
     border-bottom: 1px solid $color-border-light;
     overflow: hidden;
   }
@@ -38,7 +37,6 @@ $section-navigation-header-height: 30px;
 
   &__navigation-header {
     height: $section-navigation-header-height;
-    padding: 0 $gutter-standard;
     margin: $spacing-standard 0;
     overflow: hidden;
     @extend %clearfix;
@@ -57,6 +55,6 @@ $section-navigation-header-height: 30px;
   }
 
   &__body {
-    padding: 0 $gutter-standard;
+
   }
 }

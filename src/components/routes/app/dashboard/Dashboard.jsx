@@ -39,31 +39,33 @@ class Dashboard extends Component {
         return (
             <div className="dashboard">
                 <header className="dashboard__header">
-                    <div className="dashboard__brand">Presidential Text</div>
-                    <nav className="dashboard__nav">
-                        <ul className="dashboard__nav-list">
-                            <li className="dashboard__nav-item">
-                                <Link className={classNames('dashboard__nav-link', { 'dashboard__nav-link--active': isDocuments })} to="/documents">
-                                    <i className={classNames('dashboard__nav-icon', 'fa', 'fa-file-text', { 'dashboard__nav-icon--active': isDocuments })} />
-                                    <span>Documents</span>
-                                </Link>
-                            </li>
-                            <li className="dashboard__nav-item">
-                                <Link className={classNames('dashboard__nav-link', { 'dashboard__nav-link--active': isSpeakers })} to="/speakers">
-                                    <i className={classNames('dashboard__nav-icon', 'fa', 'fa-user', { 'dashboard__nav-icon--active': isSpeakers })} />
-                                    <span>Speakers</span>
-                                </Link>
-                            </li>
-                            <li className="dashboard__nav-item">
-                                <Link className={classNames('dashboard__nav-link', { 'dashboard__nav-link--active': isReports })} to="/reports">
-                                    <i className={classNames('dashboard__nav-icon', 'fa', 'fa-bar-chart', { 'dashboard__nav-icon--active': isReports })} />
-                                    <span>Reports</span>
-                                </Link>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div className="dashboard__user">
-                        <div className="dashboard__user-button">{app.currentUser.name}</div>
+                    <div className="container">
+                        <div className="dashboard__brand">Presidential Text</div>
+                        <nav className="dashboard__nav">
+                            <ul className="dashboard__nav-list">
+                                <li className="dashboard__nav-item">
+                                    <Link className={classNames('dashboard__nav-link', { 'dashboard__nav-link--active': isDocuments })} to="/documents">
+                                        <i className={classNames('dashboard__nav-icon', 'fa', 'fa-file-text', { 'dashboard__nav-icon--active': isDocuments })} />
+                                        <span>Documents</span>
+                                    </Link>
+                                </li>
+                                <li className="dashboard__nav-item">
+                                    <Link className={classNames('dashboard__nav-link', { 'dashboard__nav-link--active': isSpeakers })} to="/speakers">
+                                        <i className={classNames('dashboard__nav-icon', 'fa', 'fa-user', { 'dashboard__nav-icon--active': isSpeakers })} />
+                                        <span>Speakers</span>
+                                    </Link>
+                                </li>
+                                <li className="dashboard__nav-item">
+                                    <Link className={classNames('dashboard__nav-link', { 'dashboard__nav-link--active': isReports })} to="/reports">
+                                        <i className={classNames('dashboard__nav-icon', 'fa', 'fa-bar-chart', { 'dashboard__nav-icon--active': isReports })} />
+                                        <span>Reports</span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div className="dashboard__user">
+                            <div className="dashboard__user-button">{app.currentUser.name}</div>
+                        </div>
                     </div>
                 </header>
                 <div className="dashboard__content">

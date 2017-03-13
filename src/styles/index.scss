@@ -15,6 +15,14 @@ body {
   margin: 0;
 }
 
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 $gutter-standard;
+  margin: 0 auto;
+}
+
 @import './transitions/fade-in-out.scss';
 @import './transitions/fade-in-out-swap.scss';
 
