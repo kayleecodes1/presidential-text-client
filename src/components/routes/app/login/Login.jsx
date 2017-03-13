@@ -57,7 +57,7 @@ class Login extends Component {
 
         console.log(this.props.app.currentUser);//TODO: ... this is needed to trigger update
 
-        const { isProcessingLogin } = this.props.app;
+        const { isProcessingLogin, loginErrorText } = this.props.app;
         const { email, password } = this.state;
 
         return (
@@ -65,6 +65,9 @@ class Login extends Component {
                 <form id="form-login" className="login__form" onSubmit={this.handleSubmit}>
                     <div className={classNames('login__form-content', { 'login__form-content--hidden': isProcessingLogin })}>
                         <h1 className="login__heading">Sign In</h1>
+                        {loginErrorText ? (
+                            <div className="login__error">{loginErrorText}</div>
+                        ) : null}
                         <label className="login__label" htmlFor="email">Email Address</label>
                         <input className="login__input" type="text" name="email" value={email} onChange={this.handleChange} />
                         <label className="login__label" htmlFor="password">Password</label>

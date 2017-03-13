@@ -2,8 +2,12 @@
 
 export function login(email, password) {
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         setTimeout(() => {
+            if (email !== 'kylepixel@gmail.com' || password !== 'password') {
+                reject(new Error('Email or password is invalid.'));
+                return;
+            }
             resolve({
                 isAdmin: true,
                 name: 'Kyle Maguire',
