@@ -1,4 +1,5 @@
 import { observable } from 'mobx';
+import { createDocument } from '../services/api/documents';
 
 class DocumentsStore {
 
@@ -17,6 +18,20 @@ class DocumentsStore {
 
     hideImportDataModal() {
         this.importDataModalIsVisible = false;
+    }
+
+    submitImportData(data) {
+        this.isProcessingImportData = true;
+        createDocument(data)
+            .then(() => {
+                //TODO
+            })
+            .catch((err) => {
+                this.loginErrorText = err.message;
+            })
+            .then(() => {
+                this.isProcessingImportData = false;
+            });
     }
 }
 

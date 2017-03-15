@@ -1,97 +1,103 @@
-$dashboard-header-height: 50px;
-
 .dashboard {
+  
+  $header-height: 50px;
+  $header-bg-color: #393A35;
+  $header-text-color: #FFF;
+  
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
-}
 
-.dashboard__header {
-  position: absolute;
-  top: 0; right: 0; left: 0;
-  box-sizing: border-box;
-  height: $dashboard-header-height;
-  background: #FFF;
-  border-bottom: 1px solid $color-border-light;
-}
-
-.dashboard__content {
-  position: absolute;
-  top: $dashboard-header-height; right: 0; bottom: 0; left: 0;
-}
-
-.dashboard__brand {
-  float: left;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: $dashboard-header-height;
-  color: $color-text-dark;
-  text-transform: uppercase;
-  //background: url('../assets/images/logo.png') left center no-repeat;
-  //padding: 0 0 0 34px;
-  margin: 0 30px 0 0;
-}
-
-.dashboard__nav {
-  float: left;
-}
-
-.dashboard__nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dashboard__nav-item {
-  float: left;
-  line-height: $dashboard-header-height;
-}
-
-.dashboard__nav-link {
-  display: block;
-  font-weight: 600;
-  font-size: 12px;
-  color: $color-text-light;
-  text-decoration: none;
-  padding: 0 12px;
-  cursor: pointer;
-
-  &--active {
-    color: $color-text-dark;
-  }
-}
-
-.dashboard__nav-icon {
-  float: left;
-  font-size: 14px;
-  line-height: $dashboard-header-height;
-  margin: 0 7px 0 0;
-
-  &--active {
-    color: $color-highlight;
-  }
-}
-
-.dashboard__user {
-  float: right;
-}
-
-.dashboard__user-button {
-  display: block;
-  position: relative;
-  font-size: 13px;
-  line-height: $dashboard-header-height;
-  color: $color-text-dark;
-  padding: 0 20px 0 12px;
-  cursor: pointer;
-  &::after {
-    content: '\f0d7';
+  &__header {
     position: absolute;
-    top: calc(50% - 8px); right: 0;
-    width: 16px;
-    height: 16px;
-    font-family: 'FontAwesome';
-    font-size: 16px;
-    line-height: 16px;
-    text-align: center;
+    top: 0; right: 0; left: 0;
+    box-sizing: border-box;
+    height: $header-height;
+    background: $header-bg-color;
+    border-bottom: 1px solid $color-border-light;
+  }
+
+  &__content {
+    position: absolute;
+    top: $header-height; right: 0; bottom: 0; left: 0;
+  }
+
+  &__brand {
+    float: left;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: $header-height;
+    color: $header-text-color;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    //background: url('../assets/images/logo.png') left center no-repeat;
+    //padding: 0 0 0 34px;
+    margin: 0 30px 0 0;
+  }
+
+  &__nav {
+    float: left;
+  }
+
+  &__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__nav-item {
+    float: left;
+    line-height: $header-height;
+  }
+
+  &__nav-link {
+    display: block;
+    font-weight: 500;
+    font-size: 12px;
+    color: $header-text-color;
+    text-decoration: none;
+    padding: 0 12px;
+    cursor: pointer;
+
+    &--active {
+      color: $color-highlight;
+    }
+  }
+
+  &__nav-icon {
+    float: left;
+    font-size: 14px;
+    line-height: $header-height;
+    margin: 0 7px 0 0;
+
+    &--active {
+      color: $color-highlight;
+    }
+  }
+
+  &__user {
+    float: right;
+  }
+
+  &__user-button {
+    display: block;
+    position: relative;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: $header-height;
+    color: $header-text-color;
+    padding: 0 20px 0 12px;
+    cursor: pointer;
+
+    &::after {
+      content: '\f0d7';
+      position: absolute;
+      top: calc(50% - 8px); right: 0;
+      width: 16px;
+      height: 16px;
+      font-family: 'FontAwesome';
+      font-size: 16px;
+      line-height: 16px;
+      text-align: center;
+    }
   }
 }
