@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import LoadingIndicator from './LoadingIndicator';
 
 class Modal extends Component {
@@ -6,6 +8,7 @@ class Modal extends Component {
     static nextId = 1;
 
     static propTypes = {
+        isVisible: PropTypes.bool.isRequired,
         title: PropTypes.string.isRequired,
         content: PropTypes.element.isRequired,
         footer: PropTypes.element,
@@ -38,33 +41,41 @@ class Modal extends Component {
 
     render() {
 
-        const { title, content, footer, isLoading, closeFunction } = this.props;
+        const { isVisible, title, content, footer, isLoading, closeFunction } = this.props;
+        
+        let element = null;
 
-        const titleId = `modal-${this.id}-title`;
+        if (isVisible) {
+
+            const titleId = `modal-${this.id}-title`;
+            element = (
+                <div key={`modal-${this.id}`} className="modal" role="dialog" aria-labelledby={titleId} onClick={closeFunction}>
+                    <div className="modal__window" onClick={(event) => event.stopPropagation()}>
+                        <div className="modal__header">
+                            <h1 id={titleId} className="modal__title">{title}</h1>
+                            <button className="modal__close-button" aria-label="Close" onClick={closeFunction} >
+                                <i className="fa fa-times" />
+                            </button>
+                        </div>
+                        <div className={classNames('modal__body', { 'modal__body--loading': isLoading })}>
+                            {isLoading ? (
+                                <LoadingIndicator />
+                            ) : content}
+                        </div>
+                        {footer ? (
+                            <div className="modal__footer">
+                                {footer}
+                            </div>
+                        ) : null}
+                    </div>
+                </div>
+            );
+        }
 
         return (
-            <div key={`modal-${this.id}`} className="modal" role="dialog" aria-labelledby={titleId} onClick={closeFunction}>
-                <div className="modal__window" onClick={(event) => event.stopPropagation()}>
-                    <div className="modal__header">
-                        <h1 id={titleId} className="modal__title">{title}</h1>
-                        <button className="modal__close-button" aria-label="Close" onClick={closeFunction} >
-                            <i className="fa fa-times" />
-                        </button>
-                    </div>
-                    <div className="modal__body">
-                        {isLoading ? (
-                            <div className="modal__loading-stretcher">
-                                <LoadingIndicator />
-                            </div>
-                        ) : content}
-                    </div>
-                    {footer ? (
-                        <div className="modal__footer">
-                            {footer}
-                        </div>
-                    ) : null}
-                </div>
-            </div>
+            <ReactCSSTransitionGroup transitionName="fade-in-out" transitionAppear={true} transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                {element}
+            </ReactCSSTransitionGroup>
         );
     }
 }

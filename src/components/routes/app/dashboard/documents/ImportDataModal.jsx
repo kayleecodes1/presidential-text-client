@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Modal from '../../../../Modal.jsx';
 
 @inject('documents')
@@ -64,16 +63,13 @@ class ImportDataModal extends Component {
         );
 
         return (
-            <ReactCSSTransitionGroup transitionName="fade-in-out" transitionAppear={true} transitionAppearTimeout={200} transitionEnterTimeout={200} transitionLeaveTimeout={200}>
-                {importDataModalIsVisible ? (
-                    <Modal
-                        title="Import Data"
-                        content={contentElement}
-                        footer={footerElement}
-                        isLoading={isProcessingImportData}
-                        closeFunction={hideImportDataModal} />
-                ) : null}
-            </ReactCSSTransitionGroup>
+            <Modal
+                isVisible={importDataModalIsVisible}
+                title="Import Data"
+                content={contentElement}
+                footer={footerElement}
+                isLoading={isProcessingImportData}
+                closeFunction={hideImportDataModal} />
         );
     }
 }

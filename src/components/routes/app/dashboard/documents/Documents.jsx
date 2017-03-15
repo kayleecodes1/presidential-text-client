@@ -34,30 +34,23 @@ class Documents extends Component {
                 <div className="section__navigation-header">
                     <div className="container">
                         <div className="table-controls">
-
-                        </div>
-                        <div className="section__results-per-page-holder">
-                            <select name="resultsPerPage">
-                                <option value="10">Show 10</option>
-                                <option value="20">Show 20</option>
-                                <option value="30">Show 30</option>
-                                <option value="40">Show 40</option>
-                                <option value="50">Show 50</option>
-                            </select>
-                        </div>
-                        <div className="section__pagination-holder">
-                            <nav className="pagination">
-                                <button className="pagination__button pagination__button--active">1</button>
-                                <button className="pagination__button">2</button>
-                                <button className="pagination__button">3</button>
-                                <button className="pagination__button">4</button>
-                                <button className="pagination__button">5</button>
-                                <button className="pagination__button">6</button>
-                                <button className="pagination__button">7</button>
-                                <button className="pagination__button">8</button>
-                                <button className="pagination__button pagination__button--placeholder">...</button>
-                                <button className="pagination__button">93</button>
-                            </nav>
+                            <div className="table-controls__results-control">
+                                <span>Rows per page:</span>
+                                <select className="table-controls__results-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                            <div className="table-controls__results-count">1-10 of 100</div>
+                            <div className="table-controls__pages-control">
+                                <button className="table-controls__page-button">
+                                    <i className="fa fa-chevron-left" />
+                                </button>
+                                <button className="table-controls__page-button">
+                                    <i className="fa fa-chevron-right" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

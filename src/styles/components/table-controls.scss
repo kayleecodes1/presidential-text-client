@@ -1,0 +1,61 @@
+.table-controls {
+
+  $height: 30px;
+  $controls-spacing: 30px;
+  $controls-color: #868686;
+  $page-button-size: 20px;
+
+  float: right;
+  display: block;
+  height: $height;
+  font-size: 13px;
+  line-height: $height;
+  color: $controls-color;
+  @extend %clearfix;
+
+  & > * {
+    margin: 0 $controls-spacing 0 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__results-control {
+    float: left;
+  }
+
+  &__results-select {
+    margin-left: 10px;
+  }
+
+  &__results-count {
+    float: left;
+  }
+
+  &__pages-control {
+    float: left;
+    @extend %clearfix;
+  }
+
+  &__page-button {
+    float: left;
+    display: block;
+    font-size: 13px;
+    width: $page-button-size;
+    height: $page-button-size;
+    line-height: $page-button-size;
+    color: $controls-color;
+    text-align: center;
+    background: none;
+    padding: 0;
+    border: none;
+    outline: none;
+    margin: (($height - $page-button-size) / 2) 0;
+    cursor: pointer;
+
+    i.fa {
+      line-height: $page-button-size;
+    }
+  }
+}
