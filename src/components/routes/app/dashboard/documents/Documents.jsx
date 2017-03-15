@@ -33,6 +33,9 @@ class Documents extends Component {
                 </div>
                 <div className="section__navigation-header">
                     <div className="container">
+                        <div className="table-controls">
+
+                        </div>
                         <div className="section__results-per-page-holder">
                             <select name="resultsPerPage">
                                 <option value="10">Show 10</option>

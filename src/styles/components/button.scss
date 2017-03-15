@@ -8,14 +8,18 @@ $button-height: 30px;
   font-weight: 500;
   font-size: 12px;
   line-height: $button-height;
-  color: $color-text-dark;
-  background: #EEE;
+  color: #444;
+  background: #F6F6F6;
   padding: 0 16px;
   border-radius: 3px;
-  border: 1px solid #CCC;
+  border: 1px solid $color-border-light;
   outline: none;
   margin: 0;
   cursor: pointer;
+
+  &:hover {
+    border: 1px solid darken($color-border-light, 10%);
+  }
 
   /*&:focus {
     border-color: $color-highlight;
@@ -24,10 +28,12 @@ $button-height: 30px;
   &--primary {
     color: #FFF;
     background: linear-gradient(to top, darken($color-highlight, 5%), $color-highlight);
-    border: none;
-    /*&:focus {
-      box-shadow: 0 0 10px 0 rgba(50, 124, 255, 1);
-    }*/
+    border: 1px solid darken($color-highlight, 10%);
+
+    &:hover {
+      background: linear-gradient(to top, darken($color-highlight, 10%), $color-highlight);
+      border: 1px solid darken($color-highlight, 17%);
+    }
   }
 
   &--secondary {
