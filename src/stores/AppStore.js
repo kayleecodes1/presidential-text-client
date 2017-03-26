@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import { login, logout } from '../services/api/authentication';
 
 class AppStore {
@@ -7,11 +7,7 @@ class AppStore {
     @observable isProcessingLogin = false;
     @observable loginErrorText = '';
 
-    constructor() {
-
-        //
-    }
-
+    @action.bound
     login(email, password) {
 
         this.isProcessingLogin = true;
@@ -27,9 +23,10 @@ class AppStore {
             });
     }
 
+    @action.bound
     logout() {
 
-        logout
+        logout()
             .then(() => {
                 this.currentUser = null;
             });

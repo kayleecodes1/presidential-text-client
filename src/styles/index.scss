@@ -28,13 +28,18 @@ body {
 
 @import './transitions/fade-in-out.scss';
 @import './transitions/fade-in-out-swap.scss';
+@import './transitions/slide-down-fade-out.scss';
 
 @import './components/loading-indicator';
+@import './components/loading-placeholder';
 @import './components/form';
 @import './components/button';
+@import './components/button-list';
+@import './components/notification';
 @import './components/modal';
 @import './components/table';
 @import './components/table-controls';
+@import './components/repeater';
 
 @import './routes/app';
 @import './routes/login';

@@ -3,6 +3,8 @@
   $header-height: 50px;
   $header-bg-color: #393A35;
   $header-text-color: #FFF;
+  $nav-color: #999;
+  $nav-color-active: #FFF;
   
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
@@ -13,7 +15,6 @@
     box-sizing: border-box;
     height: $header-height;
     background: $header-bg-color;
-    border-bottom: 1px solid $color-border-light;
   }
 
   &__content {
@@ -53,13 +54,13 @@
     display: block;
     font-weight: 600;
     font-size: 12px;
-    color: $header-text-color;
+    color: $nav-color;
     text-decoration: none;
     padding: 0 12px;
     cursor: pointer;
 
     &--active {
-      color: $color-highlight;
+      color: $nav-color-active;
     }
   }
 
@@ -70,34 +71,39 @@
     margin: 0 7px 0 0;
 
     &--active {
-      color: $color-highlight;
+      color: $nav-color-active;
     }
   }
 
   &__user {
     float: right;
+    @extend %clearfix;
   }
 
-  &__user-button {
-    display: block;
-    position: relative;
+  &__user-name {
+    float: left;
     font-weight: 500;
     font-size: 13px;
     line-height: $header-height;
     color: $header-text-color;
-    padding: 0 20px 0 12px;
-    cursor: pointer;
 
     &::after {
-      content: '\f0d7';
-      position: absolute;
-      top: calc(50% - 8px); right: 0;
-      width: 16px;
-      height: 16px;
-      font-family: 'FontAwesome';
-      font-size: 16px;
-      line-height: 16px;
-      text-align: center;
+      content: '|';
+      margin: 0 10px;
     }
+  }
+
+  &__logout-button {
+    float: left;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: $header-height;
+    color: $header-text-color;
+    background: none;
+    padding: 0;
+    border: none;
+    outline: none;
+    margin: 0;
+    cursor: pointer;
   }
 }

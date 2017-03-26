@@ -1,8 +1,10 @@
 .table {
 
   $head-cell-height: 30px;
+  $cell-content-height: 20px;
 
   display: table;
+  border-spacing: 0;
   table-layout: fixed;
   width: 100%;
   border-radius: 3px;
@@ -60,13 +62,23 @@
   }
 
   &__cell {
+    max-width: 0;
+    height: $cell-content-height;
     font-weight: 400;
     font-size: 13px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    line-height: $cell-content-height;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /*&__row:nth-child(even) &__cell {
     background: #FEFEFE;
   }*/
+
+  &__content-placeholder {
+    height: $cell-content-height;
+  }
 }

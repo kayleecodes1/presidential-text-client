@@ -1,0 +1,57 @@
+.notification {
+
+  $card-width: 300px;
+  $type-indicator-width: 6px;
+  $message-padding: 16px;
+  $close-button-size: 18px;
+  $close-button-spacing: 6px;
+
+  position: relative;
+  display: block;
+  width: $card-width;
+  max-width: 100%;
+  background: #FFF;
+  padding: $message-padding ($close-button-spacing * 2 + $close-button-size) $message-padding $message-padding;
+  border-left: $type-indicator-width solid #CCC;
+  box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+
+  &--success {
+    border-left-color: $color-success;
+  }
+
+  &--warning {
+    border-left-color: $color-warning;
+  }
+
+  &--error {
+    border-left-color: $color-error;
+  }
+
+  &__close-button {
+    position: absolute;
+    top: $close-button-spacing; right: $close-button-spacing;
+    width: $close-button-size;
+    height: $close-button-size;
+    font-size: $close-button-size;
+    line-height: $close-button-size;
+    text-align: center;
+    color: $color-border-light;
+    background: none;
+    padding: 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      color: darken($color-border-light, 10%);
+    }
+  }
+
+  &__message {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.3;
+    color: #63697D;
+  }
+}

@@ -18,9 +18,15 @@ function parseJson(response) {
     return response.json();
 }
 
-export function callApi(path, method, data) {
+export function callApi(path, method, data, testData) {
 
-    const options = { method };
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(testData());
+        }, 1000);
+    });
+
+    /*const options = { method };
     if (data) {
         options.body = JSON.stringify(data);
     }
@@ -35,5 +41,5 @@ export function callApi(path, method, data) {
             .catch((error) => {
                 reject(error);
             });
-    });
+    });*/
 }

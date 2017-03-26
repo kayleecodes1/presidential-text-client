@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router';
 import classNames from 'classnames';
-import ImportDataModal from './documents/ImportDataModal';
+import CreateDocumentModal from './documents/CreateDocumentModal';
+import EditDocumentModal from './documents/EditDocumentModal';
+import DeleteDocumentModal from './documents/DeleteDocumentModal';
+import CreateSpeakerModal from './speakers/CreateSpeakerModal';
+import EditSpeakerModal from './speakers/EditSpeakerModal';
+import DeleteSpeakerModal from './speakers/DeleteSpeakerModal';
 
 @inject('routing')
 @inject('app')
@@ -13,7 +18,7 @@ class Dashboard extends Component {
         this.redirectIfNotLoggedIn();
     }
 
-    componentWillReceiveProps() {
+    componentWillUpdate() {
         this.redirectIfNotLoggedIn();
     }
 
@@ -32,7 +37,7 @@ class Dashboard extends Component {
         const isSpeakers = (location === '/speakers');
         const isReports = (location === '/reports');
 
-        if (this.props.app.currentUser === null) {
+        if (app.currentUser === null) {
             return null;
         }
 
@@ -64,14 +69,20 @@ class Dashboard extends Component {
                             </ul>
                         </nav>
                         <div className="dashboard__user">
-                            <div className="dashboard__user-button">{app.currentUser.name}</div>
+                            <div className="dashboard__user-name">{app.currentUser.name}</div>
+                            <button className="dashboard__logout-button" onClick={app.logout}>Logout</button>
                         </div>
                     </div>
                 </header>
                 <div className="dashboard__content">
                     {this.props.children}
                 </div>
-                <ImportDataModal />
+                <CreateDocumentModal />
+                <EditDocumentModal />
+                <DeleteDocumentModal />
+                <CreateSpeakerModal />
+                <EditSpeakerModal />
+                <DeleteSpeakerModal />
             </div>
         );
     }

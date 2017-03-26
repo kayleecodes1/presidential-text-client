@@ -1,0 +1,23 @@
+.slide-down-fade-out {
+
+  &-appear,
+  &-enter {
+    top: -50px;
+    opacity: 0.01;
+
+    &-active {
+      top: 0;
+      opacity: 1;
+      transition: top 200ms ease-in, opacity 200ms ease-in;
+    }
+  }
+
+  &-leave {
+    opacity: 1;
+
+    &-active {
+      opacity: 0.01;
+      transition: opacity 200ms ease-in;
+    }
+  }
+}

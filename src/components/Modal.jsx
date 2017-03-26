@@ -9,21 +9,23 @@ class Modal extends Component {
 
     static propTypes = {
         isVisible: PropTypes.bool.isRequired,
+        windowSize: PropTypes.oneOf(['small']),
         title: PropTypes.string.isRequired,
-        content: PropTypes.element.isRequired,
-        footer: PropTypes.element,
+        renderContent: PropTypes.func.isRequired,
+        renderFooter: PropTypes.func,
         isLoading: PropTypes.bool,
         closeFunction: PropTypes.func
     };
 
     static defaultProps = {
+        windowSize: null,
         isLoading: false,
         closeFunction: () => {}
     };
 
     constructor() {
         super();
-        this.id = LoadingIndicator.nextId++;
+        this.id = Modal.nextId++;
         this.handleKeydown = (event) => {
             if (event.keyCode === 27) {
                 this.props.closeFunction();
@@ -41,7 +43,7 @@ class Modal extends Component {
 
     render() {
 
-        const { isVisible, title, content, footer, isLoading, closeFunction } = this.props;
+        const { isVisible, windowSize, title, renderContent, renderFooter, isLoading, closeFunction } = this.props;
         
         let element = null;
 
@@ -50,7 +52,7 @@ class Modal extends Component {
             const titleId = `modal-${this.id}-title`;
             element = (
                 <div key={`modal-${this.id}`} className="modal" role="dialog" aria-labelledby={titleId} onClick={closeFunction}>
-                    <div className="modal__window" onClick={(event) => event.stopPropagation()}>
+                    <div className={classNames('modal__window', { [`modal__window--${windowSize}`]: windowSize })} onClick={(event) => event.stopPropagation()}>
                         <div className="modal__header">
                             <h1 id={titleId} className="modal__title">{title}</h1>
                             <button className="modal__close-button" aria-label="Close" onClick={closeFunction} >
@@ -60,11 +62,11 @@ class Modal extends Component {
                         <div className={classNames('modal__body', { 'modal__body--loading': isLoading })}>
                             {isLoading ? (
                                 <LoadingIndicator />
-                            ) : content}
+                            ) : renderContent()}
                         </div>
-                        {footer ? (
+                        {renderFooter ? (
                             <div className="modal__footer">
-                                {footer}
+                                {!isLoading ? renderFooter() : null}
                             </div>
                         ) : null}
                     </div>

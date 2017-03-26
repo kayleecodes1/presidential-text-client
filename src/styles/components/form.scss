@@ -1,12 +1,19 @@
 .form {
 
+  $input-font-size: 13px;
+  $input-text-color: #333;
+
   &__label {
     display: block;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 12px;
     line-height: 13px;
     color: #63697D;
     margin: 0 0 15px 0;
+
+    &--small {
+      font-size: 11px;
+    }
   }
 
   &__text-input {
@@ -14,8 +21,8 @@
     box-sizing: border-box;
     width: 100%;
     height: 30px;
-    font-size: 12px;
-    color: #000;
+    font-size: $input-font-size;
+    color: $input-text-color;
     padding: 0 10px;
     border-radius: 3px;
     border: 1px solid $color-border-light;
@@ -24,5 +31,112 @@
     /*&:focus {
       border-color: $color-highlight;
     }*/
+
+    &--small {
+      width: 125px;
+    }
+
+    &--inline {
+      display: inline-block;
+      margin-right: 8px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
+
+  &__textarea-input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    font-size: $input-font-size;
+    color: $input-text-color;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid $color-border-light;
+    outline: none;
+    margin: 8px 0 0 0;
+    /*&:focus {
+      border-color: $color-highlight;
+    }*/
+  }
+
+  &__select {
+    display: block;
+    margin: 8px 0 0 0;
+    outline: none;
+  }
+
+  &__file-select {
+    display: block;
+    font-size: 13px;
+    outline: none;
+    margin: 8px 0 0 0;
+  }
+
+  &__error {
+    display: block;
+    font-size: 11px;
+    line-height: 13px;
+    color: $color-error;
+    margin-top: 2px;
+  }
+
+  &__paragraph {
+    font-size: 15px;
+    line-height: 1.35;
+    color: #63697D;
+  }
+}
+
+// react-select overrides
+.Select {
+  margin: 8px 0 0 0;
+
+  &.is-focused {
+
+  }
+
+  &.is-open {
+
+  }
+}
+
+.Select-control {
+  height: 30px;
+  border-radius: 3px;
+  border-color: $color-border-light;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+.is-focused:not(.is-open) > .Select-control {
+  border-color: $color-border-light;
+  box-shadow: none;
+}
+
+.is-open > .Select-control {
+  border-color: $color-border-light;
+}
+
+.Select-arrow-zone {
+  bottom: -2px;
+}
+
+.Select-input {
+  height: 28px;
+}
+
+.Select--single > .Select-control .Select-value {
+  font-size: 13px;
+  line-height: 28px;
+  color: #333;
+}
+
+.Select--single > .Select-control .Select-value-label {
+  font-family: 'Open Sans', sans-serif;
 }

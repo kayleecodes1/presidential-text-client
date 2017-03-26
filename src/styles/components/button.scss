@@ -42,10 +42,31 @@ $button-height: 30px;
     border: 1px solid #CCC;
   }
 
+  &--danger {
+    color: #FFF;
+    background: linear-gradient(to top, $color-error, lighten($color-error, 5%));
+    border: 1px solid darken($color-error, 10%);
+
+    &:hover {
+      background: linear-gradient(to top, darken($color-error, 5%), lighten($color-error, 5%));
+      border: 1px solid darken($color-error, 17%);
+    }
+  }
+
+  &--tiny {
+    height: 18px;
+    line-height: 18px;
+    padding: 0 10px;
+  }
+
   &__icon {
     float: left;
     font-size: 14px;
-    line-height: $button-height;
+    line-height: inherit;
     margin: 0 6px 0 0;
+
+    &--tiny {
+      font-size: 11px;
+    }
   }
 }
