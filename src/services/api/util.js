@@ -1,6 +1,6 @@
 import fetch from 'whatwg-fetch';
 
-const API_URL = 'blah';
+const API_URL = window.__CONFIG__ ? window.__CONFIG__.apiUrl : '/api/';
 
 function checkStatus(response) {
 
