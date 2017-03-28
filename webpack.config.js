@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     devtool: 'eval',
@@ -11,11 +12,13 @@ module.exports = {
     ],
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
-        publicPath: '/static/'
+        filename: 'bundle.js'
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, 'src/index.tpl.html')
+        })
     ],
     resolve: {
         extensions: ['.scss', '.js', '.jsx'],
@@ -33,6 +36,9 @@ module.exports = {
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
             loader: 'file-loader'
+        }, {
+            test: /\.html$/,
+            loader: 'html-loader'
         }, {
             test: /\.css$/,
             loaders: ['style-loader', 'css-loader']
