@@ -1,5 +1,6 @@
 .repeater {
 
+  $remove-button-size: 16px;
 
   &__list {
     list-style: none;
@@ -8,7 +9,36 @@
   }
 
   &__item {
-    //
+    position: relative;
+    box-sizing: border-box;
+    padding: 8px;
+    padding-right: 8px + 2px * 2 + $remove-button-size;
+    border: 1px solid $color-border-light;
+    margin: 8px 0 0 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 2px * 2 + $remove-button-size + 1px;
+      background: #F6F6F6;
+      border-left: 1px solid $color-border-light;
+      z-index: 1000;
+    }
+  }
+
+  &__remove-button {
+    position: absolute;
+    top: 50%; right: 2px;
+    width: $remove-button-size;
+    height: $remove-button-size;
+    background: none;
+    padding: 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transform: translate(0, -($remove-button-size / 2));
+    z-index: 1500;
   }
 
   &__add-button {

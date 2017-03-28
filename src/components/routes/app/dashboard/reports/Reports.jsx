@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
-//@inject('reports')
+@inject('createReport')
 @observer
 class Reports extends Component {
 
     render() {
+
+        const { createReport } = this.props;
 
         return (
             <div className="section data">
@@ -13,7 +15,7 @@ class Reports extends Component {
                     <div className="container">
                         <h1 className="section__heading">Reports</h1>
                         <div className="section__header-buttons">
-                            <button className="button">
+                            <button className="button" onClick={createReport.show}>
                                 <i className="button__icon fa fa-plus" />
                                 <span>Create Report</span>
                             </button>

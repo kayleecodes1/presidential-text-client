@@ -28,7 +28,7 @@ class EditDocumentModal extends Component {
     handleSpeakerChange(value) {
 
         this.props.editDocument.setFormData('speaker', value);
-        this.props.createDocument.setFormData('speakerTerm', '');
+        this.props.editDocument.setFormData('speakerTerm', '');
     }
 
     handleFileInputChange(event) {

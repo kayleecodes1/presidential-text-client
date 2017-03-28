@@ -8,6 +8,7 @@ import DeleteDocumentModal from './documents/DeleteDocumentModal';
 import CreateSpeakerModal from './speakers/CreateSpeakerModal';
 import EditSpeakerModal from './speakers/EditSpeakerModal';
 import DeleteSpeakerModal from './speakers/DeleteSpeakerModal';
+import CreateReportModal from './reports/CreateReportModal';
 
 @inject('routing')
 @inject('app')
@@ -83,6 +84,7 @@ class Dashboard extends Component {
                 <CreateSpeakerModal />
                 <EditSpeakerModal />
                 <DeleteSpeakerModal />
+                <CreateReportModal />
             </div>
         );
     }
