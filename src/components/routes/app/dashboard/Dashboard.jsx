@@ -15,7 +15,7 @@ import CreateReportModal from './reports/CreateReportModal';
 @observer
 class Dashboard extends Component {
 
-    componentWillMount() {
+    /*componentWillMount() {
         this.redirectIfNotLoggedIn();
     }
 
@@ -27,7 +27,7 @@ class Dashboard extends Component {
         if (this.props.app.currentUser === null) {
             this.props.routing.push('/login');
         }
-    }
+    }*/
 
     render() {
 
@@ -38,9 +38,9 @@ class Dashboard extends Component {
         const isSpeakers = (location === '/speakers');
         const isReports = (location === '/reports');
 
-        if (app.currentUser === null) {
+        /*if (app.currentUser === null) {
             return null;
-        }
+        }*/
 
         return (
             <div className="dashboard">
@@ -70,7 +70,7 @@ class Dashboard extends Component {
                             </ul>
                         </nav>
                         <div className="dashboard__user">
-                            <div className="dashboard__user-name">{app.currentUser.name}</div>
+                            <div className="dashboard__user-name">{/*app.currentUser.name*/}Current User</div>
                             <button className="dashboard__logout-button" onClick={app.logout}>Logout</button>
                         </div>
                     </div>

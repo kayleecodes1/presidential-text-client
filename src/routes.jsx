@@ -18,7 +18,6 @@ const routes = () => {
                 <Route path="speakers" component={Speakers} />
                 <Route path="reports" component={Reports} />
             </Route>
-            <Route path="login" component={Login} />
         </Route>
     );
 };
