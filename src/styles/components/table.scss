@@ -46,11 +46,44 @@
   }
 
   &__head-cell {
+    position: relative;
     height: $head-cell-height;
     font-weight: 600;
     font-size: 13px;
     line-height: $head-cell-height;
     background: #EEE;
+
+    &--sortable {
+      cursor: pointer;
+
+      &::after {
+        content: '\f0dc';
+        position: absolute;
+        top: calc(50% - 8px); right: 2px;
+        width: 16px;
+        height: 16px;
+        font-family: 'FontAwesome';
+        font-size: 16px;
+        line-height: 16px;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    &--sort-ascend {
+
+      &::after {
+        content: '\f0de';
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+    &--sort-descend {
+
+      &::after {
+        content: '\f0dd';
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
   }
 
   &__row:first-child &__head-cell:first-child {

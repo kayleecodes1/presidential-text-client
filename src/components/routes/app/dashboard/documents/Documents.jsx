@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import classNames from 'classnames';
 
 @inject('documents')
 @inject('createDocument')
@@ -12,36 +13,6 @@ class Documents extends Component {
 
         this.props.documents.getDocuments();
     }
-
-    /*renderPagination() {
-
-        const { currentPage, totalPages } = this.props.documents;
-
-        const elements = [];
-
-        const pagesStart = Math.max(currentPage - 2, 1);
-        const pagesEnd = Math.min(currentPage + 2, totalPages);
-
-        if (pagesStart !== 1) {
-            //TODO push 1
-        }
-
-        if (pagesStart > 2) {
-            //TODO push ellipsis
-        }
-
-        //TODO push pagesStart to pagesEnd
-
-        if (pagesEnd < totalPages - 1) {
-            //TODO push ellipsis
-        }
-
-        if (pagesEnd !== totalPages) {
-            //TODO push totalPages
-        }
-
-        return elements;
-    }*/
 
     renderDocumentRows() {
 
@@ -102,6 +73,8 @@ class Documents extends Component {
         const { createDocument } = this.props;
         const {
             resultsPerPage,
+            sortAttribute,
+            sortOrder,
             totalPages,
             totalResults,
             firstResultNumber,
@@ -109,7 +82,8 @@ class Documents extends Component {
             setResultsPerPage,
             goToPage,
             goToPreviousPage,
-            goToNextPage
+            goToNextPage,
+            setSortAttribute
         } = this.props.documents;
 
         return (
@@ -125,6 +99,36 @@ class Documents extends Component {
                         </div>
                     </div>
                 </div>
+                {true ? null : <div className="section__filter-header">
+                    <div className="container">
+                        <form>
+                            <div className="section__filter-holder section__filter-holder--1-4">
+                                <label htmlFor="title" className="section__filter-label">Title</label>
+                                <div className="section__filter-input-holder">
+                                    <input className="form__text-input" type="text" name="title" />
+                                </div>
+                            </div>
+                            <div className="section__filter-holder section__filter-holder--1-4">
+                                <label htmlFor="startDate" className="section__filter-label">Start Date</label>
+                                <div className="section__filter-input-holder">
+                                    <input className="form__text-input" type="text" name="startDate" />
+                                </div>
+                            </div>
+                            <div className="section__filter-holder section__filter-holder--1-4">
+                                <label htmlFor="endDate" className="section__filter-label">End Date</label>
+                                <div className="section__filter-input-holder">
+                                    <input className="form__text-input" type="text" name="endDate" />
+                                </div>
+                            </div>
+                            <div className="section__filter-holder section__filter-holder--1-4">
+                                <label htmlFor="speakers" className="section__filter-label">Speaker(s)</label>
+                                <div className="section__filter-input-holder">
+                                    <input className="form__text-input" type="text" name="speakers" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>}
                 <div className="section__navigation-header">
                     <div className="container">
                         <div className="table-controls">
@@ -161,17 +165,17 @@ class Documents extends Component {
                         <table className="table">
                             <thead className="table__head">
                                 <tr className="table__row">
-                                    <th className="table__head-cell">
-                                        Title
+                                    <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'title' })} onClick={() => setSortAttribute('title')}>
+                                        <span>Title</span>
                                     </th>
-                                    <th className="table__head-cell">
-                                        Date
+                                    <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'date' })} onClick={() => setSortAttribute('date')}>
+                                        <span>Date</span>
                                     </th>
-                                    <th className="table__head-cell">
-                                        Speaker
+                                    <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'speakerName' })} onClick={() => setSortAttribute('speakerName')}>
+                                        <span>Speaker</span>
                                     </th>
                                     <th className="table__head-cell table__head-cell--centered">
-                                        Actions
+                                        <span>Actions</span>
                                     </th>
                                 </tr>
                             </thead>

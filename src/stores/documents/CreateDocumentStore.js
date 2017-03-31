@@ -14,7 +14,6 @@ class CreateDocumentStore {
         title: '',
         date: '',
         speaker: null,
-        speakerTerm: '',
         textContent: ''
     };
     @observable formErrors = {
@@ -52,7 +51,6 @@ class CreateDocumentStore {
             title: '',
             date: '',
             speaker: null,
-            speakerTerm: '',
             textContent: ''
         };
         this.formErrors = {
@@ -69,8 +67,7 @@ class CreateDocumentStore {
                 }
                 this.speakerOptions = data.map((speaker) => ({
                     value: speaker.id,
-                    label: speaker.name,
-                    terms: speaker.terms
+                    label: speaker.name
                 }));
             })
             .catch((error) => {
@@ -109,7 +106,7 @@ class CreateDocumentStore {
             return;
         }
 
-        const { title, date, speaker, speakerTerm, textContent } = this.formData;
+        const { title, date, speaker, textContent } = this.formData;
 
         let hasErrors = false;
         this.formErrors.title = '';
@@ -120,7 +117,7 @@ class CreateDocumentStore {
             hasErrors = true;
             this.formErrors.title = 'A title is required.';
         }
-        if (date.search(/^\d{1,2}\/\d{1,2}\/\d{4}$/) === -1) {
+        if (date.search(/^\d{4}-\d{1,2}-\d{1,2}$/) === -1) {
             hasErrors = true;
             this.formErrors.date = 'A valid date is required.';
         }
@@ -148,10 +145,11 @@ class CreateDocumentStore {
 
         const data = {
             title,
-            date,
-            speakerId: speaker.value,
-            speakerTerm,
-            textContent
+            deliveryDate: date,
+            fullText: textContent,
+            speaker: {
+                speakerId: speaker.value
+            }
         };
 
         this.isSubmitting = true;

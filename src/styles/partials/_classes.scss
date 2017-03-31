@@ -5,3 +5,20 @@
     clear: both;
   }
 }
+
+%label-appearance {
+  font-weight: 400;
+  font-size: 12px;
+  color: #63697D;
+}
+
+%text-input-appearance {
+  box-sizing: border-box;
+  height: 30px;
+  font-size: 13px;
+  color: #333;
+  padding: 0 10px;
+  border-radius: 3px;
+  border: 1px solid $color-border-light;
+  outline: none;
+}

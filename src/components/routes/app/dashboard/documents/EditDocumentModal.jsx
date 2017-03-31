@@ -28,7 +28,6 @@ class EditDocumentModal extends Component {
     handleSpeakerChange(value) {
 
         this.props.editDocument.setFormData('speaker', value);
-        this.props.editDocument.setFormData('speakerTerm', '');
     }
 
     handleFileInputChange(event) {
@@ -64,7 +63,6 @@ class EditDocumentModal extends Component {
 
         formData.title;
         formData.speaker;
-        formData.speakerTerm;
         formData.date;
         formData.textContent;//TODO: these are needed to trigger re-render
         formErrors.title;
@@ -89,20 +87,11 @@ class EditDocumentModal extends Component {
                     <Select name="speaker" placeholder="" value={formData.speaker} options={speakerOptions.peek()} onChange={this.handleSpeakerChange} />
                 </label>
                 <label className="form__label">
-                    <span>Speaker Term</span>
-                    <select className="form__select" name="speakerTerm" value={formData.speakerTerm} onChange={this.handleChange}>
-                        <option value="">None</option>
-                        {formData.speaker ? formData.speaker.terms.map((term, index) => (
-                            <option key={index} value={index}>{term.startDate} - {term.endDate}</option>
-                        )) : null}
-                    </select>
-                </label>
-                <label className="form__label">
                     <span>Date</span>
                     {formErrors.date ? (
                         <span className="form__error">{formErrors.date}</span>
                     ) : null}
-                    <input className="form__text-input" type="text" name="date" placeholder="MM/DD/YYYY" value={formData.date} onChange={this.handleChange} />
+                    <input className="form__text-input" type="text" name="date" placeholder="YYYY-MM-DD" value={formData.date} onChange={this.handleChange} />
                 </label>
                 <label className="form__label">
                     <span>Text Content</span>

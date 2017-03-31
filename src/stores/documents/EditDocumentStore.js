@@ -15,7 +15,6 @@ class EditDocumentStore {
         title: '',
         date: '',
         speaker: null,
-        speakerTerm: '',
         textContent: ''
     };
     @observable formErrors = {
@@ -54,7 +53,6 @@ class EditDocumentStore {
             title: '',
             date: '',
             speaker: null,
-            speakerTerm: '',
             textContent: ''
         };
         this.formErrors = {
@@ -70,18 +68,16 @@ class EditDocumentStore {
                     return;
                 }
                 const [document, speakers] = data;
-                const { title, date, speakerId, speakerName, speakerTerm, textContent } = document;
+                const { title, date, speakerId, speakerName, textContent } = document;
                 this.formData = {
                     title,
                     date,
-                    speaker: { value: speakerId, label: speakerName, terms: speakers.find((speaker) => speaker.id === speakerId).terms },
-                    speakerTerm,
+                    speaker: { value: speakerId, label: speakerName },
                     textContent
                 };
                 this.speakerOptions = speakers.map((speaker) => ({
                     value: speaker.id,
-                    label: speaker.name,
-                    terms: speaker.terms
+                    label: speaker.name
                 }));
             })
             .catch((error) => {
@@ -119,7 +115,7 @@ class EditDocumentStore {
             return;
         }
 
-        const { title, date, speaker, speakerTerm, textContent } = this.formData;
+        const { title, date, speaker, textContent } = this.formData;
 
         let hasErrors = false;
         this.formErrors.title = '';
@@ -130,7 +126,7 @@ class EditDocumentStore {
             hasErrors = true;
             this.formErrors.title = 'A title is required.';
         }
-        if (date.search(/^\d{1,2}\/\d{1,2}\/\d{4}$/) === -1) {
+        if (date.search(/^\d{4}-\d{1,2}-\d{1,2}$/) === -1) {
             hasErrors = true;
             this.formErrors.date = 'A valid date is required.';
         }
@@ -158,10 +154,11 @@ class EditDocumentStore {
 
         const data = {
             title,
-            date,
-            speakerId: speaker.value,
-            speakerTerm,
-            textContent
+            deliveryDate: date,
+            fullText: textContent,
+            speaker: {
+                speakerId: speaker.value
+            }
         };
 
         this.isSubmitting = true;

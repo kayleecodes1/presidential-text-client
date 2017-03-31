@@ -11,6 +11,9 @@ class DocumentsStore {
     cancelLoading = null;
     @observable documents = new Map();
 
+    @observable sortAttribute = 'title';
+    @observable sortOrder = 1;
+
     @computed get totalResults() {
         if (!this.documents) {
             return 0;
@@ -36,7 +39,12 @@ class DocumentsStore {
         return Math.ceil(this.documents.size / this.resultsPerPage);
     }
     @computed get currentPageDocuments() {
-        return this.documents.values().slice(this.firstResultNumber - 1, this.lastResultNumber);
+        return this.documents
+            .values()
+            .sort((a, b) => {
+                return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
+            })
+            .slice(this.firstResultNumber - 1, this.lastResultNumber);
     }
 
     constructor(notificationsStore) {
@@ -107,6 +115,16 @@ class DocumentsStore {
     @action.bound
     goToNextPage() {
         this.goToPage(this.currentPage + 1);
+    }
+
+    @action.bound
+    setSortAttribute(attribute) {
+        if (attribute === this.sortAttribute) {
+            this.sortOrder = this.sortOrder === 1 ? -1 : 1;
+            return;
+        }
+        this.sortAttribute = attribute;
+        this.sortOrder = 1;
     }
 
     @action.bound

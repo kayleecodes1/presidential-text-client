@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import classNames from 'classnames';
 
 @inject('speakers')
 @inject('createSpeaker')
@@ -70,6 +71,8 @@ class Speakers extends Component {
         const { createSpeaker } = this.props;
         const {
             resultsPerPage,
+            sortAttribute,
+            sortOrder,
             totalPages,
             totalResults,
             firstResultNumber,
@@ -77,7 +80,8 @@ class Speakers extends Component {
             setResultsPerPage,
             goToPage,
             goToPreviousPage,
-            goToNextPage
+            goToNextPage,
+            setSortAttribute
         } = this.props.speakers;
 
         return (
@@ -129,7 +133,7 @@ class Speakers extends Component {
                         <table className="table">
                             <thead className="table__head">
                                 <tr className="table__row">
-                                    <th className="table__head-cell">
+                                    <th  className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'name' })} onClick={() => setSortAttribute('name')}>
                                         Name
                                     </th>
                                     <th className="table__head-cell table__head-cell--centered">

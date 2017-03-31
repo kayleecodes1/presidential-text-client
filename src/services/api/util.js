@@ -1,6 +1,6 @@
-import fetch from 'whatwg-fetch';
+import 'whatwg-fetch';
 
-const API_URL = window.__CONFIG__ ? window.__CONFIG__.apiUrl : '/api/';
+let API_URL = __DEV__ ? __API_URL__ : window.__CONFIG__.apiUrl;
 
 function checkStatus(response) {
 
@@ -18,28 +18,26 @@ function parseJson(response) {
     return response.json();
 }
 
-export function callApi(path, method, data, testData) {
+export function callApi(path, method, data, transform) {
 
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(testData());
-        }, 1000);
-    });
-
-    /*const options = { method };
+    const options = { method };
     if (data) {
         options.body = JSON.stringify(data);
     }
 
+    const url = `${API_URL}/${path}`;
     return new Promise((resolve, reject) => {
-        fetch(`${API_URL}/${path}`, options)
+        fetch(url, options)
             .then(checkStatus)
             .then(parseJson)
             .then((data) => {
+                if (transform) {
+                    data = transform(data);
+                }
                 resolve(data);
             })
             .catch((error) => {
                 reject(error);
             });
-    });*/
+    });
 }

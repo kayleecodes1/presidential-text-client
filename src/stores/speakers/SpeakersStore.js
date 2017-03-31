@@ -11,6 +11,9 @@ class SpeakersStore {
     cancelLoading = null;
     @observable speakers = new Map();
 
+    @observable sortAttribute = 'name';
+    @observable sortOrder = 1;
+
     @computed get totalResults() {
         if (!this.speakers) {
             return 0;
@@ -36,7 +39,12 @@ class SpeakersStore {
         return Math.ceil(this.speakers.size / this.resultsPerPage);
     }
     @computed get currentPageSpeakers() {
-        return this.speakers.values().slice(this.firstResultNumber - 1, this.lastResultNumber);
+        return this.speakers
+            .values()
+            .sort((a, b) => {
+                return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
+            })
+            .slice(this.firstResultNumber - 1, this.lastResultNumber);
     }
 
     constructor(notificationsStore) {
@@ -107,6 +115,16 @@ class SpeakersStore {
     @action.bound
     goToNextPage() {
         this.goToPage(this.currentPage + 1);
+    }
+
+    @action.bound
+    setSortAttribute(attribute) {
+        if (attribute === this.sortAttribute) {
+            this.sortOrder = this.sortOrder === 1 ? -1 : 1;
+            return;
+        }
+        this.sortAttribute = attribute;
+        this.sortOrder = 1;
     }
 
     @action.bound

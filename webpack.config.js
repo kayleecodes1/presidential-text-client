@@ -2,9 +2,13 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+var isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
     devtool: 'eval',
-    entry: [
+    entry: isProduction ? [
+        './src/index'
+    ] : [
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:3000',
         'webpack/hot/only-dev-server',
@@ -12,12 +16,23 @@ module.exports = {
     ],
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: isProduction ? 'bundle.min.js' : 'bundle.js'
     },
-    plugins: [
+    plugins: isProduction ? [
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, 'src/index.tpl.html')
+        }),
+        new webpack.DefinePlugin({
+            __DEV__: JSON.stringify(false)
+        })
+    ] : [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'src/index.tpl.html')
+        }),
+        new webpack.DefinePlugin({
+            __DEV__: JSON.stringify(true),
+            __API_URL__: JSON.stringify('http://ec2-54-209-229-214.compute-1.amazonaws.com:8081')
         })
     ],
     resolve: {

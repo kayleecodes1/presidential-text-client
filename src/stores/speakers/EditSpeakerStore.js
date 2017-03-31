@@ -129,7 +129,7 @@ class EditSpeakerStore {
             this.formErrors.name = 'A name is required.';
         }
         for (const term of terms) {
-            if (term.startDate.search(/^\d{1,2}\/\d{1,2}\/\d{4}$/) === -1 || term.endDate.search(/^\d{1,2}\/\d{1,2}\/\d{4}$/) === -1) {
+            if (term.startDate.search(/^\d{4}-\d{1,2}-\d{1,2}$/) === -1 || term.endDate.search(/^\d{4}-\d{1,2}-\d{1,2}$/) === -1) {
                 hasErrors = true;
                 this.formErrors.terms = 'A valid date is required for all terms.';
                 break;
