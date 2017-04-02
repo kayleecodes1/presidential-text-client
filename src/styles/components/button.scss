@@ -15,9 +15,12 @@ $button-height: 30px;
   border: 1px solid $color-border-light;
   outline: none;
   margin: 0;
-  cursor: pointer;
 
-  &:hover {
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &:not(:disabled):hover {
     border: 1px solid darken($color-border-light, 10%);
   }
 
@@ -30,7 +33,7 @@ $button-height: 30px;
     background: linear-gradient(to top, darken($color-highlight, 5%), $color-highlight);
     border: 1px solid darken($color-highlight, 10%);
 
-    &:hover {
+    &:not(:disabled):hover {
       background: linear-gradient(to top, darken($color-highlight, 10%), $color-highlight);
       border: 1px solid darken($color-highlight, 17%);
     }
@@ -47,7 +50,7 @@ $button-height: 30px;
     background: linear-gradient(to top, $color-error, lighten($color-error, 5%));
     border: 1px solid darken($color-error, 10%);
 
-    &:hover {
+    &:not(:disabled):hover {
       background: linear-gradient(to top, darken($color-error, 5%), lighten($color-error, 5%));
       border: 1px solid darken($color-error, 17%);
     }
@@ -57,6 +60,10 @@ $button-height: 30px;
     height: 18px;
     line-height: 18px;
     padding: 0 10px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
   }
 
   &__icon {

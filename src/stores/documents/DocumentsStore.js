@@ -1,5 +1,14 @@
 import { observable, computed, action } from 'mobx';
 import { getDocuments } from '../../services/api/documents';
+import { getSpeakers } from '../../services/api/speakers';
+
+function dateToString(date) {
+    date = date.toDate();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
+}
 
 class DocumentsStore {
 
@@ -10,40 +19,75 @@ class DocumentsStore {
     @observable isLoadingDocuments = false;
     cancelLoading = null;
     @observable documents = new Map();
+    @observable speakerOptions = [];
+
+    @observable filters = {
+        title: '',
+        startDate: null,
+        endDate: null,
+        speakers: []
+    };
 
     @observable sortAttribute = 'title';
     @observable sortOrder = 1;
+
+    @computed get currentDocuments() {
+        return this.documents
+            .values()
+            .filter((document) => {
+                const { title, startDate, endDate, speakers } = this.filters;
+                if (title && document.title.search(new RegExp(title, 'i')) === -1) {
+                    return false;
+                }
+                if (startDate && document.date < dateToString(startDate)) {
+                    return false;
+                }
+                if (endDate && document.date > dateToString(endDate)) {
+                    return false;
+                }
+                if (speakers.length && !speakers.some((selected) => document.speakerId === selected.value)) {
+                    return false;
+                }
+                return true;
+            })
+            .sort((a, b) => {
+                return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
+            });
+    }
 
     @computed get totalResults() {
         if (!this.documents) {
             return 0;
         }
-        return this.documents.size;
+        return this.currentDocuments.length;
     }
     @computed get firstResultNumber() {
         if (!this.documents) {
             return 0;
         }
-        return Math.min(this.documents.size, (this.currentPage - 1) * this.resultsPerPage + 1);
+        return Math.min(this.currentDocuments.length, (this.currentPage - 1) * this.resultsPerPage + 1);
     }
     @computed get lastResultNumber() {
         if (!this.documents) {
             return 0;
         }
-        return Math.min(this.documents.size, this.currentPage * this.resultsPerPage);
+        return Math.min(this.currentDocuments.length, this.currentPage * this.resultsPerPage);
     }
     @computed get totalPages() {
         if (!this.documents) {
             return 0;
         }
-        return Math.ceil(this.documents.size / this.resultsPerPage);
+        return Math.ceil(this.currentDocuments.length / this.resultsPerPage);
     }
+
+    @computed get filtersAreEmpty() {
+        const { title, startDate, endDate, speakers } = this.filters;
+        return title === '' && startDate === null && endDate === null && speakers.length === 0;
+
+    }
+
     @computed get currentPageDocuments() {
-        return this.documents
-            .values()
-            .sort((a, b) => {
-                return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
-            })
+        return this.currentDocuments
             .slice(this.firstResultNumber - 1, this.lastResultNumber);
     }
 
@@ -66,16 +110,22 @@ class DocumentsStore {
 
         this.isLoadingDocuments = true;
         this.documents.clear();
-        getDocuments()
+        this.speakerOptions.clear();
+        Promise.all([getDocuments(), getSpeakers()])
             .then((data) => {
                 if (isCancelled) {
                     return;
                 }
-                const documents = new Map();
-                for (const document of data) {
-                    documents.set(document.id, document);
+                const [documents, speakers] = data;
+                const newDocuments = new Map();
+                for (const document of documents) {
+                    newDocuments.set(document.id, document);
                 }
-                this.documents.replace(documents);
+                this.documents.replace(newDocuments);
+                this.speakerOptions.replace(speakers.map((speaker) => ({
+                    value: speaker.id,
+                    label: speaker.name
+                })));
             })
             .catch((error) => {
                 if (isCancelled) {
@@ -115,6 +165,23 @@ class DocumentsStore {
     @action.bound
     goToNextPage() {
         this.goToPage(this.currentPage + 1);
+    }
+
+    @action.bound
+    setFilterData(name, value) {
+        if (name === 'speakers') {
+            this.filters.speakers.replace(value);
+            return;
+        }
+        this.filters[name] = value;
+    }
+
+    @action.bound
+    clearFilters() {
+        this.filters.title = '';
+        this.filters.startDate = null;
+        this.filters.endDate = null;
+        this.filters.speakers.clear();
     }
 
     @action.bound

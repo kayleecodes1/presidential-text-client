@@ -89,14 +89,6 @@
 // react-select overrides
 .Select {
   margin: 8px 0 0 0;
-
-  &.is-focused {
-
-  }
-
-  &.is-open {
-
-  }
 }
 
 .Select-control {
@@ -126,6 +118,7 @@
   height: 28px;
 }
 
+
 .Select--single > .Select-control .Select-value {
   font-size: 13px;
   line-height: 28px;
@@ -134,4 +127,34 @@
 
 .Select--single > .Select-control .Select-value-label {
   font-family: 'Open Sans', sans-serif;
+}
+
+.Select--multi {
+  font-size: 13px;
+}
+
+.Select--multi .Select-value {
+  font-size: 13px;
+  line-height: 15px;
+  color: #444;
+  background: #F6F6F6;
+  border: 1px solid #CFCFCF;
+  margin-top: 4px;
+}
+
+.Select--multi .Select-value-label {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.Select--multi .Select-value-icon {
+  border-right: 1px solid #CFCFCF;
+
+  &:hover {
+    color: $color-highlight;
+  }
+}
+
+.Select--multi .Select-input > input {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
 }

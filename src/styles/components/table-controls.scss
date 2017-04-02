@@ -1,11 +1,10 @@
 .table-controls {
 
   $height: 30px;
-  $controls-spacing: 30px;
+  $controls-spacing: 20px;
   $controls-color: #868686;
   $page-button-size: 20px;
 
-  float: right;
   display: block;
   height: $height;
   font-size: 13px;
@@ -13,11 +12,23 @@
   color: $controls-color;
   @extend %clearfix;
 
-  & > * {
-    margin: 0 $controls-spacing 0 0;
+  &__left {
+    float: left;
+  }
 
-    &:last-child {
-      margin-right: 0;
+  &__right {
+    float: right;
+  }
+
+  &__left,
+  &__right {
+
+    & > * {
+      margin: 0 $controls-spacing 0 0;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 

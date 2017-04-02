@@ -11,39 +11,61 @@ class SpeakersStore {
     cancelLoading = null;
     @observable speakers = new Map();
 
+    @observable filters = {
+        name: ''
+    };
+
     @observable sortAttribute = 'name';
     @observable sortOrder = 1;
+
+    @computed get currentSpeakers() {
+        return this.speakers
+            .values()
+            .filter((speaker) => {
+                const { name } = this.filters;
+                if (name && speaker.name.search(new RegExp(name, 'i')) === -1) {
+                    return false;
+                }
+                return true;
+            })
+            .sort((a, b) => {
+                return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
+            });
+    }
 
     @computed get totalResults() {
         if (!this.speakers) {
             return 0;
         }
-        return this.speakers.size;
+        return this.currentSpeakers.length;
     }
     @computed get firstResultNumber() {
         if (!this.speakers) {
             return 0;
         }
-        return Math.min(this.speakers.size, (this.currentPage - 1) * this.resultsPerPage + 1);
+        return Math.min(this.currentSpeakers.length, (this.currentPage - 1) * this.resultsPerPage + 1);
     }
     @computed get lastResultNumber() {
         if (!this.speakers) {
             return 0;
         }
-        return Math.min(this.speakers.size, this.currentPage * this.resultsPerPage);
+        return Math.min(this.currentSpeakers.length, this.currentPage * this.resultsPerPage);
     }
     @computed get totalPages() {
         if (!this.speakers) {
             return 0;
         }
-        return Math.ceil(this.speakers.size / this.resultsPerPage);
+        return Math.ceil(this.currentSpeakers.length / this.resultsPerPage);
     }
+
+    @computed get filtersAreEmpty() {
+        const { name } = this.filters;
+        return name === '';
+
+    }
+
     @computed get currentPageSpeakers() {
-        return this.speakers
-            .values()
-            .sort((a, b) => {
-                return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
-            })
+        return this.currentSpeakers
             .slice(this.firstResultNumber - 1, this.lastResultNumber);
     }
 
@@ -115,6 +137,16 @@ class SpeakersStore {
     @action.bound
     goToNextPage() {
         this.goToPage(this.currentPage + 1);
+    }
+
+    @action.bound
+    setFilterData(name, value) {
+        this.filters[name] = value;
+    }
+
+    @action.bound
+    clearFilters() {
+        this.filters.name = '';
     }
 
     @action.bound

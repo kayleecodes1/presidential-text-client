@@ -69,10 +69,10 @@ class Dashboard extends Component {
                                 </li>
                             </ul>
                         </nav>
-                        <div className="dashboard__user">
+                        {true ? null : <div className="dashboard__user">
                             <div className="dashboard__user-name">{/*app.currentUser.name*/}Current User</div>
                             <button className="dashboard__logout-button" onClick={app.logout}>Logout</button>
-                        </div>
+                        </div>}
                     </div>
                 </header>
                 <div className="dashboard__content">

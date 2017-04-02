@@ -38,8 +38,10 @@ body {
 @import './components/notification';
 @import './components/modal';
 @import './components/table';
+@import './components/filter-controls';
 @import './components/table-controls';
 @import './components/repeater';
+@import './components/chart';
 
 @import './routes/app';
 @import './routes/login';

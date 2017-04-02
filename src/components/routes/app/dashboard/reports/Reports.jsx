@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import ScorecardReport from './ScorecardReport';
 
 @inject('createReport')
 @observer
@@ -20,6 +21,11 @@ class Reports extends Component {
                                 <span>Create Report</span>
                             </button>
                         </div>
+                    </div>
+                </div>
+                <div className="section__body">
+                    <div className="container">
+                        {true? null : <ScorecardReport />}
                     </div>
                 </div>
             </div>
