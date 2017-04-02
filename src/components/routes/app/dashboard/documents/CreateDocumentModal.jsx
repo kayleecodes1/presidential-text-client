@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import Modal from '../../../../Modal.jsx';
 import Select from 'react-select';
 
+@inject('documents')
 @inject('createDocument')
 @observer
 class CreateDocumentModal extends Component {
@@ -59,7 +60,8 @@ class CreateDocumentModal extends Component {
 
     render() {
 
-        const { isVisible, isLoading, formData, formErrors, speakerOptions, isSubmitting, hide } = this.props.createDocument;
+        const { speakerOptions } = this.props.documents;
+        const { isVisible, formData, formErrors, isSubmitting, hide } = this.props.createDocument;
 
         formData.title;
         formData.speaker;
@@ -124,7 +126,7 @@ class CreateDocumentModal extends Component {
                 title="Create Document"
                 renderContent={renderContent}
                 renderFooter={renderFooter}
-                isLoading={isLoading || isSubmitting}
+                isLoading={isSubmitting}
                 closeFunction={hide} />
         );
     }

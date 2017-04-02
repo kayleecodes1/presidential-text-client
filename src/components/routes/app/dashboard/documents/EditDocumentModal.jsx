@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import Modal from '../../../../Modal.jsx';
 import Select from 'react-select';
 
+@inject('documents')
 @inject('editDocument')
 @observer
 class EditDocumentModal extends Component {
@@ -59,7 +60,8 @@ class EditDocumentModal extends Component {
 
     render() {
 
-        const { isVisible, isLoading, formData, formErrors, speakerOptions, isSubmitting, hide } = this.props.editDocument;
+        const { speakerOptions } = this.props.documents;
+        const { isVisible, isLoading, formData, formErrors, isSubmitting, hide } = this.props.editDocument;
 
         formData.title;
         formData.speaker;

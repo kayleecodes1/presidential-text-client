@@ -23,7 +23,6 @@ class EditDocumentStore {
         speaker: '',
         textContent: ''
     };
-    @observable speakerOptions = [];
     @observable isSubmitting = false;
     cancelSubmitting = null;
 
@@ -61,13 +60,11 @@ class EditDocumentStore {
             speaker: '',
             textContent: ''
         };
-        this.speakerOptions = [];
-        Promise.all([ getDocument(this.documentId), getSpeakers() ])
-            .then((data) => {
+        getDocument(this.documentId)
+            .then((document) => {
                 if (isCancelled) {
                     return;
                 }
-                const [document, speakers] = data;
                 const { title, date, speakerId, speakerName, textContent } = document;
                 this.formData = {
                     title,
@@ -75,10 +72,6 @@ class EditDocumentStore {
                     speaker: { value: speakerId, label: speakerName },
                     textContent
                 };
-                this.speakerOptions = speakers.map((speaker) => ({
-                    value: speaker.id,
-                    label: speaker.name
-                }));
             })
             .catch((error) => {
                 if (isCancelled) {
