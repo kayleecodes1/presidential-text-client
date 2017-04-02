@@ -1,6 +1,14 @@
 import { observable, computed, action } from 'mobx';
 import { getSpeakers } from '../../services/api/speakers';
 
+function dateToString(date) {
+    date = date.toDate();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
+}
+
 class SpeakersStore {
 
     notificationsStore;
@@ -12,7 +20,9 @@ class SpeakersStore {
     @observable speakers = new Map();
 
     @observable filters = {
-        name: ''
+        name: '',
+        startDate: null,
+        endDate: null
     };
 
     @observable sortAttribute = 'name';
@@ -22,8 +32,14 @@ class SpeakersStore {
         return this.speakers
             .values()
             .filter((speaker) => {
-                const { name } = this.filters;
+                const { name, startDate, endDate } = this.filters;
                 if (name && speaker.name.search(new RegExp(name, 'i')) === -1) {
+                    return false;
+                }
+                if (startDate && !speaker.terms.some((term) => term.endDate > dateToString(startDate))) {
+                    return false;
+                }
+                if (endDate && !speaker.terms.some((term) => term.startDate < dateToString(endDate))) {
                     return false;
                 }
                 return true;
@@ -59,9 +75,8 @@ class SpeakersStore {
     }
 
     @computed get filtersAreEmpty() {
-        const { name } = this.filters;
-        return name === '';
-
+        const { name, startDate, endDate } = this.filters;
+        return name === '' && startDate === null && endDate === null;
     }
 
     @computed get currentPageSpeakers() {
@@ -147,6 +162,8 @@ class SpeakersStore {
     @action.bound
     clearFilters() {
         this.filters.name = '';
+        this.filters.startDate = null;
+        this.filters.endDate = null;
     }
 
     @action.bound
