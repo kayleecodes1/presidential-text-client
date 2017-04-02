@@ -16,7 +16,7 @@ class DocumentsStore {
 
     @observable resultsPerPage = 10;
     @observable currentPage = 1;
-    @observable isLoadingDocuments = false;
+    @observable isLoading = false;
     cancelLoading = null;
     @observable documents = new Map();
     @observable speakerOptions = [];
@@ -96,7 +96,7 @@ class DocumentsStore {
     }
     
     @action.bound
-    getDocuments() {
+    initializeState() {
 
         if (this.cancelLoading) {
             this.cancelLoading();
@@ -108,9 +108,15 @@ class DocumentsStore {
             isCancelled = true;
         };
 
-        this.isLoadingDocuments = true;
+        this.resultsPerPage = 10;
+        this.currentPage = 1;
+        this.isLoading = true;
         this.documents.clear();
         this.speakerOptions.clear();
+        this.clearFilters();
+        this.sortAttribute = 'title';
+        this.sortOrder = 1;
+
         Promise.all([getDocuments(), getSpeakers()])
             .then((data) => {
                 if (isCancelled) {
@@ -137,7 +143,7 @@ class DocumentsStore {
                 if (isCancelled) {
                     return;
                 }
-                this.isLoadingDocuments = false;
+                this.isLoading = false;
                 this.cancelLoading = null;
             });
     }

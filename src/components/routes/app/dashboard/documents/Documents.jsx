@@ -19,7 +19,7 @@ class Documents extends Component {
 
     componentWillMount() {
 
-        this.props.documents.getDocuments();
+        this.props.documents.initializeState();
     }
 
     toggleFilters() {

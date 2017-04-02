@@ -15,7 +15,7 @@ class SpeakersStore {
 
     @observable resultsPerPage = 10;
     @observable currentPage = 1;
-    @observable isLoadingSpeakers = false;
+    @observable isLoading = false;
     cancelLoading = null;
     @observable speakers = new Map();
 
@@ -89,7 +89,7 @@ class SpeakersStore {
     }
     
     @action.bound
-    getSpeakers() {
+    initializeState() {
 
         if (this.cancelLoading) {
             this.cancelLoading();
@@ -101,8 +101,14 @@ class SpeakersStore {
             isCancelled = true;
         };
 
-        this.isLoadingSpeakers = true;
+        this.resultsPerPage = 10;
+        this.currentPage = 1;
+        this.isLoading = true;
         this.speakers.clear();
+        this.clearFilters();
+        this.sortAttribute = 'name';
+        this.sortOrder = 1;
+
         getSpeakers()
             .then((data) => {
                 if (isCancelled) {
@@ -124,7 +130,7 @@ class SpeakersStore {
                 if (isCancelled) {
                     return;
                 }
-                this.isLoadingSpeakers = false;
+                this.isLoading = false;
                 this.cancelLoading = null;
             });
     }

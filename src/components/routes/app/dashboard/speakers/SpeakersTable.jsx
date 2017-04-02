@@ -11,9 +11,9 @@ class SpeakersTable extends Component {
     renderSpeakerRows() {
 
         const { speakers, editSpeaker, deleteSpeaker } = this.props;
-        const { resultsPerPage, isLoadingSpeakers, currentPageSpeakers } = speakers;
+        const { resultsPerPage, isLoading, currentPageSpeakers } = speakers;
 
-        if (isLoadingSpeakers) {
+        if (isLoading) {
             const placeholderRows = [];
             for (let i = 0; i < resultsPerPage; i++) {
                 placeholderRows.push(

@@ -20,7 +20,7 @@ class Speakers extends Component {
 
     componentWillMount() {
 
-        this.props.speakers.getSpeakers();
+        this.props.speakers.initializeState();
     }
 
     toggleFilters() {
