@@ -39,6 +39,14 @@
     &--centered {
       text-align: center;
     }
+
+    &--right {
+      text-align: right;
+    }
+
+    &--small {
+      width: 150px;
+    }
   }
 
   &__row:last-child &__cell {
@@ -92,6 +100,10 @@
 
   &__row:first-child &__head-cell:last-child {
     border-radius: 0 3px 0 0;
+  }
+
+  &__row:last-child &__head-cell--body {
+    border-bottom: none;
   }
 
   &__cell {

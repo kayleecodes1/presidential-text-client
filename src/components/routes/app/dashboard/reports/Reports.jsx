@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import ScorecardReport from './ScorecardReport';
+import ViewReport from './ViewReport';
 
 @inject('reports')
 @inject('createReport')
 @observer
 class Reports extends Component {
 
+    componentWillMount() {
+
+        this.props.reports.initializeState();
+    }
+
     render() {
 
-        const { result } = this.props.reports;
         const { createReport } = this.props;
 
         return (
@@ -27,7 +31,7 @@ class Reports extends Component {
                 </div>
                 <div className="section__body">
                     <div className="container">
-                        {result ? JSON.stringify(result) : null}
+                        <ViewReport />
                     </div>
                 </div>
             </div>

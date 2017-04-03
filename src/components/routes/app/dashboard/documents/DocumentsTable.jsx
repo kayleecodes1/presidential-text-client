@@ -69,20 +69,20 @@ class DocumentsTable extends Component {
         return (
             <table className="table">
                 <thead className="table__head">
-                <tr className="table__row">
-                    <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'title' })} onClick={() => setSortAttribute('title')}>
-                        <span>Title</span>
-                    </th>
-                    <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'date' })} onClick={() => setSortAttribute('date')}>
-                        <span>Date</span>
-                    </th>
-                    <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'speakerName' })} onClick={() => setSortAttribute('speakerName')}>
-                        <span>Speaker</span>
-                    </th>
-                    <th className="table__head-cell table__head-cell--centered">
-                        <span>Actions</span>
-                    </th>
-                </tr>
+                    <tr className="table__row">
+                        <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'title' })} onClick={() => setSortAttribute('title')}>
+                            <span>Title</span>
+                        </th>
+                        <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'date' })} onClick={() => setSortAttribute('date')}>
+                            <span>Date</span>
+                        </th>
+                        <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'speakerName' })} onClick={() => setSortAttribute('speakerName')}>
+                            <span>Speaker</span>
+                        </th>
+                        <th className="table__head-cell table__head-cell--centered table__head-cell--small">
+                            <span>Actions</span>
+                        </th>
+                    </tr>
                 </thead>
                 <tbody className="table__body">
                     {this.renderDocumentRows()}

@@ -41,9 +41,12 @@ body {
 @import './components/filter-controls';
 @import './components/table-controls';
 @import './components/repeater';
-@import './components/chart';
 
 @import './routes/app';
 @import './routes/login';
 @import './routes/dashboard';
 @import './routes/section';
+
+@import './reports/view-report.scss';
+@import './reports/scorecard.scss';
+@import './reports/word-cloud';

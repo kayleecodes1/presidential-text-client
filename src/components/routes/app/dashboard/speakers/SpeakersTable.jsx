@@ -71,7 +71,7 @@ class SpeakersTable extends Component {
                     <th  className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'name' })} onClick={() => setSortAttribute('name')}>
                         Name
                     </th>
-                    <th className="table__head-cell table__head-cell--centered">
+                    <th className="table__head-cell table__head-cell--centered table__head-cell--small">
                         Actions
                     </th>
                 </tr>

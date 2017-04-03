@@ -5,11 +5,16 @@ class ReportsStore {
 
     notificationsStore;
 
-    @observable isLoading = false;
     @observable result = null;
 
     constructor(notificationsStore) {
         this.notificationsStore = notificationsStore;
+    }
+
+    @action.bound
+    initializeState() {
+
+        this.result = null;
     }
 
     @action.bound
