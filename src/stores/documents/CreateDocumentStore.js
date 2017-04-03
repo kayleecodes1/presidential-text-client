@@ -133,7 +133,7 @@ class CreateDocumentStore {
                     return;
                 }
                 this.isSubmitting = false;
-                this.cancelLoading = null;
+                this.cancelSubmitting = null;
             });
     }
 }

@@ -22,6 +22,7 @@ export function callApi(path, method, data, transform) {
 
     const options = { method };
     if (data) {
+        options.headers = { 'Content-Type': 'application/json' };
         options.body = JSON.stringify(data);
     }
 

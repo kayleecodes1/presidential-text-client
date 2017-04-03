@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import ScorecardReport from './ScorecardReport';
 
+@inject('reports')
 @inject('createReport')
 @observer
 class Reports extends Component {
 
     render() {
 
+        const { result } = this.props.reports;
         const { createReport } = this.props;
 
         return (
@@ -25,7 +27,7 @@ class Reports extends Component {
                 </div>
                 <div className="section__body">
                     <div className="container">
-                        {true? null : <ScorecardReport />}
+                        {result ? JSON.stringify(result) : null}
                     </div>
                 </div>
             </div>
