@@ -48,9 +48,7 @@ class Documents extends Component {
                 </div>
                 {filtersAreVisible ? (
                     <div className="section__filter-header">
-                        <div className="container">
-                            <DocumentsFilters />
-                        </div>
+                        <DocumentsFilters />
                     </div>
                 ) : null}
                 <div className="section__navigation-header">

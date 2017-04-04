@@ -62,6 +62,10 @@ $button-height: 30px;
     padding: 0 10px;
   }
 
+  &--full-width {
+    width: 100%;
+  }
+
   &:disabled {
     opacity: 0.6;
   }

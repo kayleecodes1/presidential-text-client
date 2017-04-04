@@ -1,5 +1,6 @@
-import { observable, computed, action } from 'mobx';
-import { getDocuments } from '../../services/api/documents';
+import { observable, computed, action, toJS } from 'mobx';
+import moment from 'moment';
+import { getDocuments, searchDocuments } from '../../services/api/documents';
 import { getSpeakers } from '../../services/api/speakers';
 
 function dateToString(date) {
@@ -13,6 +14,7 @@ function dateToString(date) {
 class DocumentsStore {
 
     notificationsStore;
+    filterSetsStore;
 
     @observable resultsPerPage = 10;
     @observable currentPage = 1;
@@ -21,19 +23,30 @@ class DocumentsStore {
     @observable documents = new Map();
     @observable speakerOptions = [];
 
+    @observable filterSetName = '';
     @observable filters = {
         title: '',
         startDate: null,
         endDate: null,
-        speakers: []
+        speakers: [],
+        textContent: ''
     };
+    @observable textSearchIsLoading = false;
+    textSearchTimeoutId = null;
+    cancelTextSearchLoading = null;
+    @observable textSearchDocumentIds = [];
 
     @observable sortAttribute = 'title';
     @observable sortOrder = 1;
 
     @computed get currentDocuments() {
-        return this.documents
-            .values()
+        let currentDocuments = this.documents.values();
+        if (this.filters.textContent !== '') {
+            currentDocuments = currentDocuments.filter((document) => {
+                return this.textSearchDocumentIds.indexOf(document.id) !== -1;
+            });
+        }
+        currentDocuments = currentDocuments
             .filter((document) => {
                 const { title, startDate, endDate, speakers } = this.filters;
                 if (title && document.title.search(new RegExp(title, 'i')) === -1) {
@@ -53,6 +66,7 @@ class DocumentsStore {
             .sort((a, b) => {
                 return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
             });
+        return currentDocuments;
     }
 
     @computed get totalResults() {
@@ -81,9 +95,40 @@ class DocumentsStore {
     }
 
     @computed get filtersAreEmpty() {
-        const { title, startDate, endDate, speakers } = this.filters;
-        return title === '' && startDate === null && endDate === null && speakers.length === 0;
+        const { title, startDate, endDate, speakers, textContent } = this.filters;
+        return title === '' &&
+            startDate === null &&
+            endDate === null &&
+            speakers.length === 0 &&
+            textContent === '';
+    }
 
+    @computed get filterSetIsDirty() {
+
+        if (this.filterSetName === '') {
+            return false;
+        }
+
+        if (this.filtersAreEmpty) {
+            return false;
+        }
+
+        const filterSet = this.filterSetsStore.getFilterSet(this.filterSetName);
+
+        if (!filterSet) {
+            return true;
+        }
+
+        if (filterSet.filters.title === this.filters.title &&
+            filterSet.filters.startDate === JSON.parse(JSON.stringify(this.filters.startDate)) &&
+            filterSet.filters.endDate === JSON.parse(JSON.stringify(this.filters.endDate)) &&
+            filterSet.filters.speakers.toString() === this.filters.speakers.toString() &&
+            filterSet.filters.textContent === this.filters.textContent)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     @computed get currentPageDocuments() {
@@ -91,8 +136,13 @@ class DocumentsStore {
             .slice(this.firstResultNumber - 1, this.lastResultNumber);
     }
 
-    constructor(notificationsStore) {
+    @computed get currentFilterSetExists() {
+        return Boolean(this.filterSetsStore.getFilterSet(this.filterSetName));
+    }
+
+    constructor(notificationsStore, filterSetsStore) {
         this.notificationsStore = notificationsStore;
+        this.filterSetsStore = filterSetsStore;
     }
     
     @action.bound
@@ -174,20 +224,114 @@ class DocumentsStore {
     }
 
     @action.bound
+    setFilterSetName(value) {
+
+        this.filterSetName = value;
+    }
+
+    @action.bound
     setFilterData(name, value) {
+
         if (name === 'speakers') {
             this.filters.speakers.replace(value);
             return;
         }
         this.filters[name] = value;
+        if (name === 'textContent') {
+            this.debounceLoadTextContentDocumentIds(value);
+        }
+    }
+
+    @action.bound
+    loadFilterSet(filterSet) {
+
+        this.filterSetName = filterSet.name;
+        const { title, startDate, endDate, speakers, textContent } = filterSet.filters;
+        this.setFilterData('title', title);
+        this.setFilterData('startDate', startDate && moment(startDate));
+        this.setFilterData('endDate', endDate && moment(endDate));
+        this.setFilterData('speakers', speakers);
+        this.setFilterData('textContent', textContent);
+    }
+
+    @action.bound
+    saveFilterSet() {
+
+        const filters = toJS(this.filters);
+        if (filters.startDate !== null) {
+            filters.startDate = JSON.parse(JSON.stringify(filters.startDate));
+        }
+        if (filters.endDate !== null) {
+            filters.endDate = JSON.parse(JSON.stringify(filters.endDate));
+        }
+        this.filterSetsStore.createOrUpdateFilterSet(this.filterSetName, filters);
+    }
+
+    @action.bound
+    deleteFilterSet() {
+
+        this.filterSetsStore.deleteFilterSet(this.filterSetName);
+        this.clearFilters();
+    }
+
+    debounceLoadTextContentDocumentIds(value) {
+
+        if (this.textSearchTimeoutId) {
+            clearTimeout(this.textSearchTimeoutId);
+            this.textSearchTimeoutId = null;
+        }
+
+        if (this.cancelTextSearchLoading) {
+            this.cancelTextSearchLoading();
+            this.cancelTextSearchLoading = null;
+        }
+
+        if (value === '') {
+            this.textSearchDocumentIds.clear();
+            this.textSearchIsLoading = false;
+            return;
+        }
+
+        this.textSearchIsLoading = true;
+        this.textSearchTimeoutId = setTimeout(() => {
+
+            let isCancelled = false;
+            this.cancelTextSearchLoading = () => {
+                isCancelled = true;
+            };
+
+            searchDocuments(value)
+                .then((documentIds) => {
+                    if (isCancelled) {
+                        return;
+                    }
+                    this.textSearchDocumentIds.replace(documentIds);
+                })
+                .catch((error) => {
+                    if (isCancelled) {
+                        return;
+                    }
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                })
+                .then(() => {
+                    if (isCancelled) {
+                        return;
+                    }
+                    this.textSearchIsLoading = false;
+                    this.cancelTextSearchLoading = null;
+                });
+        }, 300);
     }
 
     @action.bound
     clearFilters() {
+
+        this.filterSetName = '';
         this.filters.title = '';
         this.filters.startDate = null;
         this.filters.endDate = null;
         this.filters.speakers.clear();
+        this.filters.textContent = '';
     }
 
     @action.bound

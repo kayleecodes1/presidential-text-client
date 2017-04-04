@@ -41,7 +41,7 @@ class Scorecard extends Component {
                     </thead>
                     <tbody className="table__body">
                         {stats.map((s) => (
-                            <tr className="table__row">
+                            <tr key={s} className="table__row">
                                 <th className="table__head-cell table__head-cell--body table__head-cell--right">{s.label}</th>
                                 {collectionNames.map((collectionName) => (
                                     <td key={collectionName} className="table__cell">{props.get(collections[collectionName].result, s.key)}</td>

@@ -30,6 +30,14 @@ export const getDocuments = () => callApi('leandocuments', 'GET', null, (documen
     return documents.map(transformDocumentSummary);
 });
 
+//export const searchDocuments = (keyword) => Promise.reject('API functionality not implemented.');
+export const searchDocuments = (keyword) => new Promise((resolve) => {
+    setTimeout(() => {
+        resolve([1, 2, 3, 4, 5]);
+    }, 500);
+});
+//export const searchDocuments = (keyword) => callApi('documents/search/POST', 'POST', { keyword });
+
 export const getDocument = (documentId) => callApi(`documents/${documentId}`, 'GET', null, (document) => {
     return transformDocumentDetail(document);
 });

@@ -49,9 +49,7 @@ class Speakers extends Component {
                 </div>
                 {filtersAreVisible ? (
                     <div className="section__filter-header">
-                        <div className="container">
-                            <SpeakersFilters />
-                        </div>
+                        <SpeakersFilters />
                     </div>
                 ) : null}
                 <div className="section__navigation-header">

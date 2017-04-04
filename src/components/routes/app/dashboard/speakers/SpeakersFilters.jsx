@@ -32,22 +32,26 @@ class SpeakersFilters extends Component {
 
         return (
             <form className="filter-controls">
-                <div className="filter-controls__item filter-controls__item--6-12">
-                    <label htmlFor="title" className="filter-controls__label">Name</label>
-                    <div className="filter-controls__input-holder">
-                        <input className="form__text-input" type="text" name="name" value={filters.name} onChange={this.handleChange} />
-                    </div>
-                </div>
-                <div className="filter-controls__item filter-controls__item--3-12">
-                    <label htmlFor="startDate" className="filter-controls__label">Term Start Date</label>
-                    <div className="filter-controls__input-holder">
-                        <DatePicker className="form__text-input" dateFormat="YYYY-MM-DD" selected={filters.startDate} onChange={this.handleStartDateChange} />
-                    </div>
-                </div>
-                <div className="filter-controls__item filter-controls__item--3-12">
-                    <label htmlFor="endDate" className="filter-controls__label">Term End Date</label>
-                    <div className="filter-controls__input-holder">
-                        <DatePicker className="form__text-input" dateFormat="YYYY-MM-DD" selected={filters.endDate} onChange={this.handleEndDateChange} />
+                <div className="filter-controls__listing">
+                    <div className="container">
+                        <div className="filter-controls__item filter-controls__item--6-12">
+                            <label htmlFor="title" className="filter-controls__label">Name</label>
+                            <div className="filter-controls__input-holder">
+                                <input className="form__text-input" type="text" name="name" value={filters.name} onChange={this.handleChange} />
+                            </div>
+                        </div>
+                        <div className="filter-controls__item filter-controls__item--3-12">
+                            <label htmlFor="startDate" className="filter-controls__label">Term Start Date</label>
+                            <div className="filter-controls__input-holder">
+                                <DatePicker className="form__text-input" dateFormat="YYYY-MM-DD" selected={filters.startDate} onChange={this.handleStartDateChange} />
+                            </div>
+                        </div>
+                        <div className="filter-controls__item filter-controls__item--3-12">
+                            <label htmlFor="endDate" className="filter-controls__label">Term End Date</label>
+                            <div className="filter-controls__input-holder">
+                                <DatePicker className="form__text-input" dateFormat="YYYY-MM-DD" selected={filters.endDate} onChange={this.handleEndDateChange} />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>

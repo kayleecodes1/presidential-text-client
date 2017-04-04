@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router';
 import classNames from 'classnames';
+import LoadFilterSetModal from './documents/LoadFilterSetModal';
 import CreateDocumentModal from './documents/CreateDocumentModal';
 import EditDocumentModal from './documents/EditDocumentModal';
 import DeleteDocumentModal from './documents/DeleteDocumentModal';
@@ -78,6 +79,7 @@ class Dashboard extends Component {
                 <div className="dashboard__content">
                     {this.props.children}
                 </div>
+                <LoadFilterSetModal />
                 <CreateDocumentModal />
                 <EditDocumentModal />
                 <DeleteDocumentModal />

@@ -11,9 +11,9 @@ class DocumentsTable extends Component {
     renderDocumentRows() {
 
         const { editDocument, deleteDocument } = this.props;
-        const { resultsPerPage, isLoading, currentPageDocuments } = this.props.documents;
+        const { resultsPerPage, isLoading, textSearchIsLoading, currentPageDocuments } = this.props.documents;
 
-        if (isLoading) {
+        if (isLoading || textSearchIsLoading) {
             const placeholderRows = [];
             for (let i = 0; i < resultsPerPage; i++) {
                 placeholderRows.push(

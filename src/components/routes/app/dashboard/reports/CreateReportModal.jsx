@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Modal from '../../../../Modal.jsx';
+import Select from 'react-select';
 
+@inject('filterSets')
 @inject('createReport')
 @observer
 class CreateReportModal extends Component {
@@ -10,6 +12,7 @@ class CreateReportModal extends Component {
 
         super();
         this.handleChange = this.handleChange.bind(this);
+        this.handleFilterSetsChange = this.handleFilterSetsChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -17,6 +20,11 @@ class CreateReportModal extends Component {
 
         const { name, value } = event.target;
         this.props.createReport.setFormData(name, value);
+    }
+
+    handleFilterSetsChange(value) {
+
+        this.props.createReport.setFormData('filterSets', value);
     }
 
     handleSubmit(event) {
@@ -28,10 +36,15 @@ class CreateReportModal extends Component {
 
     render() {
 
+        const { filterSets } = this.props;
         const { isVisible, formData, formErrors, isSubmitting, hide } = this.props.createReport;
 
-        formData.analytic;//TODO: required for update
+        formData.analytic;
+        formData.filterSets//TODO: required for update
         formErrors.analytic;
+        formErrors.filterSets;
+
+        const options = filterSets.currentFilterSets.map((filterSet) => ({ value: filterSet.name, label: filterSet.name }));
 
         const renderContent = () => (
             <form id="form-create-report" className="form" onSubmit={this.handleSubmit}>
@@ -50,6 +63,17 @@ class CreateReportModal extends Component {
                         <option value="pos">Part of Speech</option>
                         <option value="sentiment">Sentiment</option>
                     </select>
+                </label>
+                <label className="form__label">
+                    <span>Filter Sets</span>
+                    {formErrors.filterSets ? (
+                        <span className="form__error">{formErrors.filterSets}</span>
+                    ) : null}
+                    {options.length ? (
+                        <Select name="filterSets" placeholder="" multi={true} options={options} value={formData.filterSets.peek()} onChange={this.handleFilterSetsChange} />
+                    ) : (
+                        <span className="form__empty-message">No filter sets.</span>
+                    )}
                 </label>
             </form>
         );

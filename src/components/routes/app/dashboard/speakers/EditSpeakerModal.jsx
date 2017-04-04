@@ -63,9 +63,9 @@ class EditSpeakerModal extends Component {
                         <ul className="repeater__list">
                             {terms.map((term, index) => (
                                 <li key={index} className="repeater__item">
-                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="startDate" placeholder="Start YYYY-MM-DD" value={term.startDate} onChange={(event) => this.handleTermChange(event, index)} />
+                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="startDate" placeholder="YYYY-MM-DD" value={term.startDate} onChange={(event) => this.handleTermChange(event, index)} />
                                     <span style={{ marginRight: '8px' }}>to</span>
-                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="endDate" placeholder="End YYYY-MM-DD" value={term.endDate} onChange={(event) => this.handleTermChange(event, index)} />
+                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="endDate" placeholder="YYYY-MM-DD" value={term.endDate} onChange={(event) => this.handleTermChange(event, index)} />
                                     <button className="repeater__remove-button" type="button" onClick={(event) => { event.preventDefault(); removeTerm(index); }}>
                                         <i className="fa fa-minus-circle" />
                                     </button>

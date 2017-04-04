@@ -2,8 +2,20 @@
 
   $item-spacing: 10px;
 
-  margin: -5px;
-  @extend %clearfix;
+  margin: 0;
+
+  &__head {
+    background: rgba(#EEE, 0.5);
+    padding: $spacing-standard 0;
+    border-bottom: 1px solid rgba($color-border-light, 0.5);
+    @extend %clearfix;
+  }
+
+  &__listing {
+    padding: $spacing-standard 0;
+    margin: -5px;
+    @extend %clearfix;
+  }
 
   &__item {
     float: left;
@@ -33,6 +45,10 @@
 
     &:last-child {
       padding-right: 0;
+    }
+
+    & > input {
+      margin-top: 0;
     }
   }
 
