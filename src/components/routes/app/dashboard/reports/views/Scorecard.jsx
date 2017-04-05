@@ -9,11 +9,9 @@ const stats = [
     { key: 'cardinality', label: 'Cardinality' },
     { key: 'sentiment', label: 'Sentiment' },
     { key: 'pos.noun', label: 'Total Nouns' },
-    { key: 'pos.pronoun', label: 'Total Pronouns' },
     { key: 'pos.adj', label: 'Total Adjectives' },
     { key: 'pos.verb', label: 'Total Verbs' },
-    { key: 'pos.adv', label: 'Total Adverbs' },
-    { key: 'pos.determiner', label: 'Total Determiners' }
+    { key: 'pos.adv', label: 'Total Adverbs' }
 ];
 
 class Scorecard extends Component {
@@ -41,7 +39,7 @@ class Scorecard extends Component {
                     </thead>
                     <tbody className="table__body">
                         {stats.map((s) => (
-                            <tr key={s} className="table__row">
+                            <tr key={s.key} className="table__row">
                                 <th className="table__head-cell table__head-cell--body table__head-cell--right">{s.label}</th>
                                 {collectionNames.map((collectionName) => (
                                     <td key={collectionName} className="table__cell">{props.get(collections[collectionName].result, s.key)}</td>
