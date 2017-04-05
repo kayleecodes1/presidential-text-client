@@ -159,10 +159,10 @@ class CreateReportStore {
                 }
                 const collections = {};
                 for (const collectionData of collectionsData) {
-                    collections[collectionData.name] = { documents: collectionData.documentIds };
+                    collections[collectionData.name] = collectionData.documentIds;
                 }
                 const data = { analytic, collections };
-console.log(analytic);
+
                 createReport(data)
                     .then((result) => {
                         if (isCancelled) {
