@@ -18,6 +18,11 @@ class ReportsStore {
     }
 
     @action.bound
+    clearResult() {
+        this.result = null;
+    }
+
+    @action.bound
     setResult(result) {
         this.result = result;
     }
