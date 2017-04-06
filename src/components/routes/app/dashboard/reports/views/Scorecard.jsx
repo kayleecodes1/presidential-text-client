@@ -14,6 +14,10 @@ const stats = [
     { key: 'pos.adv', label: 'Total Adverbs' }
 ];
 
+function formatStat() {
+    
+}
+
 class Scorecard extends Component {
 
     static propTypes = {
