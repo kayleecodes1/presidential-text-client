@@ -41,7 +41,7 @@ class WordCloud extends Component {
         });
 
         const fill = (word) => {
-            const index = Math.floor(word.magnitude * CHART_COLORS.length - 0.1);
+            const index = Math.floor(word.magnitude * (CHART_COLORS.length - 0.1));
             return CHART_COLORS[index];
         };
 
