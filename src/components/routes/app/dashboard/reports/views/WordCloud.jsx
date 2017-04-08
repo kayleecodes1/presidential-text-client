@@ -5,6 +5,9 @@ import cloud from 'd3-cloud';
 const WIDTH = 600;
 const HEIGHT = 400;
 
+const MIN_FONT_SIZE = 10;
+const MAX_FONT_SIZE = 100;
+
 const CHART_COLORS = [
     '#E1F5FE',
     '#B3E5FC',
@@ -30,15 +33,15 @@ class WordCloud extends Component {
             return;
         }
 
-        const words = data.map((d) => {
-            const parts = d.split(': ');
-            return { text: parts[0], size: parseFloat(parts[1]) * 100 };
+        const [min, max] = d3.extent(Object.keys(data), (key) => data[key]);
+        const words = Object.keys(data).map((key) => {
+            const magnitude = (data[key] - min) / (max - min);
+            const size = MIN_FONT_SIZE + (MAX_FONT_SIZE - MIN_FONT_SIZE) * magnitude;
+            return { text: key, magnitude, size };
         });
 
-        const [min, max] = d3.extent(words, (d) => d.size);
-        const fill = (size) => {
-            const t = (size - min) / (max - min);
-            const index = Math.floor(t * CHART_COLORS.length);
+        const fill = (word) => {
+            const index = Math.floor(word.magnitude * (CHART_COLORS.length - 0.1));
             return CHART_COLORS[index];
         };
 
@@ -69,7 +72,7 @@ class WordCloud extends Component {
                 .enter().append('text')
                 .style('font-size', (d) => `${d.size}px`)
                 .style('font-family', 'Impact')
-                .style('fill', (d) => fill(d.size))
+                .style('fill', (d) => fill(d))
                 .attr('text-anchor', 'middle')
                 .attr('transform', (d) => `translate(${d.x},${d.y}) rotate(${d.rotate})`)
                 .text((d) => d.text);

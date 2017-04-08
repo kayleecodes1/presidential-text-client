@@ -136,6 +136,7 @@ class CreateReportStore {
             isCancelled = true;
         };
 
+        this.reportsStore.clearResult();
         this.isSubmitting = true;
 
         const promises = [];

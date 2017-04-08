@@ -18,6 +18,10 @@ const stats = [
     { key: 'pos.determiner', label: 'Total Determiners' }
 ];
 
+function formatStat() {
+    
+}
+
 class Scorecard extends Component {
 
     static propTypes = {
