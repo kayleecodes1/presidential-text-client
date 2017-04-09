@@ -38,7 +38,7 @@ class LoadFilterSetModal extends Component {
         const options = currentFilterSets.map((filterSet) => ({ key: filterSet.name, label: filterSet.name }));
 
         const renderContent = () => (
-            <form id="form-create-document" className="form" onSubmit={this.handleSubmit} style={{ minHeight: '125px' }}>
+            <form id="form-create-document" className="form" onSubmit={this.handleSubmit} style={{ minHeight: '250px' }}>
                 <label className="form__label">
                     <span>Filter Set</span>
                     {formErrors.filterSet ? (
