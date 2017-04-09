@@ -64,7 +64,7 @@ class CreateReportModal extends Component {
                         <option value="sentiment">Sentiment</option>
                     </select>
                 </label>
-                <label className="form__label">
+                <label className="form__label" style={{ minHeight: '250px' }}>
                     <span>Filter Sets</span>
                     {formErrors.filterSets ? (
                         <span className="form__error">{formErrors.filterSets}</span>
