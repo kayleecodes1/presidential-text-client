@@ -1,25 +1,26 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import * as d3 from 'd3';
-
+import * as d3Scale from 'd3-scale-chromatic';
+import * as d3Legend from 'd3-svg-legend';
 import props from 'deep-property';
 
 const stats = [
-    { key: 'num_sent_total', label: 'Total Sent' },
-    { key: 'num_sent_avg', label: 'Average Sent' },
-    { key: 'num_word_total', label: 'Total Words' },
-    { key: 'num_word_avg', label: 'Average Words' },
-    { key: 'cardinality', label: 'Cardinality' },
-    { key: 'sentiment', label: 'Sentiment' },
-    { key: 'pos.noun', label: 'Total Nouns' },
-    { key: 'pos.pronoun', label: 'Total Pronouns' },
-    { key: 'pos.adj', label: 'Total Adjectives' },
-    { key: 'pos.verb', label: 'Total Verbs' },
-    { key: 'pos.adv', label: 'Total Adverbs' },
-    { key: 'pos.determiner', label: 'Total Determiners' }
+    {key: 'num_sent_total', label: 'Total Sent'},
+    {key: 'num_sent_avg', label: 'Average Sent'},
+    {key: 'num_word_total', label: 'Total Words'},
+    {key: 'num_word_avg', label: 'Average Words'},
+    {key: 'cardinality', label: 'Cardinality'},
+    {key: 'sentiment', label: 'Sentiment'},
+    {key: 'pos.noun', label: 'Total Nouns'},
+    {key: 'pos.pronoun', label: 'Total Pronouns'},
+    {key: 'pos.adj', label: 'Total Adjectives'},
+    {key: 'pos.verb', label: 'Total Verbs'},
+    {key: 'pos.adv', label: 'Total Adverbs'},
+    {key: 'pos.determiner', label: 'Total Determiners'}
 ];
 
 function formatStat() {
-    
+
 }
 
 class Scorecard extends Component {
@@ -28,13 +29,16 @@ class Scorecard extends Component {
         data: PropTypes.object.isRequired
     };
 
-    static renderScorecard(svg, scores){
+    static renderScorecard(svg, scores) {
         if (svg === null) {
             return;
         }
 
-        const margin = {top: 50, right: 10, bottom: 10, left: 50},
-            width = 1100 - margin.left - margin.right,
+        /* ====================
+            Set up the SVG area
+           ==================== */
+        const margin = {top: 30, right: 10, bottom: 10, left: 50},
+            width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
         let x = d3.scalePoint().range([0, width], 1),
@@ -50,22 +54,28 @@ class Scorecard extends Component {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        /*  =================================================
+            Get the data.
+            The data comes back in json format. The functions
+            want it to be in csv.
+            ================================================= */
+
+        // Set the fields to pull in
         let vals = '';
         vals += 'Name' + ',';
-        vals += 'Total Sent' + ','  ;
-        vals += 'Average Sent' + ','  ;
-        vals += 'Total Words' + ','  ;
-        vals += 'Average Words' + ','  ;
-        vals += 'Cardinality' + ','  ;
-        vals += 'Sentiment' + ','  ;
-        vals += 'Total Nouns' + ','  ;
-        vals += 'Total Adjectives' + ','  ;
-        vals += 'Total Verbs' + ','  ;
-        vals += 'Total Adverbs' + ',' ;
+        vals += 'Total Sent' + ',';
+        vals += 'Avg Sent' + ',';
+        vals += 'Total Words' + ',';
+        vals += 'Avg Words' + ',';
+        vals += 'Cardinality' + ',';
+        vals += 'Sentiment' + ',';
+        vals += 'Nouns' + ',';
+        vals += 'Adjectives' + ',';
+        vals += 'Verbs' + ',';
+        vals += 'Adverbs' + ',';
 
 
-
-        for(let lst in scores) {
+        for (let lst in scores) {
             vals += '\n';
             vals += lst + ',';
             vals += scores[lst].result.num_sent_total + ',';
@@ -80,153 +90,143 @@ class Scorecard extends Component {
             vals += scores[lst].result.pos.adv + ',';
         }
 
+        /*  ========================
+            Start building the chart
+            ======================== */
+        const colorScheme = d3Scale.schemeSet1;
+
+        let color = d3.scaleOrdinal(colorScheme);
         let data = d3.csvParse(vals);
 
-            // Extract the list of dimensions and create a scale for each.
-            let dimensions = [];
-            x.domain(dimensions = d3.keys(data[0]).filter(
-                function(d) {
-                    let xxx = y[d];
-                    return d !== 'Name' && d !== '' && (y[d] = d3.scaleLinear()
-                        .domain(d3.extent(data, function(p) {
+        // Extract the list of dimensions and create a scale for each.
+        let dimensions = [];
+        x.domain(dimensions = d3.keys(data[0]).filter(
+            function (d) {
+                let xxx = y[d];
+                return d !== 'Name' && d !== '' && (y[d] = d3.scaleLinear()
+                        .domain(d3.extent(data, function (p) {
                             let ppp = p;
                             return +p[d];
                         }))
                         .range([height, 0]));
             }));
 
-            // Add grey background lines for context.
-            const background = svg.append('g')
-                .attr("class", "background")
-                .selectAll("path")
-                .data(data)
-                .enter().append("path")
-                .attr("d", path);
+        // Add grey background lines for context.
+        const background = svg.append('g')
+            .attr("class", "background")
+            .selectAll("path")
+            .data(data)
+            .enter().append("path")
+            .attr("d", path);
 
-            // Add blue foreground lines for focus.
-            const foreground = svg.append('g')
-                .attr('class', 'foreground')
-                .selectAll('path')
-                .data(data)
-                .enter().append('path')
-                .attr('d', path);
+        // Add blue foreground lines for focus.
+        const foreground = svg.append('g')
+            .attr('class', 'foreground')
+            .selectAll('path')
+            .data(data)
+            .enter().append('path')
+            .attr('d', path)
+            .attr('stroke', function (d) {
+                return color(d.Name);
+            })
+            .attr('data-legend', function (d) {
+                return d.Name
+            });
 
-            // Add a group element for each dimension.
-            const g = svg.selectAll('.dimension')
-                .data(dimensions)
-                .enter().append('g')
-                .attr('class', 'dimension')
-                .attr('transform', function(d) {
-                    let xd = x(d);
-                    return 'translate(' + x(d) + ')';
-                });
-                /*.call(d3.drag()
-                    .subject(function(d) { return {x: x(d)}; })
-                    .on('start', function(d) {
-                        dragging[d] = x(d);
-                        background.attr('visibility', 'hidden');
-                    })
-                    .on('drag', function(d) {
-                        dragging[d] = Math.min(width, Math.max(0, d3.event.x));
-                        foreground.attr('d', path);
-                        dimensions.sort(function(a, b) { return position(a) - position(b); });
-                        x.domain(dimensions);
-                        g.attr('transform', function(d) { return 'translate(' + position(d) + ')'; })
-                    })
-                    .on('end', function(d) {
-                        delete dragging[d];
-                        transition(d3.select(this)).attr('transform', 'translate(' + x(d) + ')');
-                        transition(foreground).attr('d', path);
-                        background
-                            .attr('d', path)
-                            .transition()
-                            .delay(500)
-                            .duration(0)
-                            .attr('visibility', null);
-                    }));*/
+        // Add a group element for each dimension.
+        const g = svg.selectAll('.dimension')
+            .data(dimensions)
+            .enter().append('g')
+            .attr('class', 'dimension')
+            .attr('transform', function (d) {
+                let xd = x(d);
+                return 'translate(' + x(d) + ')';
+            });
 
-            // Add an axis and title.
-            g.append('g')
-                .attr('class', 'axis')
-                .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
-                .append('text')
-                .style('text-anchor', 'middle')
-                .attr('y', -9)
-                .text(function(d) { return d; });
+        // Add an axis and title.
+        g.append('g')
+            .attr('class', 'axis')
+            .each(function (d) {
+                d3.select(this).call(axis.scale(y[d]));
+            })
+            .append('text')
+            .style('text-anchor', 'left')
+            .attr('y', -9)
+            .text(function (d) {
+                return d;
+            });
 
-            // Add and store a brush for each axis.
-            /*
-            g.append('g')
-                .attr('class', 'brush')
-                .each(function(d) {
-                    d3.select(this).call(d3.brushY()
-                        .extent([0,0],[width,height])
-                        .on("brush", brush));
-                })
-                .selectAll('rect')
-                .attr('x', -8)
-                .attr('width', 16);
-            */
-/*
-        function position(d) {
-            let v = dragging[d];
-            return v == null ? x(d) : v;
+        /*  ==========
+            Add Legend
+            ========== */
+
+        let ordDomain = [];
+        for (var i in data) {
+            ordDomain.push(data[i].Name);
         }
 
-        function transition(g) {
-            return g.transition().duration(500);
-        }
-*/
+        let ordinal = d3.scaleOrdinal(colorScheme)
+            .domain(ordDomain);
+
+        let legendSVG = d3.select('.scorecard__item')
+            .append('svg')
+            .attr('class', 'svgLegend');
+
+        legendSVG.append("g")
+            .attr("class", "legendOrdinal")
+            .attr("transform", "translate(20,20)");
+
+        let legendOrdinal = d3Legend.legendColor()
+            .shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
+            //.title('Filter Sets')
+            .shapePadding(10)
+            .labelWrap(175)
+            .cellFilter(function (d) {
+                return d.label !== undefined
+            })
+            .on('cellover', cellover)
+            .on('cellout', cellout)
+            .scale(ordinal);
+
+        legendSVG.select(".legendOrdinal")
+            .call(legendOrdinal);
+
         // Returns the path for a given data point.
         function path(d) {
-            return line(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
-        }
-/*
-        function brushstart() {
-            d3.event.sourceEvent.stopPropagation();
-        }
-*/
-        // Handles a brush event, toggling the display of foreground lines.
-
-        function brush() {
-            let actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
-                extents = actives.map(function(p) { return y[p].brush.extent(); });
-            foreground.style("display", function(d) {
-                return actives.every(function(p, i) {
-                    return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-                }) ? null : "none";
-            });
+            return line(dimensions.map(function (p) {
+                return [x(p), y[p](d[p])];
+            }));
         }
 
-        function brushended() {
-            if (!d3.event.sourceEvent) {return;} // Only transition after input.
-            if (!d3.event.selection) {return;} // Ignore empty selections.
-            var d0 = d3.event.selection.map(x.invert),
-                d1 = d0.map(d3.timeDay.round);
+        // Highlights the list
+        function cellover(d) {
+            d3.select('[data-legend=' + d + ']')
+                .style('stroke-width', 5);
+        }
 
-            // If empty when rounded, use floor & ceil instead.
-            if (d1[0] >= d1[1]) {
-                d1[0] = d3.timeDay.floor(d0[0]);
-                d1[1] = d3.timeDay.offset(d1[0]);
-            }
-
-            d3.select(this).transition().call(d3.event.target.move, d1.map(x));
+        // Sets width back to regular
+        function cellout(d) {
+            d3.select('[data-legend=' + d + ']')
+                .style('stroke-width', 1);
         }
 
     }
+
     render() {
 
-        const { collections } = this.props.data;
+        const {collections} = this.props.data;
 
         const collectionName = 'Scorecard';
         return (
 
             <div className="scorecard">
 
-                    <div key={collectionName} className="scorecard__item">
-                        <h2 className="word-cloud__label">{collectionName}</h2>
-                        <svg ref={(svg) => { Scorecard.renderScorecard(svg, collections); }} />
-                    </div>
+                <div key={collectionName} className="scorecard__item">
+                    <h2 className="word-cloud__label">{collectionName}</h2>
+                    <svg ref={(svg) => {
+                        Scorecard.renderScorecard(svg, collections);
+                    }}/>
+                </div>
 
             </div>
         );

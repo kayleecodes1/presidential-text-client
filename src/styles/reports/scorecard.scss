@@ -13,7 +13,7 @@
 
     .foreground path {
       fill: none;
-      stroke: steelblue;
+      //stroke: steelblue;
     }
 
     .brush .extent {
@@ -32,6 +32,14 @@
     .axis text {
       text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
       fill: #333844;
+    }
+
+    .svgLegend{
+      float:right;
+      width: 200px;
+    }
+    .legendTitle{
+      font-weight: bold;
     }
 
   }
