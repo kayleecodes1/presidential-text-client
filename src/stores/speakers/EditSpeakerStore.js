@@ -11,7 +11,8 @@ class EditSpeakerStore {
     @observable isLoading = false;
     cancelLoading = null;
     @observable formData = {
-        name: ''
+        name: '',
+        labels: []
     };
     @observable terms = [];
     @observable formErrors = {
@@ -44,7 +45,8 @@ class EditSpeakerStore {
 
         this.isLoading = true;
         this.formData = {
-            name: ''
+            name: '',
+            labels: []
         };
         this.terms.clear();
         this.formErrors = {
@@ -56,9 +58,17 @@ class EditSpeakerStore {
                 if (isCancelled) {
                     return;
                 }
-                const { name, terms } = data;
+                const { speakerLabelOptions } = this.speakersStore;
+                const { name, terms, labels } = data;
                 this.formData = {
-                    name
+                    name,
+                    labels: labels.map((label) => {
+                        const storedLabel = speakerLabelOptions.find((storedLabel) => storedLabel.id === label.id);
+                        return {
+                            value: label.id,
+                            label: storedLabel ? storedLabel.title : '?'
+                        };
+                    })
                 };
                 this.terms.replace(terms);
             })
@@ -81,6 +91,10 @@ class EditSpeakerStore {
     @action.bound
     setFormData(name, value) {
 
+        if (name === 'labels') {
+            this.formData[name].replace(value);
+            return;
+        }
         this.formData[name] = value;
     }
 
@@ -118,7 +132,7 @@ class EditSpeakerStore {
             return;
         }
 
-        const { name } = this.formData;
+        const { name, labels } = this.formData;
         const terms = this.terms.peek().map((o) => toJS(o));
 
         let hasErrors = false;
@@ -151,7 +165,10 @@ class EditSpeakerStore {
 
         const data = {
             name,
-            terms
+            terms,
+            labels: labels.map((label) => ({
+                speakerLabelId: label.value
+            }))
         };
 
         this.isSubmitting = true;

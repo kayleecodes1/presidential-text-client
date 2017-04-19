@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import DatePicker from 'react-datepicker';
+import Select from 'react-select';
 
 @inject('speakers')
 @observer
@@ -11,6 +12,7 @@ class SpeakersFilters extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
+        this.handleLabelsChange = this.handleLabelsChange.bind(this);
     }
 
     handleChange(event) {
@@ -26,9 +28,13 @@ class SpeakersFilters extends Component {
         this.props.speakers.setFilterData('endDate', date);
     }
 
+    handleLabelsChange(value) {
+        this.props.speakers.setFilterData('labels', value);
+    }
+
     render() {
 
-        const { filters } = this.props.speakers;
+        const { filters, speakerLabelOptions } = this.props.speakers;
 
         return (
             <form className="filter-controls">
@@ -50,6 +56,12 @@ class SpeakersFilters extends Component {
                             <label htmlFor="endDate" className="filter-controls__label">Term End Date</label>
                             <div className="filter-controls__input-holder">
                                 <DatePicker className="form__text-input" dateFormat="YYYY-MM-DD" selected={filters.endDate} onChange={this.handleEndDateChange} />
+                            </div>
+                        </div>
+                        <div className="filter-controls__item filter-controls__item--12-12">
+                            <label htmlFor="title" className="filter-controls__label">Speaker Label(s)</label>
+                            <div className="filter-controls__input-holder">
+                                <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions.peek()} value={filters.labels.peek()} onChange={this.handleLabelsChange} />
                             </div>
                         </div>
                     </div>

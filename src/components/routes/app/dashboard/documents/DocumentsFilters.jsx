@@ -15,7 +15,8 @@ class DocumentsFilters extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
-        this.handleSpeakerChange = this.handleSpeakerChange.bind(this);
+        this.handleSpeakersChange = this.handleSpeakersChange.bind(this);
+        this.handleLabelsChange = this.handleLabelsChange.bind(this);
     }
 
     handleFilterSetNameChange(event) {
@@ -35,14 +36,18 @@ class DocumentsFilters extends Component {
         this.props.documents.setFilterData('endDate', date);
     }
 
-    handleSpeakerChange(value) {
+    handleSpeakersChange(value) {
         this.props.documents.setFilterData('speakers', value);
+    }
+
+    handleLabelsChange(value) {
+        this.props.documents.setFilterData('labels', value);
     }
 
     render() {
 
         const { filterSets, loadFilterSet } = this.props;
-        const { filterSetName, filters, currentFilterSetExists, filterSetIsDirty, saveFilterSet, deleteFilterSet, speakerOptions } = this.props.documents;
+        const { filterSetName, filters, currentFilterSetExists, filterSetIsDirty, saveFilterSet, deleteFilterSet, documentLabelOptions, speakerOptions } = this.props.documents;
 
         return (
             <form className="filter-controls">
@@ -94,13 +99,19 @@ class DocumentsFilters extends Component {
                         <div className="filter-controls__item filter-controls__item--6-12">
                             <label htmlFor="speakers" className="filter-controls__label">Speaker(s)</label>
                             <div className="filter-controls__input-holder">
-                                <Select name="speaker" placeholder="" multi={true} options={speakerOptions.peek()} value={filters.speakers.peek()} onChange={this.handleSpeakerChange} />
+                                <Select name="speakers" placeholder="" multi={true} options={speakerOptions.peek()} value={filters.speakers.peek()} onChange={this.handleSpeakersChange} />
                             </div>
                         </div>
                         <div className="filter-controls__item filter-controls__item--6-12">
                             <label htmlFor="title" className="filter-controls__label">Text Content</label>
                             <div className="filter-controls__input-holder">
                                 <input className="form__text-input" type="text" name="textContent" value={filters.textContent} onChange={this.handleChange} />
+                            </div>
+                        </div>
+                        <div className="filter-controls__item filter-controls__item--12-12">
+                            <label htmlFor="title" className="filter-controls__label">Document Label(s)</label>
+                            <div className="filter-controls__input-holder">
+                                <Select name="labels" placeholder="" multi={true} options={documentLabelOptions.peek()} value={filters.labels.peek()} onChange={this.handleLabelsChange} />
                             </div>
                         </div>
                     </div>

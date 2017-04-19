@@ -16,6 +16,7 @@ class EditDocumentModal extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSpeakerChange = this.handleSpeakerChange.bind(this);
+        this.handleLabelsChange = this.handleLabelsChange.bind(this);
         this.handleFileInputChange = this.handleFileInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -29,6 +30,11 @@ class EditDocumentModal extends Component {
     handleSpeakerChange(value) {
 
         this.props.editDocument.setFormData('speaker', value);
+    }
+
+    handleLabelsChange(value) {
+
+        this.props.editDocument.setFormData('labels', value);
     }
 
     handleFileInputChange(event) {
@@ -60,13 +66,14 @@ class EditDocumentModal extends Component {
 
     render() {
 
-        const { speakerOptions } = this.props.documents;
+        const { documentLabelOptions, speakerOptions } = this.props.documents;
         const { isVisible, isLoading, formData, formErrors, isSubmitting, hide } = this.props.editDocument;
 
         formData.title;
         formData.speaker;
         formData.date;
-        formData.textContent;//TODO: these are needed to trigger re-render
+        formData.textContent;
+        formData.labels;//TODO: these are needed to trigger re-render
         formErrors.title;
         formErrors.speaker;
         formErrors.date;
@@ -94,6 +101,10 @@ class EditDocumentModal extends Component {
                         <span className="form__error">{formErrors.date}</span>
                     ) : null}
                     <input className="form__text-input" type="text" name="date" placeholder="YYYY-MM-DD" value={formData.date} onChange={this.handleChange} />
+                </label>
+                <label className="form__label">
+                    <span>Document Labels</span>
+                    <Select name="labels" placeholder="" multi={true} options={documentLabelOptions.peek()} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
                 </label>
                 <label className="form__label">
                     <span>Text Content</span>

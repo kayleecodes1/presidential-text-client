@@ -7,6 +7,7 @@ import SpeakersTable from './SpeakersTable';
 
 @inject('speakers')
 @inject('createSpeaker')
+@inject('manageSpeakerLabels')
 @observer
 class Speakers extends Component {
 
@@ -31,7 +32,7 @@ class Speakers extends Component {
 
     render() {
 
-        const { speakers, createSpeaker } = this.props;
+        const { createSpeaker, manageSpeakerLabels } = this.props;
         const { filtersAreVisible } = this.state;
 
         return (
@@ -40,6 +41,10 @@ class Speakers extends Component {
                     <div className="container">
                         <h1 className="section__heading">Speakers</h1>
                         <div className="section__header-buttons">
+                            <button className="button" onClick={manageSpeakerLabels.show}>
+                                <i className="button__icon fa fa-tags" />
+                                <span>Manage Speaker Labels</span>
+                            </button>
                             <button className="button" onClick={createSpeaker.show}>
                                 <i className="button__icon fa fa-plus" />
                                 <span>Create Speaker</span>

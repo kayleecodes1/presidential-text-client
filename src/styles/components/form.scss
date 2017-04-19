@@ -3,6 +3,8 @@
   $input-font-size: 13px;
   $input-text-color: #333;
 
+  margin: 0;
+
   &__label {
     @extend %label-appearance;
     display: block;
@@ -19,7 +21,7 @@
     font-size: 11px;
     line-height: 13px;
     color: #666;
-    margin: 8px 0 0 0;
+    margin: 8px 0 16px 0;
   }
 
   &__text-input {

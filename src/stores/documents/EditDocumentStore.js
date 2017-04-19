@@ -15,7 +15,8 @@ class EditDocumentStore {
         title: '',
         date: '',
         speaker: null,
-        textContent: ''
+        textContent: '',
+        labels: []
     };
     @observable formErrors = {
         title: '',
@@ -52,7 +53,8 @@ class EditDocumentStore {
             title: '',
             date: '',
             speaker: null,
-            textContent: ''
+            textContent: '',
+            labels: []
         };
         this.formErrors = {
             title: '',
@@ -65,12 +67,20 @@ class EditDocumentStore {
                 if (isCancelled) {
                     return;
                 }
-                const { title, date, speakerId, speakerName, textContent } = document;
+                const { documentLabelOptions } = this.documentsStore;
+                const { title, date, speakerId, speakerName, textContent, labels } = document;
                 this.formData = {
                     title,
                     date,
                     speaker: { value: speakerId, label: speakerName },
-                    textContent
+                    textContent,
+                    labels: labels.map((label) => {
+                        const storedLabel = documentLabelOptions.find((storedLabel) => storedLabel.id === label.id);
+                        return {
+                            value: label.id,
+                            label: storedLabel ? storedLabel.title : '?'
+                        };
+                    })
                 };
             })
             .catch((error) => {
@@ -92,6 +102,10 @@ class EditDocumentStore {
     @action.bound
     setFormData(name, value) {
 
+        if (name === 'labels') {
+            this.formData[name].replace(value);
+            return;
+        }
         this.formData[name] = value;
     }
 
@@ -108,7 +122,7 @@ class EditDocumentStore {
             return;
         }
 
-        const { title, date, speaker, textContent } = this.formData;
+        const { title, date, speaker, textContent, labels } = this.formData;
 
         let hasErrors = false;
         this.formErrors.title = '';
@@ -151,7 +165,10 @@ class EditDocumentStore {
             fullText: textContent,
             speaker: {
                 speakerId: speaker.value
-            }
+            },
+            labels: labels.map((label) => ({
+                documentLabelId: label.value
+            }))
         };
 
         this.isSubmitting = true;

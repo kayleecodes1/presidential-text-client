@@ -1,6 +1,5 @@
 import { observable, action } from 'mobx';
 import { createDocument } from '../../services/api/documents';
-import { getSpeakers } from '../../services/api/speakers';
 
 class CreateDocumentStore {
 
@@ -12,7 +11,8 @@ class CreateDocumentStore {
         title: '',
         date: '',
         speaker: null,
-        textContent: ''
+        textContent: '',
+        labels: []
     };
     @observable formErrors = {
         title: '',
@@ -37,7 +37,8 @@ class CreateDocumentStore {
             title: '',
             date: '',
             speaker: null,
-            textContent: ''
+            textContent: '',
+            labels: []
         };
         this.formErrors = {
             title: '',
@@ -50,6 +51,10 @@ class CreateDocumentStore {
     @action.bound
     setFormData(name, value) {
 
+        if (name === 'labels') {
+            this.formData[name].replace(value);
+            return;
+        }
         this.formData[name] = value;
     }
 
@@ -67,7 +72,7 @@ class CreateDocumentStore {
             return;
         }
 
-        const { title, date, speaker, textContent } = this.formData;
+        const { title, date, speaker, textContent, labels } = this.formData;
 
         let hasErrors = false;
         this.formErrors.title = '';
@@ -110,7 +115,10 @@ class CreateDocumentStore {
             fullText: textContent,
             speaker: {
                 speakerId: speaker.value
-            }
+            },
+            labels: labels.map((label) => ({
+                documentLabelId: label.value
+            }))
         };
 
         this.isSubmitting = true;

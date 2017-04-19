@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import Modal from '../../../../Modal.jsx';
 import Select from 'react-select';
 
+@inject('speakers')
 @inject('editSpeaker')
 @observer
 class EditSpeakerModal extends Component {
@@ -12,6 +13,7 @@ class EditSpeakerModal extends Component {
         super();
         this.handleChange = this.handleChange.bind(this);
         this.handleTermChange = this.handleTermChange.bind(this);
+        this.handleLabelsChange = this.handleLabelsChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -27,6 +29,11 @@ class EditSpeakerModal extends Component {
         this.props.editSpeaker.setTermData(index, name, value);
     }
 
+    handleLabelsChange(value) {
+
+        this.props.editSpeaker.setFormData('labels', value);
+    }
+
     handleSubmit(event) {
 
         event.preventDefault();
@@ -36,14 +43,17 @@ class EditSpeakerModal extends Component {
 
     render() {
 
+        const { speakerLabelOptions } = this.props.speakers;
         const { isVisible, isLoading, formData, terms, formErrors, removeTerm, addTerm, isSubmitting, hide } = this.props.editSpeaker;
 
         formData.name;
         for (let i = 0; i < terms.length; i++) {
             terms[i].startDate;
             terms[i].endDate;
-        }//TODO: these are needed to trigger re-render
+        }
+        formData.labels;//TODO: these are needed to trigger re-render
         formErrors.name;
+        formErrors.terms;
 
         const renderContent = () => (
             <form id="form-edit-speaker" className="form" onSubmit={this.handleSubmit}>
@@ -77,6 +87,10 @@ class EditSpeakerModal extends Component {
                             <span>Add Term</span>
                         </button>
                     </div>
+                </label>
+                <label className="form__label">
+                    <span>Speaker Labels</span>
+                    <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions.peek()} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
                 </label>
             </form>
         );

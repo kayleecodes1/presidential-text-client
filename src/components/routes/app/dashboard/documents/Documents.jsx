@@ -6,6 +6,7 @@ import DocumentsTable from './DocumentsTable';
 
 @inject('documents')
 @inject('createDocument')
+@inject('manageDocumentLabels')
 @observer
 class Documents extends Component {
 
@@ -30,7 +31,7 @@ class Documents extends Component {
 
     render() {
 
-        const { createDocument } = this.props;
+        const { createDocument, manageDocumentLabels } = this.props;
         const { filtersAreVisible } = this.state;
 
         return (
@@ -39,6 +40,10 @@ class Documents extends Component {
                     <div className="container">
                         <h1 className="section__heading">Documents</h1>
                         <div className="section__header-buttons">
+                            <button className="button" onClick={manageDocumentLabels.show}>
+                                <i className="button__icon fa fa-tags" />
+                                <span>Manage Document Labels</span>
+                            </button>
                             <button className="button" onClick={createDocument.show}>
                                 <i className="button__icon fa fa-plus" />
                                 <span>Create Document</span>
