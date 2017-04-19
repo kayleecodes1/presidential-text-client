@@ -5,6 +5,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
+    node:{
+        fs: "empty"
+    },
     devtool: 'eval',
     entry: isProduction ? [
         './src/index'
