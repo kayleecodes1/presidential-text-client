@@ -62,6 +62,7 @@ class CreateReportModal extends Component {
                         <option value="top">Top 10 Words</option>
                         <option value="pos">Part of Speech</option>
                         <option value="sentiment">Sentiment</option>
+                        <option value="cluster">Cluster</option>
                     </select>
                 </label>
                 <label className="form__label" style={{ minHeight: '250px' }}>

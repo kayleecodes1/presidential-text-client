@@ -1,0 +1,33 @@
+.cluster {
+
+  &__chart {
+    //
+  }
+
+  &__link {
+    fill: none;
+    stroke: #555;
+    stroke-opacity: 0.4;
+    stroke-width: 1.5px;
+  }
+
+  &__node {
+    fill: #999;
+
+    circle {
+      fill: #555;
+    }
+
+    text {
+      font: 10px sans-serif;
+      text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+    }
+
+    &--leaf {
+
+      text {
+        text-shadow: none;
+      }
+    }
+  }
+}
