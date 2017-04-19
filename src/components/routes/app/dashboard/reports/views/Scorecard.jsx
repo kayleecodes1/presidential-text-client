@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import * as d3 from 'd3';
 import * as d3Scale from 'd3-scale-chromatic';
 import * as d3Legend from 'd3-svg-legend';
-import props from 'deep-property';
 
 const stats = [
     {key: 'num_sent_total', label: 'Total Sent'},
