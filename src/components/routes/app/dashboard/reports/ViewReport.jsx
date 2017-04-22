@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Scorecard from './views/Scorecard';
 import WordCloud from './views/WordCloud';
+import Sentiment from './views/Sentiment';
+import SentimentYear from "./views/SentimentYear";
 
 @inject('reports')
 @observer
@@ -22,6 +24,10 @@ class ViewReport extends Component {
                 return <Scorecard data={result} />;
             case 'wordcloud':
                 return <WordCloud data={result} />;
+            case 'sentiment':
+                return <Sentiment data={result}/>
+            case 'sentimentyear':
+                return <SentimentYear data={result}/>
             //TODO: other report types
             default:
                 return JSON.stringify(result);
