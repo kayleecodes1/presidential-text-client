@@ -1,5 +1,6 @@
 import { observable, computed, action } from 'mobx';
 import { getSpeakers } from '../../services/api/speakers';
+import { getSpeakerLabels } from '../../services/api/speakerLabels';
 
 function dateToString(date) {
     date = date.toDate();
@@ -18,11 +19,13 @@ class SpeakersStore {
     @observable isLoading = false;
     cancelLoading = null;
     @observable speakers = new Map();
+    @observable speakerLabelOptions = [];
 
     @observable filters = {
         name: '',
         startDate: null,
-        endDate: null
+        endDate: null,
+        labels: []
     };
 
     @observable sortAttribute = 'name';
@@ -32,7 +35,7 @@ class SpeakersStore {
         return this.speakers
             .values()
             .filter((speaker) => {
-                const { name, startDate, endDate } = this.filters;
+                const { name, startDate, endDate, labels } = this.filters;
                 if (name && speaker.name.search(new RegExp(name, 'i')) === -1) {
                     return false;
                 }
@@ -40,6 +43,9 @@ class SpeakersStore {
                     return false;
                 }
                 if (endDate && !speaker.terms.some((term) => term.startDate < dateToString(endDate))) {
+                    return false;
+                }
+                if (labels.length && !labels.some((selected) => speaker.labels.some((label) => label.id === selected.value))) {
                     return false;
                 }
                 return true;
@@ -75,8 +81,8 @@ class SpeakersStore {
     }
 
     @computed get filtersAreEmpty() {
-        const { name, startDate, endDate } = this.filters;
-        return name === '' && startDate === null && endDate === null;
+        const { name, startDate, endDate, labels } = this.filters;
+        return name === '' && startDate === null && endDate === null && labels.length === 0;
     }
 
     @computed get currentPageSpeakers() {
@@ -105,20 +111,25 @@ class SpeakersStore {
         this.currentPage = 1;
         this.isLoading = true;
         this.speakers.clear();
+        this.speakerLabelOptions.clear();
         this.clearFilters();
         this.sortAttribute = 'name';
         this.sortOrder = 1;
 
-        getSpeakers()
+        Promise.all([getSpeakers(), getSpeakerLabels()])
             .then((data) => {
                 if (isCancelled) {
                     return;
                 }
-                const speakers = new Map();
-                for (const speaker of data) {
-                    speakers.set(speaker.id, speaker);
+                const [speakers, speakerLabels] = data;
+                this.speakers.clear();
+                for (const speaker of speakers) {
+                    this.speakers.set(speaker.id, speaker);
                 }
-                this.speakers.replace(speakers);
+                this.speakerLabelOptions.replace(speakerLabels.map((label) => ({
+                    value: label.id,
+                    label: label.title
+                })));
             })
             .catch((error) => {
                 if (isCancelled) {
@@ -162,6 +173,10 @@ class SpeakersStore {
 
     @action.bound
     setFilterData(name, value) {
+        if (name === 'labels') {
+            this.filters[name].replace(value);
+            return;
+        }
         this.filters[name] = value;
     }
 
@@ -170,6 +185,7 @@ class SpeakersStore {
         this.filters.name = '';
         this.filters.startDate = null;
         this.filters.endDate = null;
+        this.filters.labels.clear();
     }
 
     @action.bound

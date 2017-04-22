@@ -9,7 +9,7 @@ const MIN_FONT_SIZE = 10;
 const MAX_FONT_SIZE = 100;
 
 const CHART_COLORS = [
-    '#E1F5FE',
+    //'#E1F5FE',
     '#B3E5FC',
     '#81D4FA',
     '#4FC3F7',

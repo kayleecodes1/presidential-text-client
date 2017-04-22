@@ -8,7 +8,8 @@ class CreateSpeakerStore {
 
     @observable isVisible = false;
     @observable formData = {
-        name: ''
+        name: '',
+        labels: []
     };
     @observable terms = [];
     @observable formErrors = {
@@ -29,7 +30,8 @@ class CreateSpeakerStore {
         this.isVisible = true;
 
         this.formData = {
-            name: ''
+            name: '',
+            labels: []
         };
         this.terms.clear();
         this.formErrors = {
@@ -41,6 +43,10 @@ class CreateSpeakerStore {
     @action.bound
     setFormData(name, value) {
 
+        if (name === 'labels') {
+            this.formData[name].replace(value);
+            return;
+        }
         this.formData[name] = value;
     }
 
@@ -79,7 +85,7 @@ class CreateSpeakerStore {
             return;
         }
 
-        const { name } = this.formData;
+        const { name, labels } = this.formData;
         const terms = this.terms.peek().map((o) => toJS(o));
 
         let hasErrors = false;
@@ -112,7 +118,10 @@ class CreateSpeakerStore {
 
         const data = {
             name,
-            terms
+            terms,
+            labels: labels.map((label) => ({
+                speakerLabelId: label.value
+            }))
         };
 
         this.isSubmitting = true;

@@ -8,6 +8,9 @@ function transformSpeakerSummary(speaker) {
             id: term.termId,
             startDate: term.startDate,
             endDate: term.endDate
+        })),
+        labels: speaker.labels.map((label) => ({
+            id: label.speakerLabelId
         }))
     };
 }
@@ -20,6 +23,9 @@ function transformSpeakerDetail(speaker) {
             id: term.termId,
             startDate: term.startDate,
             endDate: term.endDate
+        })),
+        labels: speaker.labels.map((label) => ({
+            id: label.speakerLabelId
         }))
     };
 }

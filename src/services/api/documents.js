@@ -6,7 +6,10 @@ function transformDocumentSummary(document) {
         title: document.title,
         date: document.deliveryDate,
         speakerId: document.speaker.speakerId,
-        speakerName: document.speaker.name
+        speakerName: document.speaker.name,
+        labels: document.labels.map((label) => ({
+            id: label.documentLabelId
+        }))
     };
 }
 
@@ -17,7 +20,10 @@ function transformDocumentDetail(document) {
         date: document.deliveryDate,
         speakerId: document.speaker.speakerId,
         speakerName: document.speaker.name,
-        textContent: document.fullText
+        textContent: document.fullText,
+        labels: document.labels.map((label) => ({
+            id: label.documentLabelId
+        }))
     };
 }
 

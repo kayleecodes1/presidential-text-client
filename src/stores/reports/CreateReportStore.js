@@ -139,6 +139,16 @@ class CreateReportStore {
         this.reportsStore.clearResult();
         this.isSubmitting = true;
 
+        if (this.formData.analytic === 'cluster') {
+            setTimeout(() => {
+                this.reportsStore.setResult(require('./_test_cluster'));
+                this.hide();
+                this.isSubmitting = false;
+                this.cancelLoading = null;
+            }, 1000);
+            return;
+        }
+
         const promises = [];
         for (const filterSetOption of filterSets) {
             promises.push(new Promise((resolve, reject) => {

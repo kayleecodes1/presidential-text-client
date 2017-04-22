@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import * as d3 from 'd3';
 import * as d3Scale from 'd3-scale-chromatic';
 import * as d3Legend from 'd3-svg-legend';
-import props from 'deep-property';
 
 const stats = [
     {key: 'num_sent_total', label: 'Total Sent'},
@@ -18,10 +17,6 @@ const stats = [
     {key: 'pos.adv', label: 'Total Adverbs'},
     {key: 'pos.determiner', label: 'Total Determiners'}
 ];
-
-function formatStat() {
-
-}
 
 class Scorecard extends Component {
 
@@ -220,14 +215,12 @@ class Scorecard extends Component {
         return (
 
             <div className="scorecard">
-
                 <div key={collectionName} className="scorecard__item">
                     <h2 className="word-cloud__label">{collectionName}</h2>
                     <svg ref={(svg) => {
                         Scorecard.renderScorecard(svg, collections);
                     }}/>
                 </div>
-
             </div>
         );
     }

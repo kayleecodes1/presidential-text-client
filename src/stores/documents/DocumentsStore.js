@@ -1,6 +1,7 @@
 import { observable, computed, action, toJS } from 'mobx';
 import moment from 'moment';
 import { getDocuments, searchDocuments } from '../../services/api/documents';
+import { getDocumentLabels } from '../../services/api/documentLabels';
 import { getSpeakers } from '../../services/api/speakers';
 
 function dateToString(date) {
@@ -21,6 +22,7 @@ class DocumentsStore {
     @observable isLoading = false;
     cancelLoading = null;
     @observable documents = new Map();
+    @observable documentLabelOptions = [];
     @observable speakerOptions = [];
 
     @observable filterSetName = '';
@@ -29,7 +31,8 @@ class DocumentsStore {
         startDate: null,
         endDate: null,
         speakers: [],
-        textContent: ''
+        textContent: '',
+        labels: []
     };
     @observable textSearchIsLoading = false;
     textSearchTimeoutId = null;
@@ -48,7 +51,7 @@ class DocumentsStore {
         }
         currentDocuments = currentDocuments
             .filter((document) => {
-                const { title, startDate, endDate, speakers } = this.filters;
+                const { title, startDate, endDate, speakers, labels } = this.filters;
                 if (title && document.title.search(new RegExp(title, 'i')) === -1) {
                     return false;
                 }
@@ -59,6 +62,9 @@ class DocumentsStore {
                     return false;
                 }
                 if (speakers.length && !speakers.some((selected) => document.speakerId === selected.value)) {
+                    return false;
+                }
+                if (labels.length && !labels.some((selected) => document.labels.some((label) => label.id === selected.value))) {
                     return false;
                 }
                 return true;
@@ -95,12 +101,13 @@ class DocumentsStore {
     }
 
     @computed get filtersAreEmpty() {
-        const { title, startDate, endDate, speakers, textContent } = this.filters;
+        const { title, startDate, endDate, speakers, textContent, labels } = this.filters;
         return title === '' &&
             startDate === null &&
             endDate === null &&
             speakers.length === 0 &&
-            textContent === '';
+            textContent === '' &&
+            labels.length === 0;
     }
 
     @computed get filterSetIsDirty() {
@@ -123,7 +130,8 @@ class DocumentsStore {
             filterSet.filters.startDate === JSON.parse(JSON.stringify(this.filters.startDate)) &&
             filterSet.filters.endDate === JSON.parse(JSON.stringify(this.filters.endDate)) &&
             filterSet.filters.speakers.toString() === this.filters.speakers.toString() &&
-            filterSet.filters.textContent === this.filters.textContent)
+            filterSet.filters.textContent === this.filters.textContent &&
+            filterSet.filters.labels.toString() === this.filters.labels.toString())
         {
             return false;
         }
@@ -162,22 +170,26 @@ class DocumentsStore {
         this.currentPage = 1;
         this.isLoading = true;
         this.documents.clear();
+        this.documentLabelOptions.clear();
         this.speakerOptions.clear();
         this.clearFilters();
         this.sortAttribute = 'title';
         this.sortOrder = 1;
 
-        Promise.all([getDocuments(), getSpeakers()])
+        Promise.all([getDocuments(), getDocumentLabels(), getSpeakers()])
             .then((data) => {
                 if (isCancelled) {
                     return;
                 }
-                const [documents, speakers] = data;
-                const newDocuments = new Map();
+                const [documents, documentLabels, speakers] = data;
+                this.documents.clear();
                 for (const document of documents) {
-                    newDocuments.set(document.id, document);
+                    this.documents.set(document.id, document);
                 }
-                this.documents.replace(newDocuments);
+                this.documentLabelOptions.replace(documentLabels.map((label) => ({
+                    value: label.id,
+                    label: label.title
+                })));
                 this.speakerOptions.replace(speakers.map((speaker) => ({
                     value: speaker.id,
                     label: speaker.name
@@ -232,8 +244,8 @@ class DocumentsStore {
     @action.bound
     setFilterData(name, value) {
 
-        if (name === 'speakers') {
-            this.filters.speakers.replace(value);
+        if (name === 'speakers' || name === 'labels') {
+            this.filters[name].replace(value);
             return;
         }
         this.filters[name] = value;
@@ -246,12 +258,13 @@ class DocumentsStore {
     loadFilterSet(filterSet) {
 
         this.filterSetName = filterSet.name;
-        const { title, startDate, endDate, speakers, textContent } = filterSet.filters;
-        this.setFilterData('title', title);
+        const { title, startDate, endDate, speakers, textContent, labels } = filterSet.filters;
+        this.setFilterData('title', title || '');
         this.setFilterData('startDate', startDate && moment(startDate));
         this.setFilterData('endDate', endDate && moment(endDate));
-        this.setFilterData('speakers', speakers);
-        this.setFilterData('textContent', textContent);
+        this.setFilterData('speakers', speakers || []);
+        this.setFilterData('textContent', textContent || '');
+        this.setFilterData('labels', labels || []);
     }
 
     @action.bound
@@ -332,6 +345,7 @@ class DocumentsStore {
         this.filters.endDate = null;
         this.filters.speakers.clear();
         this.filters.textContent = '';
+        this.filters.labels.clear();
     }
 
     @action.bound
