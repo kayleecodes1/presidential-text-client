@@ -56,7 +56,16 @@ class LoadFilterSetStore {
 
     submitImport(text) {
 
+        //TODO: confirm if overwriting
+
         const filterSet = JSON.parse(text);
+
+        if (this.filterSetsStore.getFilterSet(filterSet.name)) {
+            if (!confirm(`This will overwrite the existing "${filterSet.name}" filter set. Do you still want to import?`)) {
+                return;
+            }
+        }
+
         const filterSetData = {
             name: filterSet.name,
             filters: {
@@ -69,6 +78,7 @@ class LoadFilterSetStore {
                 speakerLabels: filterSet.filters.speakerLabels || []
             }
         };
+        this.filterSetsStore.createOrUpdateFilterSet(filterSet.name, filterSetData.filters);
         this.documentsStore.loadFilterSet(filterSetData);
         this.hide();
     }
