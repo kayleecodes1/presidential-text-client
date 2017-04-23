@@ -3,16 +3,16 @@ import { callApi } from './util.js';
 function transformSpeakerLabel(label) {
     return {
         id: label.speakerLabelId,
-        title: label.title
+        key: label.key,
+        value: label.value,
+        tag: `${label.key}:${label.value}`
     };
 }
 
-//TODO
-export const createSpeakerLabel = (data) => Promise.reject('API functionality not implemented.');
+export const createSpeakerLabel = (data) => callApi('speakerlabels', 'POST', data, transformSpeakerLabel);
 
 export const getSpeakerLabels = () => callApi('speakerlabels', 'GET', null, (labels) => {
     return labels.map(transformSpeakerLabel);
 });
 
-//TODO
-export const updateSpeakerLabel = (speakerLabelId, data) => Promise.reject('API functionality not implemented.');
+export const updateSpeakerLabel = (speakerLabelId, data) => callApi(`speakerlabels/${speakerLabelId}`, 'PUT', data, transformSpeakerLabel);

@@ -3,16 +3,16 @@ import { callApi } from './util.js';
 function transformDocumentLabel(label) {
     return {
         id: label.documentLabelId,
-        title: label.title
+        key: label.key,
+        value: label.value,
+        tag: `${label.key}:${label.value}`
     };
 }
 
-//TODO
-export const createDocumentLabel = (data) => Promise.reject('API functionality not implemented.');
+export const createDocumentLabel = (data) => callApi('documentlabels', 'POST', data, transformDocumentLabel);
 
 export const getDocumentLabels = () => callApi('documentlabels', 'GET', null, (labels) => {
     return labels.map(transformDocumentLabel);
 });
 
-//TODO
-export const updateDocumentLabel = (documentLabelId, data) => Promise.reject('API functionality not implemented.');
+export const updateDocumentLabel = (documentLabelId, data) => callApi(`documentlabels/${documentLabelId}`, 'PUT', data, transformDocumentLabel);

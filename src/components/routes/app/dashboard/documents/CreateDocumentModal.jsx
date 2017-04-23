@@ -93,7 +93,7 @@ class CreateDocumentModal extends Component {
                     {formErrors.speaker ? (
                         <span className="form__error">{formErrors.speaker}</span>
                     ) : null}
-                    <Select name="speaker" placeholder="" value={formData.speaker} options={speakerOptions.peek()} onChange={this.handleSpeakerChange} />
+                    <Select name="speaker" placeholder="" value={formData.speaker} options={speakerOptions} onChange={this.handleSpeakerChange} />
                 </label>
                 <label className="form__label">
                     <span>Date</span>
@@ -104,7 +104,7 @@ class CreateDocumentModal extends Component {
                 </label>
                 <label className="form__label">
                     <span>Document Labels</span>
-                    <Select name="labels" placeholder="" multi={true} options={documentLabelOptions.peek()} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
+                    <Select name="labels" placeholder="" multi={true} options={documentLabelOptions} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
                 </label>
                 <label className="form__label">
                     <span>Text Content</span>

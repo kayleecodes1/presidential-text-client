@@ -1,82 +1,44 @@
-import { observable, computed, action } from 'mobx';
-import { createSpeakerLabel, getSpeakerLabels, updateSpeakerLabel } from '../../services/api/speakerLabels';
+import { observable, action, runInAction } from 'mobx';
+import { createSpeakerLabel, updateSpeakerLabel } from '../../services/api/speakerLabels';
 
 class ManageSpeakerLabelsStore {
 
     notificationsStore;
+    speakersStore;
 
     @observable isVisible = false;
-    @observable isLoading = false;
-    cancelLoading = null;
-    @observable labels = new Map();
     @observable isEditing = false;
     @observable formData = {
         _labelId: null,
-        title: ''
+        key: '',
+        value: ''
     };
     @observable formErrors = {
-        title: ''
+        key: '',
+        value: ''
     };
     @observable isSubmitting = false;
     cancelSubmitting = null;
 
-    @computed get currentLabels() {
-        return this.labels.values();
-    }
-
-    constructor(notificationsStore) {
+    constructor(notificationsStore, speakersStore) {
         this.notificationsStore = notificationsStore;
+        this.speakersStore = speakersStore;
     }
 
     @action.bound
     show() {
 
         this.isVisible = true;
-
-        if (this.cancelLoading) {
-            this.cancelLoading();
-        }
-
-        let isCancelled = false;
-        this.cancelLoading = () => {
-            isCancelled = true;
-            this.cancelLoading = null;
-        };
-
-        this.isLoading = true;
-        this.labels.clear();
         this.isEditing = false;
         this.formData = {
             _labelId: null,
-            title: ''
+            key: '',
+            value: ''
         };
         this.formErrors = {
-            title: ''
+            key: '',
+            value: ''
         };
-        getSpeakerLabels()
-            .then((labels) => {
-                if (isCancelled) {
-                    return;
-                }
-                this.labels.clear();
-                for (const label of labels) {
-                    this.labels.set(label.id, label);
-                }
-            })
-            .catch((error) => {
-                if (isCancelled) {
-                    return;
-                }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
-                this.hide();
-            })
-            .then(() => {
-                if (isCancelled) {
-                    return;
-                }
-                this.isLoading = false;
-                this.cancelLoading = null;
-            });
     }
 
     @action.bound
@@ -85,13 +47,20 @@ class ManageSpeakerLabelsStore {
         this.isEditing = true;
         this.formData = {
             _labelId: labelId,
-            title: ''
+            key: '',
+            value: ''
+        };
+        this.formErrors = {
+            key: '',
+            value: ''
         };
 
         if (labelId !== null) {
-            const label = this.labels.find((label) => label.id === labelId);
+            const { currentSpeakerLabels } = this.speakersStore;
+            const label = currentSpeakerLabels.find((label) => label.id === labelId);
             if (label) {
-                this.formData.title = label.title;
+                this.formData.key = label.key;
+                this.formData.value = label.value;
             }
         }
     }
@@ -121,12 +90,20 @@ class ManageSpeakerLabelsStore {
             return;
         }
 
-        const { _labelId, title } = this.formData;
+        const { _labelId, key, value } = this.formData;
 
+        this.formErrors = {
+            key: '',
+            value: ''
+        };
         let hasErrors = false;
-        if (title === '') {
+        if (key === '') {
             hasErrors = true;
-            this.formErrors.title = 'A title is required.';
+            this.formErrors.key = 'A key is required.';
+        }
+        if (value === '') {
+            hasErrors = true;
+            this.formErrors.value = 'A value is required.';
         }
         if (hasErrors) {
             return;
@@ -143,37 +120,44 @@ class ManageSpeakerLabelsStore {
         };
 
         const data = {
-            title
+            key,
+            value
         };
 
         this.isSubmitting = true;
         let promise;
         if (_labelId) {
-            promise = createSpeakerLabel(data);
+            promise = updateSpeakerLabel(_labelId, data);
         }
         else {
-            promise = updateSpeakerLabel(_labelId, data);
+            promise = createSpeakerLabel(data);
         }
         promise
             .then((label) => {
                 if (isCancelled) {
                     return;
                 }
-                this.labels.set(label.id, label);
-                this.hide();
+                runInAction(() => {
+                    this.speakersStore.addOrUpdateLabel(label);
+                    this.hide();
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isSubmitting = false;
-                this.cancelSubmitting = null;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                    this.cancelSubmitting = null;
+                });
             });
     }
 }

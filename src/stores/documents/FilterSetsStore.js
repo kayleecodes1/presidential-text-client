@@ -1,5 +1,4 @@
 import { observable, computed, action } from 'mobx';
-import moment from 'moment';
 
 const STORAGE_KEY = 'pt::filterSets';
 
@@ -13,7 +12,7 @@ class FilterSetsStore {
             .sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    constructor(notificationsStore, documentsStore) {
+    constructor() {
 
         let json = window.localStorage.getItem(STORAGE_KEY);
         if (!json) {

@@ -1,4 +1,4 @@
-import { observable, computed, action } from 'mobx';
+import { observable, computed, action, runInAction } from 'mobx';
 import { getSpeakers } from '../../services/api/speakers';
 import { getSpeakerLabels } from '../../services/api/speakerLabels';
 
@@ -19,7 +19,7 @@ class SpeakersStore {
     @observable isLoading = false;
     cancelLoading = null;
     @observable speakers = new Map();
-    @observable speakerLabelOptions = [];
+    @observable speakerLabels = new Map();
 
     @observable filters = {
         name: '',
@@ -53,6 +53,16 @@ class SpeakersStore {
             .sort((a, b) => {
                 return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
             });
+    }
+
+    @computed get currentSpeakerLabels() {
+        return this.speakerLabels.values()
+            .sort((a, b) => a.tag.localeCompare(b.tag));
+    }
+
+    @computed get speakerLabelOptions() {
+        return this.currentSpeakerLabels
+            .map((label) => ({ value: label.id, label: label.tag }));
     }
 
     @computed get totalResults() {
@@ -111,7 +121,7 @@ class SpeakersStore {
         this.currentPage = 1;
         this.isLoading = true;
         this.speakers.clear();
-        this.speakerLabelOptions.clear();
+        this.speakerLabels.clear();
         this.clearFilters();
         this.sortAttribute = 'name';
         this.sortOrder = 1;
@@ -121,28 +131,34 @@ class SpeakersStore {
                 if (isCancelled) {
                     return;
                 }
-                const [speakers, speakerLabels] = data;
-                this.speakers.clear();
-                for (const speaker of speakers) {
-                    this.speakers.set(speaker.id, speaker);
-                }
-                this.speakerLabelOptions.replace(speakerLabels.map((label) => ({
-                    value: label.id,
-                    label: label.title
-                })));
+                runInAction(() => {
+                    const [speakers, speakerLabels] = data;
+                    this.speakers.clear();
+                    for (const speaker of speakers) {
+                        this.speakers.set(speaker.id, speaker);
+                    }
+                    this.speakerLabels.clear();
+                    for (const label of speakerLabels) {
+                        this.speakerLabels.set(label.id, label);
+                    }
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isLoading = false;
-                this.cancelLoading = null;
+                runInAction(() => {
+                    this.isLoading = false;
+                    this.cancelLoading = null;
+                });
             });
     }
 
@@ -209,6 +225,11 @@ class SpeakersStore {
         if (this.currentPage > this.totalPages) {
             this.currentPage = this.totalPages;
         }
+    }
+
+    @action.bound
+    addOrUpdateLabel(label) {
+        this.speakerLabels.set(label.id, label);
     }
 }
 

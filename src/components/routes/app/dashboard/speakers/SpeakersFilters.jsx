@@ -61,7 +61,7 @@ class SpeakersFilters extends Component {
                         <div className="filter-controls__item filter-controls__item--12-12">
                             <label htmlFor="title" className="filter-controls__label">Speaker Label(s)</label>
                             <div className="filter-controls__input-holder">
-                                <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions.peek()} value={filters.labels.peek()} onChange={this.handleLabelsChange} />
+                                <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions} value={filters.labels.peek()} onChange={this.handleLabelsChange} />
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-import { observable, action, toJS } from 'mobx';
+import { observable, action, runInAction, toJS } from 'mobx';
 import { createSpeaker } from '../../services/api/speakers';
 
 class CreateSpeakerStore {
@@ -130,21 +130,27 @@ class CreateSpeakerStore {
                 if (isCancelled) {
                     return;
                 }
-                this.speakersStore.addOrUpdateSpeaker(data);
-                this.hide();
+                runInAction(() => {
+                    this.speakersStore.addOrUpdateSpeaker(data);
+                    this.hide();
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isSubmitting = false;
-                this.cancelLoading = null;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                    this.cancelLoading = null;
+                });
             });
     }
 }

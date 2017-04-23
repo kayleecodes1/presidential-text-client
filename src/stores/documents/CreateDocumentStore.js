@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { createDocument } from '../../services/api/documents';
 
 class CreateDocumentStore {
@@ -127,21 +127,27 @@ class CreateDocumentStore {
                 if (isCancelled) {
                     return;
                 }
-                this.documentsStore.addOrUpdateDocument(data);
-                this.hide();
+                runInAction(() => {
+                    this.documentsStore.addOrUpdateDocument(data);
+                    this.hide();
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isSubmitting = false;
-                this.cancelSubmitting = null;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                    this.cancelSubmitting = null;
+                });
             });
     }
 }

@@ -27,10 +27,7 @@ function transformDocumentDetail(document) {
     };
 }
 
-export const createDocument = (data) => Promise.reject('API functionality not implemented.');
-/*export const createDocument = (data) => callApi('documents', 'POST', data, () => {
-    //TODO
-});*/
+export const createDocument = (data) => callApi('documents', 'POST', data, transformDocumentSummary);
 
 export const getDocuments = () => callApi('leandocuments', 'GET', null, (documents) => {
     return documents.map(transformDocumentSummary);
@@ -44,10 +41,7 @@ export const getDocument = (documentId) => callApi(`documents/${documentId}`, 'G
     return transformDocumentDetail(document);
 });
 
-export const updateDocument = (documentId, data) => Promise.reject('API functionality not implemented.');
-/*export const updateDocument = (documentId, data) => callApi(`documents/${documentId}`, 'PUT', data, () => {
-    //TODO
-});*/
+export const updateDocument = (documentId, data) => callApi(`documents/${documentId}`, 'PUT', data, transformDocumentSummary);
 
 export const deleteDocument = (documentId) => Promise.reject('API functionality not implemented.');
 /*export const deleteDocument = (documentId) => callApi(`documents/${documentId}`, 'DELETE', null, () => {

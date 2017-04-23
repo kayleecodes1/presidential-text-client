@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { deleteSpeaker } from '../../services/api/speakers';
 
 class DeleteSpeakerStore {
@@ -30,14 +30,20 @@ class DeleteSpeakerStore {
         this.isSubmitting = true;
         deleteSpeaker(this.documentId)
             .then(() => {
-                this.speakersStore.removeSpeaker(this.speakerId);
-                this.hide();
+                runInAction(() => {
+                    this.speakersStore.removeSpeaker(this.speakerId);
+                    this.hide();
+                });
             })
             .catch((error) => {
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
-                this.isSubmitting = false;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                });
             });
     }
 }

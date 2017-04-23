@@ -3,8 +3,8 @@ import { inject, observer } from 'mobx-react';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 
-@inject('filterSets')
 @inject('documents')
+@inject('filterSets')
 @inject('loadFilterSet')
 @observer
 class DocumentsFilters extends Component {
@@ -16,7 +16,8 @@ class DocumentsFilters extends Component {
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleSpeakersChange = this.handleSpeakersChange.bind(this);
-        this.handleLabelsChange = this.handleLabelsChange.bind(this);
+        this.handleDocumentLabelsChange = this.handleDocumentLabelsChange.bind(this);
+        this.handleSpeakerLabelsChange = this.handleSpeakerLabelsChange.bind(this);
     }
 
     handleFilterSetNameChange(event) {
@@ -40,14 +41,18 @@ class DocumentsFilters extends Component {
         this.props.documents.setFilterData('speakers', value);
     }
 
-    handleLabelsChange(value) {
-        this.props.documents.setFilterData('labels', value);
+    handleDocumentLabelsChange(value) {
+        this.props.documents.setFilterData('documentLabels', value);
+    }
+
+    handleSpeakerLabelsChange(value) {
+        this.props.documents.setFilterData('speakerLabels', value);
     }
 
     render() {
 
         const { filterSets, loadFilterSet } = this.props;
-        const { filterSetName, filters, currentFilterSetExists, filterSetIsDirty, saveFilterSet, deleteFilterSet, documentLabelOptions, speakerOptions } = this.props.documents;
+        const { filterSetName, filters, currentFilterSetExists, filterSetIsDirty, saveFilterSet, deleteFilterSet, documentLabelOptions, speakerLabelOptions, speakerOptions } = this.props.documents;
 
         return (
             <form className="filter-controls">
@@ -99,7 +104,7 @@ class DocumentsFilters extends Component {
                         <div className="filter-controls__item filter-controls__item--6-12">
                             <label htmlFor="speakers" className="filter-controls__label">Speaker(s)</label>
                             <div className="filter-controls__input-holder">
-                                <Select name="speakers" placeholder="" multi={true} options={speakerOptions.peek()} value={filters.speakers.peek()} onChange={this.handleSpeakersChange} />
+                                <Select name="speakers" placeholder="" multi={true} options={speakerOptions} value={filters.speakers.peek()} onChange={this.handleSpeakersChange} />
                             </div>
                         </div>
                         <div className="filter-controls__item filter-controls__item--6-12">
@@ -108,10 +113,16 @@ class DocumentsFilters extends Component {
                                 <input className="form__text-input" type="text" name="textContent" value={filters.textContent} onChange={this.handleChange} />
                             </div>
                         </div>
-                        <div className="filter-controls__item filter-controls__item--12-12">
+                        <div className="filter-controls__item filter-controls__item--6-12">
                             <label htmlFor="title" className="filter-controls__label">Document Label(s)</label>
                             <div className="filter-controls__input-holder">
-                                <Select name="labels" placeholder="" multi={true} options={documentLabelOptions.peek()} value={filters.labels.peek()} onChange={this.handleLabelsChange} />
+                                <Select name="documentLabels" placeholder="" multi={true} options={documentLabelOptions} value={filters.documentLabels.peek()} onChange={this.handleDocumentLabelsChange} />
+                            </div>
+                        </div>
+                        <div className="filter-controls__item filter-controls__item--6-12">
+                            <label htmlFor="title" className="filter-controls__label">Speaker Label(s)</label>
+                            <div className="filter-controls__input-holder">
+                                <Select name="speakerLabels" placeholder="" multi={true} options={speakerLabelOptions} value={filters.speakerLabels.peek()} onChange={this.handleSpeakerLabelsChange} />
                             </div>
                         </div>
                     </div>
