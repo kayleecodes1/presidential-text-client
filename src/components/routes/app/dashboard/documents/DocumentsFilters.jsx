@@ -52,7 +52,7 @@ class DocumentsFilters extends Component {
     render() {
 
         const { filterSets, loadFilterSet } = this.props;
-        const { filterSetName, filters, currentFilterSetExists, filterSetIsDirty, saveFilterSet, deleteFilterSet, documentLabelOptions, speakerLabelOptions, speakerOptions } = this.props.documents;
+        const { filterSetName, filters, currentFilterSetExists, filterSetIsDirty, saveFilterSet, deleteFilterSet, exportFilterSet, documentLabelOptions, speakerLabelOptions, speakerOptions } = this.props.documents;
 
         return (
             <form className="filter-controls">
@@ -70,13 +70,19 @@ class DocumentsFilters extends Component {
                         <div className="filter-controls__item filter-controls__item--2-12">
                             <button className="button button--full-width" type="button" disabled={filterSets.currentFilterSets.length === 0} onClick={loadFilterSet.show}>
                                 <i className="button__icon fa fa-folder" />
-                                <span>Load</span>
+                                <span>Load / Import</span>
                             </button>
                         </div>
                         <div className="filter-controls__item filter-controls__item--2-12">
                             <button className="button button--full-width" type="button" disabled={!currentFilterSetExists} onClick={deleteFilterSet}>
                                 <i className="button__icon fa fa-trash" />
                                 <span>Delete</span>
+                            </button>
+                        </div>
+                        <div className="filter-controls__item filter-controls__item--2-12">
+                            <button className="button button--full-width" type="button" disabled={!currentFilterSetExists} onClick={exportFilterSet}>
+                                <i className="button__icon fa fa-download" />
+                                <span>Export</span>
                             </button>
                         </div>
                     </div>

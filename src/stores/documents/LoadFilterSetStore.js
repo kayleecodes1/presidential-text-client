@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import moment from 'moment';
 
 class LoadFilterSetStore {
 
@@ -49,6 +50,25 @@ class LoadFilterSetStore {
         }
 
         const filterSetData = this.filterSetsStore.getFilterSet(filterSet.key);
+        this.documentsStore.loadFilterSet(filterSetData);
+        this.hide();
+    }
+
+    submitImport(text) {
+
+        const filterSet = JSON.parse(text);
+        const filterSetData = {
+            name: filterSet.name,
+            filters: {
+                title: filterSet.filters.title || '',
+                startDate: (filterSet.filters.startDate && moment(filterSet.filters.startDate)) || null,
+                endDate: (filterSet.filters.endDate && moment(filterSet.filters.endDate)) || null,
+                speakers: filterSet.filters.speakers || [],
+                textContent: filterSet.filters.textContent || '',
+                documentLabels: filterSet.filters.documentLabels || [],
+                speakerLabels: filterSet.filters.speakerLabels || []
+            }
+        };
         this.documentsStore.loadFilterSet(filterSetData);
         this.hide();
     }

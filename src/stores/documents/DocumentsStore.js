@@ -1,5 +1,6 @@
 import { observable, computed, action, runInAction, toJS } from 'mobx';
 import moment from 'moment';
+import FileSaver from 'file-saver';
 import { getDocuments, searchDocuments } from '../../services/api/documents';
 import { getDocumentLabels } from '../../services/api/documentLabels';
 import { getSpeakers } from '../../services/api/speakers';
@@ -167,8 +168,8 @@ class DocumentsStore {
         }
 
         if (filterSet.filters.title === this.filters.title &&
-            filterSet.filters.startDate === JSON.parse(JSON.stringify(this.filters.startDate)) &&
-            filterSet.filters.endDate === JSON.parse(JSON.stringify(this.filters.endDate)) &&
+            JSON.parse(JSON.stringify(filterSet.filters.startDate)) === JSON.parse(JSON.stringify(this.filters.startDate)) &&
+                JSON.parse(JSON.stringify(filterSet.filters.endDate)) === JSON.parse(JSON.stringify(this.filters.endDate)) &&
             filterSet.filters.speakers.toString() === this.filters.speakers.toString() &&
             filterSet.filters.textContent === this.filters.textContent &&
             filterSet.filters.documentLabels.toString() === this.filters.documentLabels.toString() &&
@@ -308,16 +309,15 @@ class DocumentsStore {
 
     @action.bound
     loadFilterSet(filterSet) {
-
         this.filterSetName = filterSet.name;
         const { title, startDate, endDate, speakers, textContent, documentLabels, speakerLabels } = filterSet.filters;
-        this.setFilterData('title', title || '');
-        this.setFilterData('startDate', startDate && moment(startDate));
-        this.setFilterData('endDate', endDate && moment(endDate));
-        this.setFilterData('speakers', speakers || []);
-        this.setFilterData('textContent', textContent || '');
-        this.setFilterData('documentLabels', documentLabels || []);
-        this.setFilterData('speakerLabels', speakerLabels || []);
+        this.setFilterData('title', title);
+        this.setFilterData('startDate', startDate);
+        this.setFilterData('endDate', endDate);
+        this.setFilterData('speakers', speakers);
+        this.setFilterData('textContent', textContent);
+        this.setFilterData('documentLabels', documentLabels);
+        this.setFilterData('speakerLabels', speakerLabels);
     }
 
     @action.bound
@@ -338,6 +338,26 @@ class DocumentsStore {
 
         this.filterSetsStore.deleteFilterSet(this.filterSetName);
         this.clearFilters();
+    }
+
+    @action.bound
+    exportFilterSet() {
+        
+        const filters = toJS(this.filters);
+        if (filters.startDate !== null) {
+            filters.startDate = JSON.parse(JSON.stringify(filters.startDate));
+        }
+        if (filters.endDate !== null) {
+            filters.endDate = JSON.parse(JSON.stringify(filters.endDate));
+        }
+        const data = {
+            name: this.filterSetName,
+            filters
+        };
+        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const nameSlug = data.name.replace(/[ \t]+/g, '-').toLowerCase();
+        const filename = `filter-set__${nameSlug || 'untitled'}.json`;
+        FileSaver.saveAs(blob, filename);
     }
 
     debounceLoadTextContentDocumentIds(value) {

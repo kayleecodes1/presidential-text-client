@@ -1,4 +1,5 @@
 import { observable, computed, action } from 'mobx';
+import moment from 'moment';
 
 const STORAGE_KEY = 'pt::filterSets';
 
@@ -21,7 +22,18 @@ class FilterSetsStore {
         }
         const filterSets = JSON.parse(json);
         for (const filterSet of filterSets) {
-            this.filterSets.set(filterSet.name, filterSet);
+            this.filterSets.set(filterSet.name, {
+                name: filterSet.name,
+                filters: {
+                    title: filterSet.filters.title || '',
+                    startDate: (filterSet.filters.startDate && moment(filterSet.filters.startDate)) || null,
+                    endDate: (filterSet.filters.endDate && moment(filterSet.filters.endDate)) || null,
+                    speakers: filterSet.filters.speakers || [],
+                    textContent: filterSet.filters.textContent || '',
+                    documentLabels: filterSet.filters.documentLabels || [],
+                    speakerLabels: filterSet.filters.speakerLabels || []
+                }
+            });
         }
     }
 
