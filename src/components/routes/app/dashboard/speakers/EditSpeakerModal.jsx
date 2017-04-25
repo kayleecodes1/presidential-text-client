@@ -90,7 +90,7 @@ class EditSpeakerModal extends Component {
                 </label>
                 <label className="form__label">
                     <span>Speaker Labels</span>
-                    <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions.peek()} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
+                    <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
                 </label>
             </form>
         );

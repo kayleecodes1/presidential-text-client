@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { getDocuments } from '../../services/api/documents';
 
 class ReportsStore {
@@ -35,23 +35,29 @@ class ReportsStore {
                 if (isCancelled) {
                     return;
                 }
-                this.documents.clear();
-                for (const document of documents) {
-                    this.documents.set(document.id, document);
-                }
+                runInAction(() => {
+                    this.documents.clear();
+                    for (const document of documents) {
+                        this.documents.set(document.id, document);
+                    }
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isLoading = false;
-                this.cancelLoading = null;
+                runInAction(() => {
+                    this.isLoading = false;
+                    this.cancelLoading = null;
+                });
             });
     }
 

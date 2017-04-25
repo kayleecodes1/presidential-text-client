@@ -1,6 +1,5 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { getDocument, updateDocument } from '../../services/api/documents';
-import { getSpeakers } from '../../services/api/speakers';
 
 class EditDocumentStore {
 
@@ -67,35 +66,41 @@ class EditDocumentStore {
                 if (isCancelled) {
                     return;
                 }
-                const { documentLabelOptions } = this.documentsStore;
-                const { title, date, speakerId, speakerName, textContent, labels } = document;
-                this.formData = {
-                    title,
-                    date,
-                    speaker: { value: speakerId, label: speakerName },
-                    textContent,
-                    labels: labels.map((label) => {
-                        const storedLabel = documentLabelOptions.find((storedLabel) => storedLabel.id === label.id);
-                        return {
-                            value: label.id,
-                            label: storedLabel ? storedLabel.title : '?'
-                        };
-                    })
-                };
+                runInAction(() => {
+                    const {documentLabelOptions} = this.documentsStore;
+                    const {title, date, speakerId, speakerName, textContent, labels} = document;
+                    this.formData = {
+                        title,
+                        date,
+                        speaker: {value: speakerId, label: speakerName},
+                        textContent,
+                        labels: labels.map((label) => {
+                            const storedLabel = documentLabelOptions.find((storedLabel) => storedLabel.id === label.id);
+                            return {
+                                value: label.id,
+                                label: storedLabel ? storedLabel.tag : null
+                            };
+                        })
+                    };
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
-                this.hide();
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                    this.hide();
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isLoading = false;
-                this.cancelLoading = null;
+                runInAction(() => {
+                    this.isLoading = false;
+                    this.cancelLoading = null;
+                });
             });
     }
 
@@ -177,21 +182,27 @@ class EditDocumentStore {
                 if (isCancelled) {
                     return;
                 }
-                this.documentsStore.addOrUpdateDocument(data);
-                this.hide();
+                runInAction(() => {
+                    this.documentsStore.addOrUpdateDocument(data);
+                    this.hide();
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isSubmitting = false;
-                this.cancelSubmitting = null;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                    this.cancelSubmitting = null;
+                });
             });
     }
 }

@@ -8,16 +8,37 @@ import Select from 'react-select';
 @observer
 class LoadFilterSetModal extends Component {
 
+    state = {
+        fileInputId: 1
+    };
+
     constructor() {
 
         super();
         this.handleFilterSetChange = this.handleFilterSetChange.bind(this);
+        this.handleFileInputChange = this.handleFileInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleFilterSetChange(value) {
 
         this.props.loadFilterSet.setFormData('filterSet', value);
+    }
+
+    handleFileInputChange(event) {
+        const { value, files } = event.target;
+        if (value === '' || files.length === 0) {
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+            const text = reader.result;
+            this.props.loadFilterSet.submitImport(text);
+            this.setState({
+                fileInputId: ++this.state.fileInputId
+            });
+        };
+        reader.readAsText(files[0]);
     }
 
     handleSubmit(event) {
@@ -45,6 +66,10 @@ class LoadFilterSetModal extends Component {
                         <span className="form__error">{formErrors.filterSet}</span>
                     ) : null}
                     <Select name="filterSet" placeholder="" value={formData.filterSet} options={options} onChange={this.handleFilterSetChange} />
+                </label>
+                <label className="form__label">
+                    <span>Import from File</span>
+                    <input key={this.state.fileInputId} className="form__file-select" type="file" accept="application/json" onChange={this.handleFileInputChange} />
                 </label>
             </form>
         );

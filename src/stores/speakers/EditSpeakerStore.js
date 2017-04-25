@@ -1,4 +1,4 @@
-import { observable, action, toJS } from 'mobx';
+import { observable, action, runInAction, toJS } from 'mobx';
 import { getSpeaker, updateSpeaker } from '../../services/api/speakers';
 
 class EditSpeakerStore {
@@ -58,19 +58,21 @@ class EditSpeakerStore {
                 if (isCancelled) {
                     return;
                 }
-                const { speakerLabelOptions } = this.speakersStore;
-                const { name, terms, labels } = data;
-                this.formData = {
-                    name,
-                    labels: labels.map((label) => {
-                        const storedLabel = speakerLabelOptions.find((storedLabel) => storedLabel.id === label.id);
-                        return {
-                            value: label.id,
-                            label: storedLabel ? storedLabel.title : '?'
-                        };
-                    })
-                };
-                this.terms.replace(terms);
+                runInAction(() => {
+                    const {speakerLabelOptions} = this.speakersStore;
+                    const {name, terms, labels} = data;
+                    this.formData = {
+                        name,
+                        labels: labels.map((label) => {
+                            const storedLabel = speakerLabelOptions.find((storedLabel) => storedLabel.id === label.id);
+                            return {
+                                value: label.id,
+                                label: storedLabel ? storedLabel.tag : null
+                            };
+                        })
+                    };
+                    this.terms.replace(terms);
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
@@ -83,8 +85,10 @@ class EditSpeakerStore {
                 if (isCancelled) {
                     return;
                 }
-                this.isLoading = false;
-                this.cancelLoading = null;
+                runInAction(() => {
+                    this.isLoading = false;
+                    this.cancelLoading = null;
+                });
             });
     }
 
@@ -177,21 +181,27 @@ class EditSpeakerStore {
                 if (isCancelled) {
                     return;
                 }
-                this.speakersStore.addOrUpdateSpeaker(data);
-                this.hide();
+                runInAction(() => {
+                    this.speakersStore.addOrUpdateSpeaker(data);
+                    this.hide();
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isSubmitting = false;
-                this.cancelSubmitting = null;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                    this.cancelSubmitting = null;
+                });
             });
     }
 }

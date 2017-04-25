@@ -1,82 +1,44 @@
-import { observable, computed, action } from 'mobx';
-import { createDocumentLabel, getDocumentLabels, updateDocumentLabel } from '../../services/api/documentLabels';
+import { observable, action, runInAction } from 'mobx';
+import { createDocumentLabel, updateDocumentLabel } from '../../services/api/documentLabels';
 
 class ManageDocumentLabelsStore {
 
     notificationsStore;
+    documentsStore;
 
     @observable isVisible = false;
-    @observable isLoading = false;
-    cancelLoading = null;
-    @observable labels = new Map();
     @observable isEditing = false;
     @observable formData = {
         _labelId: null,
-        title: ''
+        key: '',
+        value: ''
     };
     @observable formErrors = {
-        title: ''
+        key: '',
+        value: ''
     };
     @observable isSubmitting = false;
     cancelSubmitting = null;
 
-    @computed get currentLabels() {
-        return this.labels.values();
-    }
-
-    constructor(notificationsStore) {
+    constructor(notificationsStore, documentsStore) {
         this.notificationsStore = notificationsStore;
+        this.documentsStore = documentsStore;
     }
 
     @action.bound
     show() {
 
         this.isVisible = true;
-
-        if (this.cancelLoading) {
-            this.cancelLoading();
-        }
-
-        let isCancelled = false;
-        this.cancelLoading = () => {
-            isCancelled = true;
-            this.cancelLoading = null;
-        };
-
-        this.isLoading = true;
-        this.labels.clear();
         this.isEditing = false;
         this.formData = {
             _labelId: null,
-            title: ''
+            key: '',
+            value: ''
         };
         this.formErrors = {
-            title: ''
+            key: '',
+            value: ''
         };
-        getDocumentLabels()
-            .then((labels) => {
-                if (isCancelled) {
-                    return;
-                }
-                this.labels.clear();
-                for (const label of labels) {
-                    this.labels.set(label.id, label);
-                }
-            })
-            .catch((error) => {
-                if (isCancelled) {
-                    return;
-                }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
-                this.hide();
-            })
-            .then(() => {
-                if (isCancelled) {
-                    return;
-                }
-                this.isLoading = false;
-                this.cancelLoading = null;
-            });
     }
 
     @action.bound
@@ -85,13 +47,20 @@ class ManageDocumentLabelsStore {
         this.isEditing = true;
         this.formData = {
             _labelId: labelId,
-            title: ''
+            key: '',
+            value: ''
+        };
+        this.formErrors = {
+            key: '',
+            value: ''
         };
 
         if (labelId !== null) {
-            const label = this.labels.find((label) => label.id === labelId);
+            const { currentDocumentLabels } = this.documentsStore;
+            const label = currentDocumentLabels.find((label) => label.id === labelId);
             if (label) {
-                this.formData.title = label.title;
+                this.formData.key = label.key;
+                this.formData.value = label.value;
             }
         }
     }
@@ -121,12 +90,20 @@ class ManageDocumentLabelsStore {
             return;
         }
 
-        const { _labelId, title } = this.formData;
+        const { _labelId, key, value } = this.formData;
 
+        this.formErrors = {
+            key: '',
+            value: ''
+        };
         let hasErrors = false;
-        if (title === '') {
+        if (key === '') {
             hasErrors = true;
-            this.formErrors.title = 'A title is required.';
+            this.formErrors.key = 'A key is required.';
+        }
+        if (value === '') {
+            hasErrors = true;
+            this.formErrors.value = 'A value is required.';
         }
         if (hasErrors) {
             return;
@@ -143,37 +120,44 @@ class ManageDocumentLabelsStore {
         };
 
         const data = {
-            title
+            key,
+            value
         };
 
         this.isSubmitting = true;
         let promise;
         if (_labelId) {
-            promise = createDocumentLabel(data);
+            promise = updateDocumentLabel(_labelId, data);
         }
         else {
-            promise = updateDocumentLabel(_labelId, data);
+            promise = createDocumentLabel(data);
         }
         promise
             .then((label) => {
                 if (isCancelled) {
                     return;
                 }
-                this.labels.set(label.id, label);
-                this.hide();
+                runInAction(() => {
+                    this.documentsStore.addOrUpdateLabel(label);
+                    this.hide();
+                });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
                 if (isCancelled) {
                     return;
                 }
-                this.isSubmitting = false;
-                this.cancelSubmitting = null;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                    this.cancelSubmitting = null;
+                });
             });
     }
 }

@@ -25,12 +25,12 @@ const loadFilterSet = new LoadFilterSetStore(filterSets, documents);
 const createDocument = new CreateDocumentStore(notifications, documents);
 const editDocument = new EditDocumentStore(notifications, documents);
 const deleteDocument = new DeleteDocumentStore(notifications, documents);
-const manageDocumentLabels = new ManageDocumentLabelsStore(notifications);
+const manageDocumentLabels = new ManageDocumentLabelsStore(notifications, documents);
 const speakers = new SpeakersStore(notifications);
 const createSpeaker = new CreateSpeakerStore(notifications, speakers);
 const editSpeaker = new EditSpeakerStore(notifications, speakers);
 const deleteSpeaker = new DeleteSpeakerStore(notifications, speakers);
-const manageSpeakerLabels = new ManageSpeakerLabelsStore(notifications);
+const manageSpeakerLabels = new ManageSpeakerLabelsStore(notifications, speakers);
 const reports = new ReportsStore(notifications);
 const createReport = new CreateReportStore(notifications, filterSets, reports);
 

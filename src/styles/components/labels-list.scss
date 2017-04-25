@@ -6,4 +6,26 @@
   &__item {
     margin-bottom: 16px;
   }
+
+  &__inputs-holder {
+    @extend %clearfix;
+    .form__label {
+      margin-bottom: 0;
+    }
+  }
+
+  &__key,
+  &__value {
+    float: left;
+    box-sizing: border-box;
+    width: 50%;
+  }
+
+  &__key {
+    padding-right: 5px;
+  }
+
+  &__value {
+    padding-left: 5px;
+  }
 }

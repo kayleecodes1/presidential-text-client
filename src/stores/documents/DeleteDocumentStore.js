@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { deleteDocument } from '../../services/api/documents';
 
 class DeleteDocumentStore {
@@ -30,14 +30,20 @@ class DeleteDocumentStore {
         this.isSubmitting = true;
         deleteDocument(this.documentId)
             .then(() => {
-                this.documentsStore.removeDocument(this.documentId);
-                this.hide();
+                runInAction(() => {
+                    this.documentsStore.removeDocument(this.documentId);
+                    this.hide();
+                });
             })
             .catch((error) => {
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                });
             })
             .then(() => {
-                this.isSubmitting = false;
+                runInAction(() => {
+                    this.isSubmitting = false;
+                });
             });
     }
 }

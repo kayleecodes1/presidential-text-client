@@ -1,5 +1,6 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { getDocuments, searchDocuments } from '../../services/api/documents';
+import { getSpeakers } from '../../services/api/speakers';
 import { createReport } from '../../services/api/reports';
 
 function dateToString(date) {
@@ -8,43 +9,61 @@ function dateToString(date) {
     const day = date.getDate();
     return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
 }
-
+//TODO: ......
 function getDocumentIdsForFilterSet(filterSet) {
     return new Promise((resolve, reject) => {
 
-        getDocuments().then((documents) => {
-            return documents
-                .filter((document) => {
-                    const { title, startDate, endDate, speakers } = filterSet.filters;
-                    if (title && document.title.search(new RegExp(title, 'i')) === -1) {
-                        return false;
-                    }
-                    if (startDate && document.date < dateToString(new Date(startDate))) {
-                        return false;
-                    }
-                    if (endDate && document.date > dateToString(new Date(endDate))) {
-                        return false;
-                    }
-                    if (speakers.length && !speakers.some((selected) => document.speakerId === selected.value)) {
-                        return false;
-                    }
-                    return true;
-                });
-        }).then((documents) => {
-            if (filterSet.filters.textContent === '') {
-                return documents;
-            }
-            return searchDocuments(filterSet.filters.textContent)
-                .then((textSearchDocumentIds) => {
-                    return documents.filter((document) => {
-                        return textSearchDocumentIds.indexOf(document.id) !== -1;
+        Promise.all([getDocuments(), getSpeakers()])
+            .then((data) => {
+                const [documents, allSpeakers] = data;
+                const speakersLookup = new Map();
+                for (const speaker of allSpeakers) {
+                    speakersLookup.set(speaker.id, speaker);
+                }
+                return documents
+                    .filter((document) => {
+                        const { title, startDate, endDate, speakers, documentLabels, speakerLabels } = filterSet.filters;
+                        if (title && document.title.search(new RegExp(title, 'i')) === -1) {
+                            return false;
+                        }
+                        if (startDate && document.date < dateToString(new Date(startDate))) {
+                            return false;
+                        }
+                        if (endDate && document.date > dateToString(new Date(endDate))) {
+                            return false;
+                        }
+                        if (speakers.length && !speakers.some((selected) => document.speakerId === selected.value)) {
+                            return false;
+                        }
+                        //TODO: FROM HERE
+                        if (documentLabels.length && !documentLabels.some((selected) => document.labels.some((label) => label.id === selected.value))) {
+                            return false;
+                        }
+                        if (speakerLabels.length && !speakerLabels.some((selected) => {
+                            const speaker = speakersLookup.get(document.speakerId);
+                            return speaker.labels.some((label) => label.id === selected.value);
+                        })) {
+                            return false;
+                        }
+                        return true;
                     });
-                });
+            })
+            .then((documents) => {
+                if (filterSet.filters.textContent === '') {
+                    return documents;
+                }
+                return searchDocuments(filterSet.filters.textContent)
+                    .then((textSearchDocumentIds) => {
+                        return documents.filter((document) => {
+                            return textSearchDocumentIds.indexOf(document.id) !== -1;
+                        });
+                    });
+                //TODO: catch
+            })
+            .then((documents) => {
+                resolve(documents.map((document) => document.id));
+            });
             //TODO: catch
-        }).then((documents) => {
-            resolve(documents.map((document) => document.id));
-        })
-        //TODO: catch
     });
 }
 
@@ -179,30 +198,38 @@ class CreateReportStore {
                         if (isCancelled) {
                             return;
                         }
-                        this.reportsStore.setResult(result);
-                        this.hide();
+                        runInAction(() => {
+                            this.reportsStore.setResult(result);
+                            this.hide();
+                        });
                     })
                     .catch((error) => {
                         if (isCancelled) {
                             return;
                         }
-                        this.notificationsStore.addNotification('error', `Error: ${error}`);
+                        runInAction(() => {
+                            this.notificationsStore.addNotification('error', `Error: ${error}`);
+                        });
                     })
                     .then(() => {
                         if (isCancelled) {
                             return;
                         }
-                        this.isSubmitting = false;
-                        this.cancelLoading = null;
+                        runInAction(() => {
+                            this.isSubmitting = false;
+                            this.cancelLoading = null;
+                        });
                     });
             })
             .catch((error) => {
                 if (isCancelled) {
                     return;
                 }
-                this.notificationsStore.addNotification('error', `Error: ${error}`);
-                this.isSubmitting = false;
-                this.cancelLoading = null;
+                runInAction(() => {
+                    this.notificationsStore.addNotification('error', `Error: ${error}`);
+                    this.isSubmitting = false;
+                    this.cancelLoading = null;
+                });
             });
     }
 }

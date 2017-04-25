@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Modal from '../../../../Modal.jsx';
 
+@inject('documents')
 @inject('manageDocumentLabels')
 @observer
 class ManageDocumentLabelsModal extends Component {
@@ -22,30 +23,48 @@ class ManageDocumentLabelsModal extends Component {
     handleSubmit(event) {
 
         event.preventDefault();
-
         this.props.manageDocumentLabels.submit();
     }
 
     render() {
 
-        const { isVisible, isLoading, currentLabels, isEditing, formData, formErrors, addOrEditLabel, cancelAddOrEditLabel, isSubmitting, hide } = this.props.manageDocumentLabels;
+        const { currentDocumentLabels } = this.props.documents;
+        const { isVisible, isEditing, formData, formErrors, addOrEditLabel, cancelAddOrEditLabel, isSubmitting, hide } = this.props.manageDocumentLabels;
 
         formData._labelId;
-        formData.title;//TODO: these are needed to trigger re-render
-        formErrors.title;
+        formData.key;
+        formData.value;//TODO: these are needed to trigger re-render
+        formErrors.key;
+        formErrors.value;
 
         const renderContent = () => (
             <div>
-                {currentLabels.length > 0 ? (
+                {currentDocumentLabels.length > 0 ? (
                     <ul className="labels-list">
-                        {currentLabels.map((label) => (
-                            <li className="labels-list__item">
+                        {currentDocumentLabels.map((label) => (
+                            <li key={label.id} className="labels-list__item">
                                 {isEditing && formData._labelId === label.id ? (
                                     <form id="form-edit-document-label" className="form" onSubmit={this.handleSubmit}>
-                                        {formErrors.title ? (
-                                            <span className="form__error">{formErrors.title}</span>
-                                        ) : null}
-                                        <input className="form__text-input" type="text" name="title" value={formData.title} autoFocus onChange={this.handleChange} />
+                                        <div className="labels-list__inputs-holder">
+                                            <div className="labels-list__key">
+                                                <label className="form__label">
+                                                    <span>Key</span>
+                                                    <input className="form__text-input" type="text" name="key" value={formData.key} autoFocus onChange={this.handleChange} />
+                                                    {formErrors.key ? (
+                                                        <span className="form__error">{formErrors.key}</span>
+                                                    ) : null}
+                                                </label>
+                                            </div>
+                                            <div className="labels-list__value">
+                                                <label className="form__label">
+                                                    <span>Value</span>
+                                                    <input className="form__text-input" type="text" name="value" value={formData.value} onChange={this.handleChange} />
+                                                    {formErrors.value ? (
+                                                        <span className="form__error">{formErrors.value}</span>
+                                                    ) : null}
+                                                </label>
+                                            </div>
+                                        </div>
                                         <div className="button-list button-list--left" style={{ height: '18px', marginTop: '6px' }}>
                                             <div className="button-list__item">
                                                 <button className="button button--tiny" type="button" onClick={cancelAddOrEditLabel}>Cancel</button>
@@ -56,7 +75,20 @@ class ManageDocumentLabelsModal extends Component {
                                         </div>
                                     </form>
                                 ) : (
-                                    <input type="text" value={label.title} onFocus={() => addOrEditLabel(label.id)} />
+                                    <div className="labels-list__inputs-holder">
+                                        <div className="labels-list__key">
+                                            <label className="form__label">
+                                                <span>Key</span>
+                                                <input className="form__text-input" type="text" readOnly value={label.key} onFocus={() => addOrEditLabel(label.id)} />
+                                            </label>
+                                        </div>
+                                        <div className="labels-list__value">
+                                            <label className="form__label">
+                                                <span>Value</span>
+                                                <input className="form__text-input" type="text" readOnly value={label.value} onFocus={() => addOrEditLabel(label.id)} />
+                                            </label>
+                                        </div>
+                                    </div>
                                 )}
                             </li>
                         ))}
@@ -66,10 +98,26 @@ class ManageDocumentLabelsModal extends Component {
                 )}
                 {isEditing && formData._labelId === null ? (
                     <form id="form-add-document-label" className="form" onSubmit={this.handleSubmit}>
-                        {formErrors.title ? (
-                            <span className="form__error">{formErrors.title}</span>
-                        ) : null}
-                        <input className="form__text-input" type="text" name="title" value={formData.title} autoFocus onChange={this.handleChange} />
+                        <div className="labels-list__inputs-holder">
+                            <div className="labels-list__key">
+                                <label className="form__label">
+                                    <span>Key</span>
+                                    <input className="form__text-input" type="text" name="key" value={formData.key} autoFocus onChange={this.handleChange} />
+                                    {formErrors.key ? (
+                                        <span className="form__error">{formErrors.key}</span>
+                                    ) : null}
+                                </label>
+                            </div>
+                            <div className="labels-list__value">
+                                <label className="form__label">
+                                    <span>Value</span>
+                                    <input className="form__text-input" type="text" name="value" value={formData.value} onChange={this.handleChange} />
+                                    {formErrors.value ? (
+                                        <span className="form__error">{formErrors.value}</span>
+                                    ) : null}
+                                </label>
+                            </div>
+                        </div>
                         <div className="button-list button-list--left" style={{ height: '18px', marginTop: '6px' }}>
                             <div className="button-list__item">
                                 <button className="button button--tiny" type="button" onClick={cancelAddOrEditLabel}>Cancel</button>
@@ -93,7 +141,7 @@ class ManageDocumentLabelsModal extends Component {
                 isVisible={isVisible}
                 title="Manage Document Labels"
                 renderContent={renderContent}
-                isLoading={isLoading || isSubmitting}
+                isLoading={isSubmitting}
                 closeFunction={hide} />
         );
     }
