@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import * as d3 from 'd3';
-import * as d3Tip from 'd3-tooltip-box';
 
 class Sentiment extends Component {
     static propTypes = {
@@ -9,6 +8,7 @@ class Sentiment extends Component {
 
     static renderSentiment(svg, sentiments) {
 
+        const d3Tip = require('d3-tip');
         /*
          Turn data into csv string
          */
@@ -22,25 +22,19 @@ class Sentiment extends Component {
         /*
          Add tool tip
          */
-        /*
-         let tooltip = d3TooltipBox.tooltip()
-         .template(function(d) {
 
-         return '<div>Amount: '+ d.value +'</div>';
-
-         });
-         */
-        let options = {
-            offset: {left: 30, top: 10}
-        };
-
-        let tooltip = d3Tip.tooltip()
-            .parent(svg)
-            .data(function() {
-                return {
-                    value: 20
+        let tip = d3Tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function (d) {
+                let col = "";
+                if(d.value < 0){
+                    col = 'red';
+                }else{
+                    col = 'steelblue';
                 }
-            });
+            return '<strong>' + d.name + ':</strong> <span style=\'color:' + col + '\'>' + parseFloat(d.value).toFixed(4) + '</span>';
+        });
         /*
          Set svg dimensions
          */
@@ -53,27 +47,29 @@ class Sentiment extends Component {
             .attr('width', 960)
             .attr('height', 600);
 
-        let x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-            y = d3.scaleLinear().rangeRound([height, 0]);
-
         let g = svg.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-
+        svg.call(tip);
         /*
          Parse csv string into csv data
          */
         const data = d3.csvParse(vals);
 
+
+        let x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+            y = d3.scaleLinear()
+                .domain([-1,1])
+                .rangeRound([height, 0]);
         /*
          Create chart
          */
         x.domain(data.map(function (d) {
             return d.name;
         }));
-        y.domain([0, d3.max(data, function (d) {
+        /*y.domain([0, d3.max(data, function (d) {
             return d.value;
-        })]);
+        })]);*/
 
         g.append('g')
             .attr('class', 'axis axis--x')
@@ -92,20 +88,32 @@ class Sentiment extends Component {
 
         g.selectAll('.bar')
             .data(data)
-            .enter().append('rect')
-            .attr('class', 'bar')
+            .enter()
+            .append('rect')
+            .attr('class', function(d){
+                if(d.value > 0){
+                    return 'bar positive';
+                }else{
+                    return 'bar negative';
+                }
+            })
+
             .attr('x', function (d) {
                 return x(d.name);
             })
             .attr('y', function (d) {
-                return y(d.value);
+                if(d.value > 0) {
+                    return y(d.value);
+                }else{
+                    return y(0);
+                }
             })
             .attr('width', x.bandwidth())
             .attr('height', function (d) {
-                return height - y(d.value);
+                return (Math.abs(y(d.value) - y(0)));
             })
-            .call(tooltip.bind());
-
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
 
     }

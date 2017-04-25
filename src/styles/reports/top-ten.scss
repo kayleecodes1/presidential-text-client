@@ -1,0 +1,32 @@
+.top-ten {
+
+  $item-spacing: 20px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 -($item-spacing / 2);
+
+  &__item {
+    width: 50%;
+    border-radius: 3px;
+    border: 1px solid $color-border-light;
+    margin: ($item-spacing / 2);
+  }
+
+  &__label {
+    height: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+    background: #EEE;
+    border-bottom: 1px solid $color-border-light;
+    margin: 0;
+  }
+
+  &__chart {
+    width: 100%;
+    height: auto;
+  }
+}

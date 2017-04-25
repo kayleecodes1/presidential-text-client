@@ -4,6 +4,7 @@ import Scorecard from './views/Scorecard';
 import WordCloud from './views/WordCloud';
 import Sentiment from './views/Sentiment';
 import SentimentYear from "./views/SentimentYear";
+import TopTen from "./views/TopTen";
 
 @inject('reports')
 @observer
@@ -28,6 +29,8 @@ class ViewReport extends Component {
                 return <Sentiment data={result}/>
             case 'sentimentyear':
                 return <SentimentYear data={result}/>
+            case 'top':
+                return <TopTen data={result}/>
             //TODO: other report types
             default:
                 return JSON.stringify(result);
