@@ -5,6 +5,7 @@ import WordCloud from './views/WordCloud';
 import Sentiment from './views/Sentiment';
 import SentimentYear from "./views/SentimentYear";
 import TopTen from "./views/TopTen";
+import PartOfSpeech from "./views/PartOfSpeech";
 
 @inject('reports')
 @observer
@@ -31,6 +32,8 @@ class ViewReport extends Component {
                 return <SentimentYear data={result}/>
             case 'top':
                 return <TopTen data={result}/>
+            case 'pos':
+                return <PartOfSpeech data={result}/>
             //TODO: other report types
             default:
                 return JSON.stringify(result);
