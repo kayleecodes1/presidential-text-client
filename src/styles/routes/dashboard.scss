@@ -77,7 +77,6 @@
 
   &__user {
     float: right;
-    @extend %clearfix;
   }
 
   &__user-name {
@@ -86,24 +85,24 @@
     font-size: 13px;
     line-height: $header-height;
     color: $header-text-color;
-
-    &::after {
-      content: '|';
-      margin: 0 10px;
-    }
   }
 
-  &__logout-button {
+  &__login-button {
     float: left;
     font-weight: 400;
     font-size: 12px;
     line-height: $header-height;
     color: $header-text-color;
+    text-decoration: underline;
     background: none;
     padding: 0;
     border: none;
     outline: none;
     margin: 0;
     cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }

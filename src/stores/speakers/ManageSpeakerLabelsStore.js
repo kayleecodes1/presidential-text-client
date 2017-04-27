@@ -139,7 +139,7 @@ class ManageSpeakerLabelsStore {
                 }
                 runInAction(() => {
                     this.speakersStore.addOrUpdateLabel(label);
-                    this.hide();
+                    this.cancelAddOrEditLabel();
                 });
             })
             .catch((error) => {

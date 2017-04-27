@@ -139,7 +139,7 @@ class ManageDocumentLabelsStore {
                 }
                 runInAction(() => {
                     this.documentsStore.addOrUpdateLabel(label);
-                    this.hide();
+                    this.cancelAddOrEditLabel();
                 });
             })
             .catch((error) => {

@@ -11,7 +11,7 @@ class DocumentsTable extends Component {
     renderDocumentRows() {
 
         const { editDocument, deleteDocument } = this.props;
-        const { resultsPerPage, isLoading, textSearchIsLoading, currentPageDocuments } = this.props.documents;
+        const { resultsPerPage, isLoading, textSearchIsLoading, currentPageDocuments, getSpeakerName } = this.props.documents;
 
         if (isLoading || textSearchIsLoading) {
             const placeholderRows = [];
@@ -31,7 +31,7 @@ class DocumentsTable extends Component {
             <tr key={document.id} className="table__row">
                 <td className="table__cell">{document.title}</td>
                 <td className="table__cell">{document.date}</td>
-                <td className="table__cell">{document.speakerName}</td>
+                <td className="table__cell">{getSpeakerName(document.speakerId)}</td>
                 <td className="table__cell">
                     <ul className="button-list">
                         <li className="button-list__item button-list__item--tiny-spacing">
@@ -76,7 +76,7 @@ class DocumentsTable extends Component {
                         <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'date' })} onClick={() => setSortAttribute('date')}>
                             <span>Date</span>
                         </th>
-                        <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'speakerName' })} onClick={() => setSortAttribute('speakerName')}>
+                        <th className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'speaker' })} onClick={() => setSortAttribute('speaker')}>
                             <span>Speaker</span>
                         </th>
                         <th className="table__head-cell table__head-cell--centered table__head-cell--small">

@@ -9,10 +9,10 @@ function transformSpeakerLabel(label) {
     };
 }
 
-export const createSpeakerLabel = (data) => callApi('speakerlabels', 'POST', data, transformSpeakerLabel);
-
 export const getSpeakerLabels = () => callApi('speakerlabels', 'GET', null, (labels) => {
     return labels.map(transformSpeakerLabel);
 });
+
+export const createSpeakerLabel = (data) => callApi('speakerlabels', 'POST', data, transformSpeakerLabel);
 
 export const updateSpeakerLabel = (speakerLabelId, data) => callApi(`speakerlabels/${speakerLabelId}`, 'PUT', data, transformSpeakerLabel);

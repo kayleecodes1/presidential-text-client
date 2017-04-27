@@ -64,10 +64,9 @@ class EditSpeakerStore {
                     this.formData = {
                         name,
                         labels: labels.map((label) => {
-                            const storedLabel = speakerLabelOptions.find((storedLabel) => storedLabel.id === label.id);
                             return {
                                 value: label.id,
-                                label: storedLabel ? storedLabel.tag : null
+                                label: this.speakersStore.getSpeakerLabelTag(label.id)
                             };
                         })
                     };
@@ -147,7 +146,7 @@ class EditSpeakerStore {
             this.formErrors.name = 'A name is required.';
         }
         for (const term of terms) {
-            if (term.startDate.search(/^\d{4}-\d{1,2}-\d{1,2}$/) === -1 || term.endDate.search(/^\d{4}-\d{1,2}-\d{1,2}$/) === -1) {
+            if (term.startDate.search(/^\d{4}-\d{2}-\d{2}$/) === -1 || term.endDate.search(/^\d{4}-\d{2}-\d{2}$/) === -1) {
                 hasErrors = true;
                 this.formErrors.terms = 'A valid date is required for all terms.';
                 break;

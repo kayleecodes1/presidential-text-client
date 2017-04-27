@@ -80,7 +80,14 @@ class DocumentsStore {
                 return true;
             })
             .sort((a, b) => {
-                return a[this.sortAttribute].localeCompare(b[this.sortAttribute]) * (this.sortOrder === 1 ? 1 : -1);
+                let result;
+                if (this.sortAttribute === 'speaker') {
+                    result = this.getSpeakerName(a.speakerId).localeCompare(this.getSpeakerName(b.speakerId));
+                }
+                else {
+                    result = a[this.sortAttribute].localeCompare(b[this.sortAttribute]);
+                }
+                return result * (this.sortOrder === 1 ? 1 : -1);
             });
         return currentDocuments;
     }
@@ -262,6 +269,22 @@ class DocumentsStore {
                 });
             });
     }
+
+    getSpeakerName = (speakerId) => {
+        const speaker = this.speakers.get(speakerId);
+        if (!speaker) {
+            return '';
+        }
+        return speaker.name;
+    };
+
+    getDocumentLabelTag = (labelId) => {
+        const label = this.documentLabels.get(labelId);
+        if (!label) {
+            return '';
+        }
+        return label.tag;
+    };
 
     @action.bound
     setResultsPerPage(resultsPerPage) {

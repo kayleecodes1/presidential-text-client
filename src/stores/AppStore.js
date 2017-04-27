@@ -1,34 +1,56 @@
 import { observable, action } from 'mobx';
-import { login, logout } from '../services/api/authentication';
+import { checkAuth, login } from '../services/api/authentication';
 
 class AppStore {
 
+    @observable isLoading = false;
     @observable currentUser = null;
     @observable isProcessingLogin = false;
     @observable loginErrorText = '';
 
     @action.bound
-    login(email, password) {
+    initializeState() {
+        
+        this.isLoading = true;
+        checkAuth()
+            .then((username) => {
+                this.currentUser = username;
+            })
+            .catch((error) => {
+                // do nothing
+            })
+            .then(() => {
+                this.isLoading = false;
+            });
+
+        window.addEventListener('app.unauthorized', () => {
+            this.currentUser = null;
+        });
+    }
+
+    @action.bound
+    login(username, password) {
+
+        if (username === '') {
+            this.loginErrorText = 'Please enter a username.';
+            return;
+        }
+        if (password === '') {
+            this.loginErrorText = 'Please enter a password.';
+            return;
+        }
 
         this.isProcessingLogin = true;
-        login(email, password)
-            .then((userData) => {
-                this.currentUser = userData;
+        this.loginErrorText = '';
+        login(username, password)
+            .then((username) => {
+                this.currentUser = username;
             })
             .catch((err) => {
                 this.loginErrorText = err.message;
             })
             .then(() => {
                 this.isProcessingLogin = false;
-            });
-    }
-
-    @action.bound
-    logout() {
-
-        logout()
-            .then(() => {
-                this.currentUser = null;
             });
     }
 }
