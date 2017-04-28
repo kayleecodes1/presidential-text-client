@@ -31,15 +31,20 @@ export function parseJson(response) {
 export function callApi(path, method, data, transform, isSecure) {
 
     const options = {
-        method,
-        headers: {}
+        method
     };
     if (isSecure) {
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, '$1');
+        if (!options.headers) {
+            options.headers = {};
+        }
         options.headers.Authorization = token;
     }
 
     if (data) {
+        if (!options.headers) {
+            options.headers = {};
+        }
         options.headers['Content-Type'] = 'application/json';
         options.body = JSON.stringify(data);
     }

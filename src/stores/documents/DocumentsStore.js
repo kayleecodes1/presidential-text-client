@@ -321,7 +321,7 @@ class DocumentsStore {
     setFilterData(name, value) {
 
         if (name === 'speakers' || name === 'documentLabels' || name === 'speakerLabels') {
-            this.filters[name].replace(value);
+            this.filters[name] = value;
             return;
         }
         this.filters[name] = value;

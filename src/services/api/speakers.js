@@ -38,6 +38,6 @@ export const getSpeaker = (speakerId) => callApi(`speakers/${speakerId}`, 'GET',
 
 export const createSpeaker = (data) => callApi('speakers', 'POST', data, transformSpeakerSummary);
 
-export const updateSpeaker = (data) => callApi('speakers', 'PUT', data, transformSpeakerSummary);
+export const updateSpeaker = (speakerId, data) => callApi(`speakers/${speakerId}`, 'PUT', data, transformSpeakerSummary);
 
 export const deleteSpeaker = (speakerId) => callApi(`speakers/${speakerId}`, 'DELETE');

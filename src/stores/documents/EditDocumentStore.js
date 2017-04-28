@@ -176,7 +176,7 @@ class EditDocumentStore {
         };
 
         this.isSubmitting = true;
-        updateDocument(data)
+        updateDocument(this.documentId, data)
             .then((data) => {
                 if (isCancelled) {
                     return;

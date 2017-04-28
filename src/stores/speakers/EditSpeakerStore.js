@@ -59,7 +59,6 @@ class EditSpeakerStore {
                     return;
                 }
                 runInAction(() => {
-                    const {speakerLabelOptions} = this.speakersStore;
                     const {name, terms, labels} = data;
                     this.formData = {
                         name,
@@ -167,6 +166,7 @@ class EditSpeakerStore {
         };
 
         const data = {
+            speakerId: this.speakerId,
             name,
             terms,
             labels: labels.map((label) => ({
