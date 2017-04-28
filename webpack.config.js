@@ -45,10 +45,10 @@ module.exports = {
         ]
     },
     module: {
-        rules: [{
+        rules: [/*{
             test: require.resolve('d3-tooltip-box'),
             loader: 'imports-loader?d3'
-        }, {
+        }, */{
             test: /\.png$/,
             loader: 'url-loader?mimetype=image/png'
         }, {

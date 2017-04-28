@@ -1,0 +1,17 @@
+
+.sentiment {
+
+  &__item {
+
+    .bar.positive{
+      fill: steelblue;
+    }
+
+    .bar.negative{
+      fill: darkred;
+    }
+    .axis--x path {
+      display: none;
+    }
+  }
+}
