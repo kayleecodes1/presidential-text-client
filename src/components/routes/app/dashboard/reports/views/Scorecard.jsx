@@ -125,7 +125,7 @@ class Scorecard extends Component {
                 return color(d.Name);
             })
             .attr('data-legend', function (d) {
-                return d.Name
+                return d.Name.replace(/\s/g, '');
             });
 
         // Add a group element for each dimension.
@@ -172,7 +172,7 @@ class Scorecard extends Component {
             .attr("transform", "translate(20,20)");
 
         let legendOrdinal = d3Legend.legendColor()
-            .shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
+            .shape("path", d3.symbol().type(d3.symbolSquare).size(height)())
             //.title('Filter Sets')
             .shapePadding(10)
             .labelWrap(175)
@@ -195,13 +195,13 @@ class Scorecard extends Component {
 
         // Highlights the list
         function cellover(d) {
-            d3.select('[data-legend=' + d + ']')
+            d3.select('[data-legend=' + d.replace(/\s/g, '') + ']')
                 .style('stroke-width', 5);
         }
 
         // Sets width back to regular
         function cellout(d) {
-            d3.select('[data-legend=' + d + ']')
+            d3.select('[data-legend=' + d.replace(/\s/g, '') + ']')
                 .style('stroke-width', 1);
         }
 
