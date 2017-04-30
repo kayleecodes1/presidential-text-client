@@ -30,25 +30,14 @@ function transformSpeakerDetail(speaker) {
     };
 }
 
-export const createSpeaker = (data) => Promise.reject('API functionality not implemented.');
-/*export const createSpeaker = (data) => callApi('speakers', 'POST', data, () => {
-    //TODO
-});*/
-
 export const getSpeakers = () => callApi('speakers', 'GET', null, (speakers) => {
     return speakers.map(transformSpeakerSummary);
 });
 
-export const getSpeaker = (speakerId) => callApi(`speakers/${speakerId}`, 'GET', null, (speaker) => {
-    return transformSpeakerDetail(speaker);
-});
+export const getSpeaker = (speakerId) => callApi(`speakers/${speakerId}`, 'GET', null, transformSpeakerDetail);
 
-export const updateSpeaker = (speakerId, data) => Promise.reject('API functionality not implemented.');
-/*export const updateSpeaker = (speakerId, data) => callApi(`speakers/${speakerId}`, 'PUT', data, () => {
-    //TODO
-});*/
+export const createSpeaker = (data) => callApi('speakers', 'POST', data, transformSpeakerSummary);
 
-export const deleteSpeaker = (speakerId) => Promise.reject('API functionality not implemented.');
-/*export const deleteSpeaker = (speakerId) => callApi(`speakers/${speakerId}`, 'DELETE', null, () => {
-    //TODO
-});*/
+export const updateSpeaker = (speakerId, data) => callApi(`speakers/${speakerId}`, 'PUT', data, transformSpeakerSummary);
+
+export const deleteSpeaker = (speakerId) => callApi(`speakers/${speakerId}`, 'DELETE');

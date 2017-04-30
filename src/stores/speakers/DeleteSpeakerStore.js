@@ -28,7 +28,7 @@ class DeleteSpeakerStore {
 
     submit() {
         this.isSubmitting = true;
-        deleteSpeaker(this.documentId)
+        deleteSpeaker(this.speakerId)
             .then(() => {
                 runInAction(() => {
                     this.speakersStore.removeSpeaker(this.speakerId);

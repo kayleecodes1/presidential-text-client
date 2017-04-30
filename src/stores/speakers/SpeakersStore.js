@@ -162,6 +162,14 @@ class SpeakersStore {
             });
     }
 
+    getSpeakerLabelTag = (labelId) => {
+        const label = this.speakerLabels.get(labelId);
+        if (!label) {
+            return '';
+        }
+        return label.tag;
+    };
+
     @action.bound
     setResultsPerPage(resultsPerPage) {
 

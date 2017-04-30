@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import LoadingIndicator from '../../LoadingIndicator';
 import Notification from '../../Notification';
 
 @inject('notifications')
+@inject('app')
 @observer
 class App extends Component {
 
-    //TODO: on mount, fetch user data
+    componentWillMount() {
+        this.props.app.initializeState();
+    }
 
     render() {
 
-        const { children } = this.props;
+        const { children, app } = this.props;
         const { currentNotifications } = this.props.notifications;
 
         return (
             <div className="app">
-                {children}
                 <ul className="app__notification-list">
                     <ReactCSSTransitionGroup transitionName="slide-down-fade-out" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
                         {currentNotifications.map((notification) => (
@@ -26,6 +29,9 @@ class App extends Component {
                         ))}
                     </ReactCSSTransitionGroup>
                 </ul>
+                {app.isLoading ? (
+                    <LoadingIndicator />
+                ) : children}
             </div>
         );
     }

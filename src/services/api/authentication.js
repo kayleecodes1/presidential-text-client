@@ -1,9 +1,50 @@
-import { callApi } from './util.js';
+import 'whatwg-fetch';
+import { API_URL, checkStatus, parseJson, callApi } from './util.js';
 
-export const login = (email, password) => callApi('login', 'POST', { email, password }, () => {
-    //TODO
-});
+//TODO: use biglongstring if present
+export const checkAuth = () => callApi('users', 'GET', null, () => {
+    const username = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    return username;
+}, true);
 
-export const logout = () => callApi('logout', 'POST', null, () => {
+export const login = (username, password) => {
+    return new Promise((resolve, reject) => {
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify({ username, password })
+        };
+
+        fetch(`${API_URL}/login`, options)
+            .then((response) => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response;
+                }
+                const error = new Error(response.statusText);
+                error.response = response;
+                throw error;
+            })
+            .then((response) => {
+                const authHeader = response.headers.get('Authorization');
+                const parseResult = authHeader.match(/^Bearer (.*)$/);
+                if (!parseResult) {
+                    reject('Invalid response from server.');
+                    return;
+                }
+                const token = parseResult[1];
+                document.cookie = `token=${token}`;
+                document.cookie = `username=${username}`;
+                resolve(checkAuth());
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+/*export const logout = () => callApi('logout', 'POST', null, () => {
     //TODO
-});
+});*/

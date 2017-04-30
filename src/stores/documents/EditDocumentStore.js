@@ -67,18 +67,16 @@ class EditDocumentStore {
                     return;
                 }
                 runInAction(() => {
-                    const {documentLabelOptions} = this.documentsStore;
-                    const {title, date, speakerId, speakerName, textContent, labels} = document;
+                    const { title, date, speakerId, textContent, labels } = document;
                     this.formData = {
                         title,
                         date,
-                        speaker: {value: speakerId, label: speakerName},
+                        speaker: { value: speakerId, label: this.documentsStore.getSpeakerName(speakerId) },
                         textContent,
                         labels: labels.map((label) => {
-                            const storedLabel = documentLabelOptions.find((storedLabel) => storedLabel.id === label.id);
                             return {
                                 value: label.id,
-                                label: storedLabel ? storedLabel.tag : null
+                                label: this.documentsStore.getDocumentLabelTag(label.id)
                             };
                         })
                     };
@@ -138,7 +136,7 @@ class EditDocumentStore {
             hasErrors = true;
             this.formErrors.title = 'A title is required.';
         }
-        if (date.search(/^\d{4}-\d{1,2}-\d{1,2}$/) === -1) {
+        if (date.search(/^\d{4}-\d{2}-\d{2}$/) === -1) {
             hasErrors = true;
             this.formErrors.date = 'A valid date is required.';
         }
@@ -165,6 +163,7 @@ class EditDocumentStore {
         };
 
         const data = {
+            documentId: this.documentId,
             title,
             deliveryDate: date,
             fullText: textContent,
