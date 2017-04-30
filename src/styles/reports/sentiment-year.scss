@@ -1,0 +1,45 @@
+.sentiment-year{
+
+  &__item {
+
+    svg {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .svgLegend{
+      float:right;
+      width: 200px;
+      height: 500px;
+    }
+    .legendTitle{
+      font-weight: bold;
+    }
+
+    .axis .label{
+      fill: black;
+    }
+
+
+  }
+
+
+}
+div.tooltip {
+  position: absolute;
+  text-align: center;
+  width: 120px;
+  height: 28px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
