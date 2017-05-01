@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 import tip from 'd3-tip';
 d3.tip = tip;
 import * as scaleChromatic from 'd3-scale-chromatic';
-import * as svgLegend from 'd3-svg-legend';
 
 const WIDTH = 800;
 const HEIGHT = 400;
@@ -122,10 +121,10 @@ class Cluster extends Component {
 
         return (
             <div className="cluster">
-                <ul className="cluster__legend">
+                <ul className="view-report__legend">
                     {Object.keys(collections).map((collectionName) => (
-                        <li key={collectionName} className="cluster__legend-item">
-                            <div className="cluster__legend-shape" style={{ background: colorScale(collectionName) }}></div>
+                        <li key={collectionName} className="view-report__legend-item">
+                            <div className="view-report__legend-shape" style={{ background: colorScale(collectionName) }}></div>
                             <span>{collectionName}</span>
                         </li>
                     ))}

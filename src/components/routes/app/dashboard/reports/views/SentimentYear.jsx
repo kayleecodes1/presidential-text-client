@@ -1,14 +1,19 @@
 import React, {Component, PropTypes} from 'react';
+import { inject, observer } from 'mobx-react';
 import * as d3 from 'd3';
+import tip from 'd3-tip';
+d3.tip = tip;
 import * as d3Scale from 'd3-scale-chromatic';
-import * as d3Legend from 'd3-svg-legend';
 import * as d3Trans from 'd3-transition';
 
+const WIDTH = 960;
+const HEIGHT = 400;
 
+@inject('reports')
+@observer
 class SentimentYear extends Component {
-    static renderSentimentYear(svg, vals) {
 
-        const d3Tip = require('d3-tip');
+    renderSentimentYear(svg, vals, colorScale) {
 
         let strData = 'date,sentiment,docId,list\n';
         for (let lst in vals) {
@@ -31,20 +36,11 @@ class SentimentYear extends Component {
         });
 
         /*
-         Add tool tip
-         */
-
-        // Define the div for the tooltip
-        let div = d3.select('body').append('div')
-            .attr('class', 'tooltip')
-            .style('opacity', 0);
-
-        /*
          Set sizing
          */
         const margin = {top: 20, right: 20, bottom: 30, left: 40},
-            width = 960 - margin.left - margin.right,
-            height = 625 - margin.top - margin.bottom;
+            width = WIDTH - margin.left - margin.right,
+            height = HEIGHT - margin.top - margin.bottom;
 
         /*
          Set x & y scales and create axes
@@ -54,10 +50,6 @@ class SentimentYear extends Component {
 
         const y = d3.scaleLinear()
             .range([height, 0]);
-
-        const colorScheme = d3Scale.schemeSet1;
-
-        let color = d3.scaleOrdinal(colorScheme);
 
         const xAxis = d3.axisBottom(x);
 
@@ -70,7 +62,21 @@ class SentimentYear extends Component {
         svg = d3.select('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
-            .append('g')
+            .attr('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
+
+        const tip = d3.tip()
+            .attr('class', 'sentiment-year__tooltip')
+            .direction('n')
+            .offset([-10, 0])
+            .html((d) => {
+                const title = this.props.reports.getDocumentTitle(d.docId);
+                const sentiment = d.sentiment.toFixed(4);
+                return `<span class="sentiment-year__tooltip-title">${title}</span>` +
+                    `<span class="sentiment-year__tooltip-sentiment">${sentiment}</span>`;
+            });
+        svg.call(tip);
+
+        svg = svg.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
         x.domain(d3.extent(data, function (d) {
@@ -107,7 +113,7 @@ class SentimentYear extends Component {
                 return 'point ' + d.listName.replace(/\s/g, '');
             })
             .style('fill', function (d) {
-                return color(d.listName);
+                return colorScale(d.listName);
             })
             .attr('d', d3.symbol().type(function (d) {
                 if (d.sentiment < 0) {
@@ -136,56 +142,8 @@ class SentimentYear extends Component {
             .style('z-index', function (d) {
                 return Math.abs(d.sentiment);
             })
-            .on('mouseover', mouseover)
-            .on('mouseout', mouseout);
-
-        function mouseover(d){
-            d3.select('.tooltip').transition()
-                .duration(200)
-                .style('opacity', .9);
-            div.html('Doc Id: ' + d.docId + '<br/>Sentiment: '  + d.sentiment.toFixed(4))
-                .style('left', (d3.event.pageX) + 'px')
-                .style('top', (d3.event.pageY - 28) + 'px');
-        }
-        function mouseout(d){
-            d3.select('.tooltip')
-                .transition()
-                .duration(500)
-                .style("opacity", 0);	;
-        }
-        /*
-         Add Legend
-         */
-
-        let ordDomain = [];
-        for (var i in data) {
-            ordDomain.push(data[i].listName);
-        }
-
-        let ordinal = d3.scaleOrdinal(colorScheme)
-            .domain(ordDomain);
-
-        let legendSVG = d3.select('.sentiment-year__item')
-            .append('svg')
-            .attr('class', 'svgLegend');
-
-        legendSVG.append('g')
-            .attr('class', 'legendOrdinal')
-            .attr('transform', 'translate(20,20)');
-
-        let legendOrdinal = d3Legend.legendColor()
-            .shape('path', d3.symbol().type(d3.symbolSquare).size(height)())
-            .shapePadding(10)
-            .labelWrap(150)
-            .cellFilter(function (d) {
-                return d.label !== undefined
-            })
-            .on('cellover', cellover)
-            .on('cellout', cellout)
-            .scale(ordinal);
-
-        legendSVG.select('.legendOrdinal')
-            .call(legendOrdinal);
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
         // Highlights the list
         function cellover(d) {
@@ -204,18 +162,22 @@ class SentimentYear extends Component {
 
     render() {
 
-        const {collections} = this.props.data;
+        const { collections } = this.props.data;
 
-        const collectionName = 'Sentiment by Year';
+        const colorScale = d3.scaleOrdinal(d3Scale.schemeSet1)
+            .domain(Object.keys(collections));
+
         return (
-
-            <div className='sentiment-year'>
-                <div key={collectionName} className='sentiment-year__item'>
-                    <h2 className='word-cloud__label'>{collectionName}</h2>
-                    <svg ref={(svg) => {
-                        SentimentYear.renderSentimentYear(svg, collections);
-                    }}/>
-                </div>
+            <div className="sentiment-year">
+                <ul className="view-report__legend">
+                    {Object.keys(collections).map((collectionName) => (
+                        <li key={collectionName} className="view-report__legend-item">
+                            <div className="view-report__legend-shape" style={{ background: colorScale(collectionName) }}></div>
+                            <span>{collectionName}</span>
+                        </li>
+                    ))}
+                </ul>
+                <svg className="sentiment-year__chart" ref={(svg) => this.renderSentimentYear(svg, collections, colorScale)} />
             </div>
         );
     }

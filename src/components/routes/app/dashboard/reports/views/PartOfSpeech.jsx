@@ -9,12 +9,12 @@ class PartOfSpeech extends Component {
         data: PropTypes.object.isRequired
     };
 
-    static renderPOS(svg, partsOfSpeech) {
+    static renderPOS(svg, partsOfSpeech, colorScale) {
 
-        var initStackedBarChart = {
+        const initStackedBarChart = {
             draw: function (config) {
 
-                const colorScheme = d3Scale.schemePaired;
+                const colorScheme = d3Scale.schemeSet1;
 
                 /*
                  Begin Setting up chart
@@ -30,12 +30,12 @@ class PartOfSpeech extends Component {
                     height = (75 * countOfLists) - margin.top - margin.bottom,
                     xScale = d3.scaleLinear().rangeRound([0, width]),
                     yScale = d3.scaleBand().rangeRound([height, 0]).padding(0.1),
-                    color = d3.scaleOrdinal(colorScheme),
                     xAxis = d3.axisTop(xScale).tickFormat(formatPercent),
                     yAxis = d3.axisLeft(yScale),
                     svg = d3.select('svg')
                         .attr('width', width + margin.left + margin.right)
                         .attr('height', height + margin.top + margin.bottom)
+                        .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
                         .append('g')
                         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -61,7 +61,7 @@ class PartOfSpeech extends Component {
                         return 'layer'
                     })
                     .style('fill', function (d, i) {
-                        return color(i);
+                        return colorScale(d.key);
                     });
 
                 layer.selectAll('rect')
@@ -93,13 +93,13 @@ class PartOfSpeech extends Component {
                         const dd = d3.select(this.parentNode).datum();
                         const sel = '.text-' + dd.key;
                         d3.selectAll(sel)
-                            .style('fill', 'black');
+                            .style('fill', 'white');
                     })
                     .on("mouseout", function () {
                         const dd = d3.select(this.parentNode).datum();
                         const sel = '.text-' + dd.key;
                         d3.selectAll(sel)
-                            .style('fill', color(dd.index)  );
+                            .style('fill', colorScale(dd.key)  );
                     })
                 ;
 
@@ -140,7 +140,7 @@ class PartOfSpeech extends Component {
                     })
                     .style('fill', function(d){
                         const dd = d3.select(this.parentNode).datum();
-                        color(dd.i);
+                        colorScale(dd.key);
                     })
                     .style('font-weight', 'bold');
 
@@ -151,44 +151,9 @@ class PartOfSpeech extends Component {
                     .attr('transform', 'translate(0,0)')
 
                     .call(xAxis);
-
-                /*  ==========
-                 Add Legend
-                 ========== */
-
-                let ordDomain = config.key;
-
-
-                let ordinal = d3.scaleOrdinal(colorScheme)
-                    .domain(ordDomain);
-
-                let legendSVG = d3.select('.part-of-speech__item')
-                    .append('svg')
-                    .attr('class', 'svgLegend');
-
-                legendSVG.append("g")
-                    .attr("class", "legendOrdinal")
-                    .attr("transform", "translate(20,20)");
-
-                let legendOrdinal = d3Legend.legendColor()
-                    .shape("path", d3.symbol().type(d3.symbolSquare).size(150)())
-                    //.title('Filter Sets')
-                    .shapePadding(10)
-                    .labelWrap(175)
-                    .cellFilter(function (d) {
-                        return d.label !== undefined
-                    })
-                    //.on('cellover', cellover)
-                    //.on('cellout', cellout)
-                    .scale(ordinal);
-
-                legendSVG.select(".legendOrdinal")
-                    .call(legendOrdinal);
-
-
             }
 
-        }
+        };
 
         let lists = [];
         let data = [];
@@ -232,20 +197,31 @@ class PartOfSpeech extends Component {
 
     render() {
 
-        const {collections} = this.props.data;
+        const { collections } = this.props.data;
 
-        //TODO
-        const collectionName = 'Part of Speech';
+        const colorScale = d3.scaleOrdinal(d3Scale.schemeSet1)
+            .domain(['noun', 'adj', 'verb', 'adv']);
+
+        const KEY_LABELS = {
+            noun: 'Noun',
+            adj: 'Adjective',
+            verb: 'Verb',
+            adv: 'Adverb'
+        };
+
         return (
             <div className="part-of-speech">
-
-                <div key={collectionName} className="part-of-speech__item">
-                    <h2 className="top-ten__label">{collectionName}</h2>
-                    <svg ref={(svg) => {
-                        PartOfSpeech.renderPOS(svg, collections);
-                    }}/>
-                </div>
-
+                <ul className="view-report__legend">
+                    {['noun', 'adj', 'verb', 'adv'].map((key) => (
+                        <li key={key} className="view-report__legend-item">
+                            <div className="view-report__legend-shape" style={{ background: colorScale(key) }}></div>
+                            <span>{KEY_LABELS[key]}</span>
+                        </li>
+                    ))}
+                </ul>
+                <svg className="part-of-speech__chart" ref={(svg) => {
+                    PartOfSpeech.renderPOS(svg, collections, colorScale);
+                }}/>
             </div>
         );
     }

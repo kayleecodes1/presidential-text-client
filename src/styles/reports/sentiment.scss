@@ -1,17 +1,20 @@
-
 .sentiment {
 
-  &__item {
+  &__chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
 
-    .bar.positive{
-      fill: steelblue;
-    }
+  .bar.positive{
+    fill: steelblue;
+  }
 
-    .bar.negative{
-      fill: darkred;
-    }
-    .axis--x path {
-      display: none;
-    }
+  .bar.negative{
+    fill: darkred;
+  }
+  .axis--x path {
+    display: none;
   }
 }
