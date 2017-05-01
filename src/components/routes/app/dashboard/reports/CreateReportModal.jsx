@@ -63,9 +63,27 @@ class CreateReportModal extends Component {
                         <option value="pos">Part of Speech</option>
                         <option value="sentiment">Sentiment</option>
                         <option value="sentimentyear">Sentiment by Year</option>
+                        <option value="cluster">Cluster</option>
+                        <option value="classify">Classify</option>
                     </select>
                 </label>
-                <label className="form__label">
+                {formData.analytic === 'cluster' ? (
+                    <label className="form__label">
+                        <span>Cluster Method</span>
+                        <select className="form__select" name="clusterOption" value={formData.clusterOption} onChange={this.handleChange}>
+                            <option value="single">Single</option>
+                        </select>
+                    </label>
+                ) : null}
+                {formData.analytic === 'classify' ? (
+                    <label className="form__label">
+                        <span>Classify Method</span>
+                        <select className="form__select" name="classifyOption" value={formData.classifyOption} onChange={this.handleChange}>
+                            <option value="single">Single</option>
+                        </select>
+                    </label>
+                ) : null}
+                <label className="form__label" style={{ height: '150px' }}>
                     <span>Filter Sets</span>
                     {formErrors.filterSets ? (
                         <span className="form__error">{formErrors.filterSets}</span>

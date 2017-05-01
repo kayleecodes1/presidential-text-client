@@ -1,33 +1,73 @@
 .cluster {
 
   &__chart {
-    //
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
   }
 
   &__link {
     fill: none;
     stroke: #555;
     stroke-opacity: 0.4;
-    stroke-width: 1.5px;
+    stroke-width: 1px;
   }
 
   &__node {
-    fill: #999;
-
-    circle {
-      fill: #555;
-    }
-
-    text {
-      font: 10px sans-serif;
-      text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
-    }
+    stroke-width: 2px;
+    stroke: #FFF;
+    stroke-opacity: 0;
 
     &--leaf {
-
-      text {
-        text-shadow: none;
-      }
+      //
     }
+  }
+
+  &__tooltip {
+    font-size: 11px;
+    color: #FFF;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px;
+    border-radius: 2px;
+    pointer-events: none;
+
+    &::after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &.s::after {
+      content: '\25B2';
+      top: -8px; left: 0;
+      text-align: center;
+      margin: 0 0 1px 0;
+    }
+  }
+
+  &__tooltip-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__tooltip-item {
+    line-height: 12px;
+    margin-bottom: 3px;
+    @extend %clearfix;
+  }
+
+  &__tooltip-shape {
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    overflow: hidden;
   }
 }

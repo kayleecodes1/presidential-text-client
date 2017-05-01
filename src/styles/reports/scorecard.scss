@@ -1,47 +1,50 @@
 .scorecard {
 
-  &__item {
-    svg {
-      font: 10px sans-serif;
-    }
+  &__chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    font: 10px sans-serif;
+  }
 
-    .background path {
-      fill: none;
-      stroke: #ddd;
-      shape-rendering: crispEdges;
-    }
+  .background path {
+    fill: none;
+    stroke-width: 2px;
+    stroke: #ddd;
+    shape-rendering: crispEdges;
+  }
 
-    .foreground path {
-      fill: none;
-      //stroke: steelblue;
-    }
+  .foreground path {
+    fill: none;
+    stroke-width: 2px;
+    //stroke: steelblue;
+  }
 
-    .brush .extent {
-      fill-opacity: .3;
-      stroke: #fff;
-      shape-rendering: crispEdges;
-    }
+  .brush .extent {
+    fill-opacity: .3;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+  }
 
-    .axis line,
-    .axis path {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-    }
+  .axis line,
+  .axis path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
 
-    .axis text {
-      text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-      fill: #333844;
-    }
+  .axis text {
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    fill: #333844;
+  }
 
-    .svgLegend{
-      float:right;
-      width: 200px;
-      height: 500px;
-    }
-    .legendTitle{
-      font-weight: bold;
-    }
-
+  .svgLegend{
+    float:right;
+    width: 200px;
+    height: 500px;
+  }
+  .legendTitle{
+    font-weight: bold;
   }
 }

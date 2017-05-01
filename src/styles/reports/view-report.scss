@@ -6,4 +6,49 @@
     text-align: center;
     color: #000;
   }
+
+  &__meta {
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-weight: 400;
+    font-size: 32px;
+    color: #121212;
+    margin: 0;
+  }
+
+  &_subtitle {
+    //
+  }
+
+  &__time {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 6px 0 0 0;
+  }
+
+  &__legend {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  &__legend-item {
+    font-size: 14px;
+    line-height: 16px;
+    margin: 5px 10px;
+  }
+
+  &__legend-shape {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    overflow: hidden;
+    @extend %clearfix;
+  }
 }

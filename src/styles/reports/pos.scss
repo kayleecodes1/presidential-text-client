@@ -1,11 +1,21 @@
 .part-of-speech {
-  &__item {
-    .svgLegend {
-      float: right;
-      width: 200px;
-    }
-    .legendTitle {
-      font-weight: bold;
-    }
+
+  &__chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .svgLegend {
+    float: right;
+    width: 200px;
+  }
+  .legendTitle {
+    font-weight: bold;
+  }
+
+  text[class *= 'text-'] {
+    pointer-events: none;
   }
 }

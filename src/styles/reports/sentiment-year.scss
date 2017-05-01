@@ -1,4 +1,11 @@
-.sentiment-year{
+.sentiment-year {
+
+  &__chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
 
   &__item {
 
@@ -29,17 +36,42 @@
 
   }
 
+  &__tooltip {
+    font-size: 11px;
+    color: #FFF;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px;
+    border-radius: 2px;
+    pointer-events: none;
 
-}
-div.tooltip {
-  position: absolute;
-  text-align: center;
-  width: 120px;
-  height: 28px;
-  padding: 2px;
-  font: 12px sans-serif;
-  background: lightsteelblue;
-  border: 0px;
-  border-radius: 8px;
-  pointer-events: none;
+    &::after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &.n::after {
+      content: '\25BC';
+      margin: -1px 0 0 0;
+      top: 100%;
+      left: 0;
+      text-align: center;
+    }
+  }
+
+  &__tooltip-title {
+    font-size: 14px;
+  }
+
+  &__tooltip-sentiment {
+    display: block;
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 4px;
+  }
 }

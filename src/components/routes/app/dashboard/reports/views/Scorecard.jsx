@@ -24,7 +24,7 @@ class Scorecard extends Component {
         data: PropTypes.object.isRequired
     };
 
-    static renderScorecard(svg, scores) {
+    static renderScorecard(svg, scores, colorScale) {
         if (svg === null) {
             return;
         }
@@ -34,7 +34,7 @@ class Scorecard extends Component {
            ==================== */
         const margin = {top: 30, right: 10, bottom: 10, left: 50},
             width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            height = 400 - margin.top - margin.bottom;
 
         let x = d3.scalePoint().range([0, width], 1),
             y = {},
@@ -46,6 +46,7 @@ class Scorecard extends Component {
         svg = d3.select('svg')/*.append('svg')*/
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
+            .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -122,7 +123,7 @@ class Scorecard extends Component {
             .enter().append('path')
             .attr('d', path)
             .attr('stroke', function (d) {
-                return color(d.Name);
+                return colorScale(d.Name);
             })
             .attr('data-legend', function (d) {
                 return d.Name.replace(/\s/g, '');
@@ -160,32 +161,6 @@ class Scorecard extends Component {
             ordDomain.push(data[i].Name);
         }
 
-        let ordinal = d3.scaleOrdinal(colorScheme)
-            .domain(ordDomain);
-
-        let legendSVG = d3.select('.scorecard__item')
-            .append('svg')
-            .attr('class', 'svgLegend');
-
-        legendSVG.append("g")
-            .attr("class", "legendOrdinal")
-            .attr("transform", "translate(20,20)");
-
-        let legendOrdinal = d3Legend.legendColor()
-            .shape("path", d3.symbol().type(d3.symbolSquare).size(height)())
-            //.title('Filter Sets')
-            .shapePadding(10)
-            .labelWrap(175)
-            .cellFilter(function (d) {
-                return d.label !== undefined
-            })
-            .on('cellover', cellover)
-            .on('cellout', cellout)
-            .scale(ordinal);
-
-        legendSVG.select(".legendOrdinal")
-            .call(legendOrdinal);
-
         // Returns the path for a given data point.
         function path(d) {
             return line(dimensions.map(function (p) {
@@ -209,18 +184,22 @@ class Scorecard extends Component {
 
     render() {
 
-        const {collections} = this.props.data;
+        const { collections } = this.props.data;
 
-        const collectionName = 'Scorecard';
+        const colorScale = d3.scaleOrdinal(d3Scale.schemeSet1)
+            .domain(Object.keys(collections));
+
         return (
-
             <div className="scorecard">
-                <div key={collectionName} className="scorecard__item">
-                    <h2 className="word-cloud__label">{collectionName}</h2>
-                    <svg ref={(svg) => {
-                        Scorecard.renderScorecard(svg, collections);
-                    }}/>
-                </div>
+                <ul className="view-report__legend">
+                    {Object.keys(collections).map((collectionName) => (
+                        <li key={collectionName} className="view-report__legend-item">
+                            <div className="view-report__legend-shape" style={{ background: colorScale(collectionName) }}></div>
+                            <span>{collectionName}</span>
+                        </li>
+                    ))}
+                </ul>
+                <svg className="scorecard__chart" ref={(svg) => Scorecard.renderScorecard(svg, collections, colorScale)} />
             </div>
         );
     }

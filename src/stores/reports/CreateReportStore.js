@@ -76,6 +76,8 @@ class CreateReportStore {
     @observable isVisible = false;
     @observable formData = {
         analytic: '',
+        clusterOption: 'single',
+        classifyOption: 'single',
         filterSets: []
     };
     @observable formErrors = {
@@ -98,6 +100,8 @@ class CreateReportStore {
 
         this.formData = {
             analytic: '',
+            clusterOption: 'single',
+            classifyOption: 'single',
             filterSets: []
         };
         this.formErrors = {
@@ -130,7 +134,7 @@ class CreateReportStore {
             return;
         }
 
-        const { analytic, filterSets } = this.formData;
+        const { analytic, clusterOption, classifyOption, filterSets } = this.formData;
 
         let hasErrors = false;
         if (analytic === '') {
@@ -158,16 +162,6 @@ class CreateReportStore {
         this.reportsStore.clearResult();
         this.isSubmitting = true;
 
-        if (this.formData.analytic === 'cluster') {
-            setTimeout(() => {
-                this.reportsStore.setResult(require('./_test_cluster'));
-                this.hide();
-                this.isSubmitting = false;
-                this.cancelLoading = null;
-            }, 1000);
-            return;
-        }
-
         const promises = [];
         for (const filterSetOption of filterSets) {
             promises.push(new Promise((resolve, reject) => {
@@ -187,17 +181,59 @@ class CreateReportStore {
                 if (isCancelled) {
                     return;
                 }
+
                 const collections = {};
                 for (const collectionData of collectionsData) {
                     collections[collectionData.name] = collectionData.documentIds;
                 }
+
                 const data = { analytic, collections };
+                if (analytic === 'cluster') {
+                    data.option = clusterOption;
+                }
+                if (analytic === 'classify') {
+                    data.option1 = classifyOption;
+                }
 
                 createReport(data)
                     .then((result) => {
                         if (isCancelled) {
                             return;
                         }
+
+                        const { analytic, collections, time } = result;
+
+                        if (analytic === 'cluster') {
+                            const json = collections.result.cluster.json_tree;
+                            const hierarchyData = JSON.parse(json.replace('\\"', '"'));
+                            const _convertChildren = (children) => {
+                                for (const child of children) {
+                                    const documents = child.name.split('-').map((idString) => {
+                                        const id = parseInt(idString, 10);
+                                        const title = this.reportsStore.getDocumentTitle(id);
+                                        return { id, title };
+                                    });
+                                    delete child.name;
+                                    child.documents = documents;
+                                    if (child.children && child.children.length) {
+                                        _convertChildren(child.children);
+                                    }
+                                    else {
+                                        delete child.children;
+                                        child.leafDocument = documents[0];
+                                    }
+                                }
+                            };
+                            _convertChildren(hierarchyData.children);
+                            result = {
+                                analytic,
+                                collections,
+                                result: hierarchyData,
+                                time
+                            };
+                            delete result.collections.result;
+                        }
+
                         runInAction(() => {
                             this.reportsStore.setResult(result);
                             this.hide();

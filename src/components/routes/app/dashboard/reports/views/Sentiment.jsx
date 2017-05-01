@@ -1,6 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import * as d3 from 'd3';
 
+const WIDTH = 960;
+const HEIGHT = 400;
+
 class Sentiment extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired
@@ -40,12 +43,13 @@ class Sentiment extends Component {
          */
 
         let margin = {top: 20, right: 20, bottom: 70, left: 40},
-            width = 960 - margin.left - margin.right,
-            height = 600 - margin.top - margin.bottom;
+            width = WIDTH - margin.left - margin.right,
+            height = HEIGHT - margin.top - margin.bottom;
 
         svg = d3.select('svg')
-            .attr('width', 960)
-            .attr('height', 600);
+            .attr('width', WIDTH)
+            .attr('height', HEIGHT)
+            .attr('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
 
         let g = svg.append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -122,18 +126,10 @@ class Sentiment extends Component {
 
         const {collections} = this.props.data;
 
-        const collectionName = 'Sentiment';
         return (
 
-            <div className='sentiment'>
-
-                <div key={collectionName} className='sentiment__item'>
-                    <h2 className='word-cloud__label'>{collectionName}</h2>
-                    <svg ref={(svg) => {
-                        Sentiment.renderSentiment(svg, collections);
-                    }}/>
-                </div>
-
+            <div className="sentiment">
+                <svg className="sentiment__chart" ref={(svg) => Sentiment.renderSentiment(svg, collections)}/>
             </div>
         );
     }
