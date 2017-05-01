@@ -192,7 +192,7 @@ class CreateReportStore {
                     data.option = clusterOption;
                 }
                 if (analytic === 'classify') {
-                    data.option1 = classifyOption;
+                    data.option = classifyOption;
                 }
 
                 createReport(data)
