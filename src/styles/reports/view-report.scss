@@ -6,4 +6,25 @@
     text-align: center;
     color: #000;
   }
+
+  &__meta {
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-weight: 400;
+    font-size: 32px;
+    color: #121212;
+    margin: 0;
+  }
+
+  &_subtitle {
+    //
+  }
+
+  &__time {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 6px 0 0 0;
+  }
 }

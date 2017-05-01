@@ -77,6 +77,7 @@ class CreateReportStore {
     @observable formData = {
         analytic: '',
         clusterOption: 'single',
+        classifyOption: 'single',
         filterSets: []
     };
     @observable formErrors = {
@@ -100,6 +101,7 @@ class CreateReportStore {
         this.formData = {
             analytic: '',
             clusterOption: 'single',
+            classifyOption: 'single',
             filterSets: []
         };
         this.formErrors = {
@@ -132,7 +134,7 @@ class CreateReportStore {
             return;
         }
 
-        const { analytic, clusterOption, filterSets } = this.formData;
+        const { analytic, clusterOption, classifyOption, filterSets } = this.formData;
 
         let hasErrors = false;
         if (analytic === '') {
@@ -189,6 +191,9 @@ class CreateReportStore {
                 if (analytic === 'cluster') {
                     data.option = clusterOption;
                 }
+                if (analytic === 'classify') {
+                    data.option = classifyOption;
+                }
 
                 createReport(data)
                     .then((result) => {
@@ -196,29 +201,35 @@ class CreateReportStore {
                             return;
                         }
 
-                        const { analytic, collections } = result;
+                        const { analytic, collections, time } = result;
 
                         if (analytic === 'cluster') {
                             const json = collections.result.cluster.json_tree;
                             const hierarchyData = JSON.parse(json.replace('\\"', '"'));
                             const _convertChildren = (children) => {
                                 for (const child of children) {
-                                    const documentTitles = child.name.split('-').map((idString) => {
-                                        const documentId = parseInt(idString, 10);
-                                        return this.reportsStore.getDocumentTitle(documentId);
+                                    const documents = child.name.split('-').map((idString) => {
+                                        const id = parseInt(idString, 10);
+                                        const title = this.reportsStore.getDocumentTitle(id);
+                                        return { id, title };
                                     });
                                     delete child.name;
-                                    child.documentTitles = documentTitles;
-                                    if (child.children) {
+                                    child.documents = documents;
+                                    if (child.children && child.children.length) {
                                         _convertChildren(child.children);
                                     }
+                                    else {
+                                        delete child.children;
+                                        child.leafDocument = documents[0];
+                                    }
                                 }
-                            }
+                            };
                             _convertChildren(hierarchyData.children);
                             result = {
                                 analytic,
                                 collections,
-                                result: hierarchyData
+                                result: hierarchyData,
+                                time
                             };
                             delete result.collections.result;
                         }

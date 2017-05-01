@@ -1,5 +1,29 @@
 .cluster {
 
+  &__legend {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  &__legend-item {
+    font-size: 14px;
+    line-height: 16px;
+    margin: 5px 10px;
+  }
+
+  &__legend-shape {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    overflow: hidden;
+    @extend %clearfix;
+  }
+
   &__chart {
     width: 100%;
     height: auto;
@@ -9,24 +33,21 @@
     fill: none;
     stroke: #555;
     stroke-opacity: 0.4;
-    stroke-width: 1.5px;
+    stroke-width: 1px;
   }
 
   &__node {
-    fill: #01579B;
-    stroke-width: 3;
+    stroke-width: 2px;
     stroke: #FFF;
     stroke-opacity: 0;
 
     &--leaf {
-
-      fill: #29B6F6;
+      //
     }
   }
 
   &__tooltip {
     font-size: 11px;
-    line-height: 1.1;
     color: #FFF;
     background: rgba(0, 0, 0, 0.8);
     padding: 12px;
@@ -50,5 +71,25 @@
       text-align: center;
       margin: 0 0 1px 0;
     }
+  }
+
+  &__tooltip-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__tooltip-item {
+    line-height: 12px;
+    margin-bottom: 3px;
+    @extend %clearfix;
+  }
+
+  &__tooltip-shape {
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    overflow: hidden;
   }
 }
