@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="454269a4-4d05-43b5-a8e2-ef2a27543ad6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/CreateReportModal.jsx" afterPath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/CreateReportModal.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/ViewReport.jsx" afterPath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/ViewReport.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Cluster.jsx" afterPath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Cluster.jsx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/stores/reports/CreateReportStore.js" afterPath="$PROJECT_DIR$/src/stores/reports/CreateReportStore.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/index.scss" afterPath="$PROJECT_DIR$/src/styles/index.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/reports/cluster.scss" afterPath="$PROJECT_DIR$/src/styles/reports/cluster.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/reports/view-report.scss" afterPath="$PROJECT_DIR$/src/styles/reports/view-report.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/routes/section.scss" afterPath="$PROJECT_DIR$/src/styles/routes/section.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/reports/pos.scss" afterPath="$PROJECT_DIR$/src/styles/reports/pos.scss" />
     </list>
     <ignored path="presidential-text-client.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,72 +25,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="view-report.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/styles/reports/view-report.scss">
+      <file leaf-file-name="PartOfSpeech.jsx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/PartOfSpeech.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewReport.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/ViewReport.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="36" column="82" selection-start-line="36" selection-start-column="82" selection-end-line="36" selection-end-column="82" />
+            <state relative-caret-position="-155">
+              <caret line="127" column="47" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="47" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#0#50#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="section.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/styles/routes/section.scss">
+      <file leaf-file-name="pos.scss" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/styles/reports/pos.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="47" column="3" selection-start-line="47" selection-start-column="3" selection-end-line="47" selection-end-column="3" />
+            <state relative-caret-position="165">
+              <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cluster.scss" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/styles/reports/cluster.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="83" column="22" selection-start-line="83" selection-start-column="22" selection-end-line="83" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateReportStore.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/stores/reports/CreateReportStore.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="203" column="59" selection-start-line="203" selection-start-column="59" selection-end-line="203" selection-end-column="59" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Cluster.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Cluster.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="65" column="56" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
-              <folding>
-                <element signature="e#0#52#0" expanded="true" />
-                <element signature="e#148#201#0" expanded="true" />
-                <marker date="1493656234000" expanded="true" signature="2081:2119" ph="..." />
-                <marker date="1493656234000" expanded="true" signature="2290:2545" ph="..." />
-                <marker date="1493656234000" expanded="true" signature="4206:4831" ph="..." />
-                <marker date="1493656234000" expanded="true" signature="4255:4669" ph="..." />
-                <marker date="1493656234000" expanded="true" signature="4410:4623" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -183,19 +129,19 @@
         <option value="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Scorecard.jsx" />
         <option value="$PROJECT_DIR$/src/styles/reports/scorecard.scss" />
         <option value="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Sentiment.jsx" />
-        <option value="$PROJECT_DIR$/src/styles/reports/pos.scss" />
         <option value="$PROJECT_DIR$/src/styles/reports/sentiment-year.scss" />
         <option value="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/SentimentYear.jsx" />
         <option value="$PROJECT_DIR$/src/styles/index.scss" />
         <option value="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/CreateReportModal.jsx" />
         <option value="$PROJECT_DIR$/src/styles/reports/classify.scss" />
         <option value="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Classify.jsx" />
-        <option value="$PROJECT_DIR$/src/stores/reports/CreateReportStore.js" />
         <option value="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/ViewReport.jsx" />
         <option value="$PROJECT_DIR$/src/styles/reports/view-report.scss" />
         <option value="$PROJECT_DIR$/src/styles/routes/section.scss" />
         <option value="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Cluster.jsx" />
         <option value="$PROJECT_DIR$/src/styles/reports/cluster.scss" />
+        <option value="$PROJECT_DIR$/src/stores/reports/CreateReportStore.js" />
+        <option value="$PROJECT_DIR$/src/styles/reports/pos.scss" />
       </list>
     </option>
   </component>
@@ -719,7 +665,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272446000" />
+    <option name="totallyTimeSpent" value="273186000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="63" y="23" width="1372" height="859" extended-state="0" />
@@ -869,6 +815,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1725">
           <caret line="115" column="26" selection-start-line="115" selection-start-column="23" selection-end-line="115" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -951,16 +898,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/PartOfSpeech.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1008">
-          <caret line="130" column="57" selection-start-line="130" selection-start-column="57" selection-end-line="130" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/styles/reports/sentiment.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -973,14 +910,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="8" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/styles/reports/pos.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1101,21 +1030,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/styles/reports/view-report.scss">
+    <entry file="file://$PROJECT_DIR$/src/stores/reports/CreateReportStore.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+        <state relative-caret-position="86">
+          <caret line="193" column="46" selection-start-line="193" selection-start-column="46" selection-end-line="193" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/ViewReport.jsx">
+    <entry file="file://$PROJECT_DIR$/src/styles/reports/cluster.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="36" column="82" selection-start-line="36" selection-start-column="82" selection-end-line="36" selection-end-column="82" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="211">
+          <caret line="81" column="19" selection-start-line="81" selection-start-column="19" selection-end-line="81" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1127,10 +1054,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/stores/reports/CreateReportStore.js">
+    <entry file="file://$PROJECT_DIR$/src/styles/reports/view-report.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="203" column="59" selection-start-line="203" selection-start-column="59" selection-end-line="203" selection-end-column="59" />
+        <state relative-caret-position="405">
+          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -1151,10 +1078,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/styles/reports/cluster.scss">
+    <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/ViewReport.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="83" column="22" selection-start-line="83" selection-start-column="22" selection-end-line="83" selection-end-column="22" />
+        <state relative-caret-position="190">
+          <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/PartOfSpeech.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-155">
+          <caret line="127" column="47" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/styles/reports/pos.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
           <folding />
         </state>
       </provider>
