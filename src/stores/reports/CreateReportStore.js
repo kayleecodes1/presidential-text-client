@@ -137,6 +137,8 @@ class CreateReportStore {
         const { analytic, clusterOption, classifyOption, filterSets } = this.formData;
 
         let hasErrors = false;
+        this.formErrors.analytic = '';
+        this.formErrors.filterSets = '';
         if (analytic === '') {
             hasErrors = true;
             this.formErrors.analytic = 'Report type is required.';
@@ -144,6 +146,14 @@ class CreateReportStore {
         if (filterSets.length === 0) {
             hasErrors = true;
             this.formErrors.filterSets = 'At least one filter set is required.';
+        }
+        else if (analytic === 'scorecard') {
+            hasErrors = true;
+            this.formErrors.filterSets = 'Scorecard requires at least two filter sets.';
+        }
+        else if (analytic === 'classify' && filterSets.length < 2) {
+            hasErrors = true;
+            this.formErrors.filterSets = 'Classify requires at least two filter sets.';
         }
         if (hasErrors) {
             return;
