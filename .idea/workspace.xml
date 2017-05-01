@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="454269a4-4d05-43b5-a8e2-ef2a27543ad6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/styles/reports/sentiment-year.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Scorecard.jsx" afterPath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Scorecard.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/SentimentYear.jsx" afterPath="$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/SentimentYear.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/index.scss" afterPath="$PROJECT_DIR$/src/styles/index.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/reports/pos.scss" afterPath="$PROJECT_DIR$/src/styles/reports/pos.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/styles/reports/scorecard.scss" afterPath="$PROJECT_DIR$/src/styles/reports/scorecard.scss" />
-    </list>
+    <list default="true" id="454269a4-4d05-43b5-a8e2-ef2a27543ad6" name="Default" comment="" />
     <ignored path="presidential-text-client.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,7 +24,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Scorecard.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="548">
-              <caret line="195" column="0" lean-forward="true" selection-start-line="195" selection-start-column="0" selection-end-line="205" selection-end-column="9" />
+              <caret line="195" column="0" lean-forward="false" selection-start-line="195" selection-start-column="0" selection-end-line="205" selection-end-column="9" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
                 <marker date="1493334867000" expanded="true" signature="7369:7388" ph="&lt;div/&gt;" />
@@ -46,7 +37,7 @@
         <entry file="file://$PROJECT_DIR$/src/styles/reports/scorecard.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
-              <caret line="6" column="0" lean-forward="true" selection-start-line="3" selection-start-column="4" selection-end-line="6" selection-end-column="0" />
+              <caret line="6" column="0" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="6" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -94,7 +85,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/TopTen.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="349">
-              <caret line="82" column="8" lean-forward="true" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="33" />
+              <caret line="82" column="8" lean-forward="false" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="33" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
                 <marker date="1492994965000" expanded="true" signature="3197:3598" ph="..." />
@@ -613,12 +604,12 @@
       <workItem from="1491388275535" duration="11773000" />
       <workItem from="1491672442009" duration="17960000" />
       <workItem from="1492042498978" duration="14001000" />
-      <workItem from="1492873928112" duration="41628000" />
+      <workItem from="1492873928112" duration="41804000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="264231000" />
+    <option name="totallyTimeSpent" value="264407000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -989,7 +980,7 @@
         <state relative-caret-position="1008">
           <caret line="130" column="57" lean-forward="false" selection-start-line="130" selection-start-column="57" selection-end-line="130" selection-end-column="57" />
           <folding>
-            <element signature="e#0#50#0" expanded="true" />
+            <element signature="e#0#50#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1037,7 +1028,7 @@
     <entry file="file://$PROJECT_DIR$/src/styles/reports/scorecard.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="3" selection-start-column="4" selection-end-line="6" selection-end-column="0" />
+          <caret line="6" column="0" lean-forward="false" selection-start-line="3" selection-start-column="4" selection-end-line="6" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1084,7 +1075,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/Scorecard.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="548">
-          <caret line="195" column="0" lean-forward="true" selection-start-line="195" selection-start-column="0" selection-end-line="205" selection-end-column="9" />
+          <caret line="195" column="0" lean-forward="false" selection-start-line="195" selection-start-column="0" selection-end-line="205" selection-end-column="9" />
           <folding>
             <element signature="e#0#50#0" expanded="true" />
             <marker date="1493334867000" expanded="true" signature="7369:7388" ph="&lt;div/&gt;" />
@@ -1109,7 +1100,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/routes/app/dashboard/reports/views/TopTen.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="349">
-          <caret line="82" column="8" lean-forward="true" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="33" />
+          <caret line="82" column="8" lean-forward="false" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="33" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
             <marker date="1492994965000" expanded="true" signature="3197:3598" ph="..." />
