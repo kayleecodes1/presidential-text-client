@@ -1,7 +1,8 @@
 .cluster {
 
   &__chart {
-    //
+    width: 100%;
+    height: auto;
   }
 
   &__link {
@@ -12,22 +13,42 @@
   }
 
   &__node {
-    fill: #999;
-
-    circle {
-      fill: #555;
-    }
-
-    text {
-      font: 10px sans-serif;
-      text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
-    }
+    fill: #01579B;
+    stroke-width: 3;
+    stroke: #FFF;
+    stroke-opacity: 0;
 
     &--leaf {
 
-      text {
-        text-shadow: none;
-      }
+      fill: #29B6F6;
+    }
+  }
+
+  &__tooltip {
+    font-size: 11px;
+    line-height: 1.1;
+    color: #FFF;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px;
+    border-radius: 2px;
+    pointer-events: none;
+
+    &::after {
+      box-sizing: border-box;
+      display: inline;
+      font-size: 10px;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &.s::after {
+      content: '\25B2';
+      top: -8px; left: 0;
+      text-align: center;
+      margin: 0 0 1px 0;
     }
   }
 }

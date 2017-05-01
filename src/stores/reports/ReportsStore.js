@@ -61,6 +61,14 @@ class ReportsStore {
             });
     }
 
+    getDocumentTitle(documentId) {
+        const document = this.documents.get(documentId);
+        if (!document) {
+            return '';
+        }
+        return document.title;
+    }
+
     @action.bound
     clearResult() {
         this.result = null;

@@ -1,21 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { toJS } from 'mobx';
 import * as d3 from 'd3';
+import tip from 'd3-tip';
+d3.tip = tip;
 
 const WIDTH = 800;
 const HEIGHT = 400;
 
-const CHART_COLORS = [
-    //'#E1F5FE',
-    '#B3E5FC',
-    '#81D4FA',
-    '#4FC3F7',
-    '#29B6F6',
-    '#03A9F4',
-    '#039BE5',
-    '#0288D1',
-    '#0277BD',
-    '#01579B'
+const COLORS = [
+    '#333',
+    '#666',
+    '#999',
+    '#CCC'
 ];
 
 class Cluster extends Component {
@@ -24,11 +20,12 @@ class Cluster extends Component {
         data: PropTypes.object.isRequired
     };
 
-    static renderCluster(svg, data) {
+    static renderCluster(_svg, data) {
 
-        if (svg === null) {
+        if (_svg === null) {
             return;
         }
+        const svg = d3.select(_svg);
 
         const layout = d3.cluster()
             .size([HEIGHT, WIDTH - 160]);
@@ -38,16 +35,21 @@ class Cluster extends Component {
 
         layout(root);
 
-        console.log(root.descendants());
+        const tip = d3.tip()
+            .attr('class', 'cluster__tooltip')
+            .direction('s')
+            .offset([10, 0])
+            .html((d) => d.data.documentTitles.join('<br />'));
+        svg.call(tip);
 
-        const canvas = d3.select(svg)
+        const canvas = svg
             .attr('class', 'cluster__chart')
             .attr('width', WIDTH)
             .attr('height', HEIGHT)
             .attr('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
 
         const group = canvas.append('g')
-            .attr('transform', `translate(40,0)`);
+            .attr('transform', 'translate(40,0)');
 
         const link = group.selectAll('.cluster__link')
             .data(root.descendants().slice(1))
@@ -56,25 +58,19 @@ class Cluster extends Component {
             .attr('class', 'cluster__link')
             .attr('d', (d) => {
                 return `M${d.y},${d.x} L${d.parent.y},${d.x} L${d.parent.y},${d.parent.x}`;
-                return `M${d.y},${d.x}C${d.parent.y + 100},${d.x} ` +
-                    `${d.parent.y + 100},${d.parent.x} ${d.parent.y},${d.parent.x}`;
             });
 
         const node = group.selectAll('.cluster__node')
-            .data(root.descendants())
-            .enter()
-            .append('g')
-            .attr('class', (d) => 'cluster__node' + (!d.children ? ' cluster__node--leaf' : ''))
-            .attr('transform', (d) => `translate(${d.y},${d.x})`);
+            .data(root.descendants());
+        const nodeEnter = node.enter()
+            .append('circle')
+            .attr('class', (d) => 'cluster__node' + (d.children && d.children.length ? ' cluster__node--leaf' : ''))
+            .attr('r', 3)
+            .attr('transform', (d) => `translate(${d.y},${d.x})`)
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
-        node.append('circle')
-            .attr('r', 2.5);
-
-        node.append('text')
-            .attr('dy', 3)
-            .attr('x', (d) => d.children ? -8 : 8)
-            .style('text-anchor', (d) => d.children ? 'end' : 'start')
-            .text((d) => d.data.name);
+        //TODO hover for d.documentTitles
     }
 
     render() {

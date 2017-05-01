@@ -76,6 +76,7 @@ class CreateReportStore {
     @observable isVisible = false;
     @observable formData = {
         analytic: '',
+        clusterOption: 'single',
         filterSets: []
     };
     @observable formErrors = {
@@ -98,6 +99,7 @@ class CreateReportStore {
 
         this.formData = {
             analytic: '',
+            clusterOption: 'single',
             filterSets: []
         };
         this.formErrors = {
@@ -130,7 +132,7 @@ class CreateReportStore {
             return;
         }
 
-        const { analytic, filterSets } = this.formData;
+        const { analytic, clusterOption, filterSets } = this.formData;
 
         let hasErrors = false;
         if (analytic === '') {
@@ -158,16 +160,6 @@ class CreateReportStore {
         this.reportsStore.clearResult();
         this.isSubmitting = true;
 
-        if (this.formData.analytic === 'cluster') {
-            setTimeout(() => {
-                this.reportsStore.setResult(require('./_test_cluster'));
-                this.hide();
-                this.isSubmitting = false;
-                this.cancelLoading = null;
-            }, 1000);
-            return;
-        }
-
         const promises = [];
         for (const filterSetOption of filterSets) {
             promises.push(new Promise((resolve, reject) => {
@@ -187,17 +179,50 @@ class CreateReportStore {
                 if (isCancelled) {
                     return;
                 }
+
                 const collections = {};
                 for (const collectionData of collectionsData) {
                     collections[collectionData.name] = collectionData.documentIds;
                 }
+
                 const data = { analytic, collections };
+                if (analytic === 'cluster') {
+                    data.option = clusterOption;
+                }
 
                 createReport(data)
                     .then((result) => {
                         if (isCancelled) {
                             return;
                         }
+
+                        const { analytic, collections } = result;
+
+                        if (analytic === 'cluster') {
+                            const json = collections.result.cluster.json_tree;
+                            const hierarchyData = JSON.parse(json.replace('\\"', '"'));
+                            const _convertChildren = (children) => {
+                                for (const child of children) {
+                                    const documentTitles = child.name.split('-').map((idString) => {
+                                        const documentId = parseInt(idString, 10);
+                                        return this.reportsStore.getDocumentTitle(documentId);
+                                    });
+                                    delete child.name;
+                                    child.documentTitles = documentTitles;
+                                    if (child.children) {
+                                        _convertChildren(child.children);
+                                    }
+                                }
+                            }
+                            _convertChildren(hierarchyData.children);
+                            result = {
+                                analytic,
+                                collections,
+                                result: hierarchyData
+                            };
+                            delete result.collections.result;
+                        }
+
                         runInAction(() => {
                             this.reportsStore.setResult(result);
                             this.hide();
