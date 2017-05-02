@@ -19,6 +19,7 @@ class DocumentsStore {
     notificationsStore;
     filterSetsStore;
 
+    isInitialized = false;
     @observable resultsPerPage = 10;
     @observable currentPage = 1;
     @observable isLoading = false;
@@ -205,6 +206,10 @@ class DocumentsStore {
     @action.bound
     initializeState() {
 
+        if (this.isInitialized) {
+            return;
+        }
+
         if (this.cancelLoading) {
             this.cancelLoading();
             this.cancelLoading = null;
@@ -249,6 +254,7 @@ class DocumentsStore {
                     for (const label of speakerLabels) {
                         this.speakerLabels.set(label.id, label);
                     }
+                    this.isInitialized = true;
                 });
             })
             .catch((error) => {

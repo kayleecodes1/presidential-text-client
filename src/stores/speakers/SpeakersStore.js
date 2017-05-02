@@ -14,6 +14,7 @@ class SpeakersStore {
 
     notificationsStore;
 
+    isInitialized = false;
     @observable resultsPerPage = 10;
     @observable currentPage = 1;
     @observable isLoading = false;
@@ -107,6 +108,10 @@ class SpeakersStore {
     @action.bound
     initializeState() {
 
+        if (this.isInitialized) {
+            return;
+        }
+
         if (this.cancelLoading) {
             this.cancelLoading();
             this.cancelLoading = null;
@@ -141,6 +146,7 @@ class SpeakersStore {
                     for (const label of speakerLabels) {
                         this.speakerLabels.set(label.id, label);
                     }
+                    this.isInitialized = true;
                 });
             })
             .catch((error) => {

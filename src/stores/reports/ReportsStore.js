@@ -5,6 +5,7 @@ class ReportsStore {
 
     notificationsStore;
 
+    isInitialized = false;
     @observable isLoading = false;
     cancelLoading = null;
     @observable documents = new Map();
@@ -16,6 +17,10 @@ class ReportsStore {
 
     @action.bound
     initializeState() {
+
+        if (this.isInitialized) {
+            return;
+        }
 
         if (this.cancelLoading) {
             this.cancelLoading();
@@ -40,6 +45,7 @@ class ReportsStore {
                     for (const document of documents) {
                         this.documents.set(document.id, document);
                     }
+                    this.isInitialized = true;
                 });
             })
             .catch((error) => {
