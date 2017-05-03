@@ -73,6 +73,10 @@
     overflow-y: auto;
     transition: max-height 0.2s ease-in-out;
 
+    &--no-footer {
+      border-radius: 0 0 3px 3px;
+    }
+
     &--loading {
       height: $body-loading-height;
       max-height: $body-loading-height;

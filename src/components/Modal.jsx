@@ -59,7 +59,7 @@ class Modal extends Component {
                                 <i className="fa fa-times" />
                             </button>
                         </div>
-                        <div className={classNames('modal__body', { 'modal__body--loading': isLoading })}>
+                        <div className={classNames('modal__body', { 'modal__body--no-footer': !renderFooter, 'modal__body--loading': isLoading })}>
                             {isLoading ? (
                                 <LoadingIndicator />
                             ) : renderContent()}
