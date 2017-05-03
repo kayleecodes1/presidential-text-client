@@ -15,6 +15,10 @@ class SentimentYear extends Component {
 
     renderSentimentYear(svg, vals, colorScale) {
 
+        if (svg === null) {
+            return;
+        }
+
         let strData = 'date,sentiment,docId,list\n';
         for (let lst in vals) {
             let docYear = vals[lst].result.documentyear;

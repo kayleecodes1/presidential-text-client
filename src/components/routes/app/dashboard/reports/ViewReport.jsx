@@ -8,6 +8,8 @@ import TopTen from './views/TopTen';
 import PartOfSpeech from './views/PartOfSpeech';
 import Cluster from './views/Cluster';
 import Classify from './views/Classify';
+import DistinctWords from './views/DistinctWords';
+import UniqueWords from './views/UniqueWords';
 
 @inject('reports')
 @observer
@@ -29,7 +31,9 @@ class ViewReport extends Component {
             top: 'Top 10 Words',
             pos: 'Part of Speech',
             cluster: 'Cluster',
-            classify: 'Classify'
+            classify: 'Classify',
+            distinct: 'Distinct Words',
+            unique: 'Unique Words'
         };
 
         return (
@@ -67,6 +71,10 @@ class ViewReport extends Component {
                 return <Cluster data={result} />;
             case 'classify':
                 return <Classify data={result} />;
+            case 'distinct':
+                return <DistinctWords data={result} />
+            case 'unique':
+                return <UniqueWords data={result} />
             default:
                 return JSON.stringify(result);
         }
