@@ -1,0 +1,45 @@
+.unique-words {
+
+  $item-spacing: 20px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 -($item-spacing / 2);
+
+  &__item {
+    //width: 50%;
+    border-radius: 3px;
+    border: 1px solid $color-border-light;
+    margin: ($item-spacing / 2);
+    float: left;
+    display: inline;
+    height: 500px;
+    //overflow: scroll;
+  }
+
+  .tableDiv{
+    height: 460px;
+    overflow: scroll;
+  }
+  &__label {
+    height: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    //line-height: 30px;
+    text-align: center;
+    background: #EEE;
+    border-bottom: 1px solid $color-border-light;
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  &__chart {
+    width: 100%;
+    height: auto;
+  }
+  svg{
+    display: none;
+  }
+}
