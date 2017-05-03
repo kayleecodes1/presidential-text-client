@@ -40,6 +40,8 @@ class CreateReportModal extends Component {
         const { isVisible, formData, formErrors, isSubmitting, hide } = this.props.createReport;
 
         formData.analytic;
+        formData.clusterOption;
+        formData.classifyOption;
         formData.filterSets//TODO: required for update
         formErrors.analytic;
         formErrors.filterSets;
@@ -86,10 +88,8 @@ class CreateReportModal extends Component {
                 ) : null}
                 {formData.analytic === 'classify' ? (
                     <label className="form__label">
-                        <span>Classify Method</span>
-                        <select className="form__select" name="classifyOption" value={formData.classifyOption} onChange={this.handleChange}>
-                            <option value="single">Single</option>
-                        </select>
+                        <span>Classify K-folds</span>
+                        <input type="text" className="form__text-input" name="classifyOption" value={formData.classifyOption} onChange={this.handleChange} />
                     </label>
                 ) : null}
                 <label className="form__label" style={{ height: '150px' }}>

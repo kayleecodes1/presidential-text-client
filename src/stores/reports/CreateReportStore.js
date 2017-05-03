@@ -77,7 +77,7 @@ class CreateReportStore {
     @observable formData = {
         analytic: '',
         clusterOption: 'single',
-        classifyOption: 'single',
+        classifyOption: '1',
         filterSets: []
     };
     @observable formErrors = {
@@ -101,7 +101,7 @@ class CreateReportStore {
         this.formData = {
             analytic: '',
             clusterOption: 'single',
-            classifyOption: 'single',
+            classifyOption: '1',
             filterSets: []
         };
         this.formErrors = {
@@ -192,6 +192,8 @@ class CreateReportStore {
                     return;
                 }
 
+                //TODO: check k-folds for classify here?
+
                 const collections = {};
                 for (const collectionData of collectionsData) {
                     collections[collectionData.name] = collectionData.documentIds;
@@ -202,7 +204,7 @@ class CreateReportStore {
                     data.option = clusterOption;
                 }
                 if (analytic === 'classify') {
-                    data.option = classifyOption;
+                    data.option1 = classifyOption;
                 }
 
                 createReport(data)
