@@ -72,7 +72,16 @@ class CreateReportModal extends Component {
                         <span>Cluster Method</span>
                         <select className="form__select" name="clusterOption" value={formData.clusterOption} onChange={this.handleChange}>
                             <option value="single">Single</option>
+                            <option value="complete">Complete</option>
+                            <option value="average">Average</option>
+                            <option value="weighted">Weighted</option>
+                            <option value="centroid">Centroid</option>
+                            <option value="median">Median</option>
+                            <option value="ward">Ward</option>
                         </select>
+                        <div className="form__input-link">
+                            <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html" target="_blank">Click here to learn about each cluster method.</a>
+                        </div>
                     </label>
                 ) : null}
                 {formData.analytic === 'classify' ? (

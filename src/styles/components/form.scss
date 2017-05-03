@@ -94,6 +94,20 @@
     line-height: 1.35;
     color: #63697D;
   }
+
+  &__input-link {
+    margin: 3px 0 0 0;
+
+    a {
+      font-size: 11px;
+      color: rgba(darken($color-highlight, 35%), 0.7);
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 }
 
 // react-select overrides
