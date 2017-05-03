@@ -6,12 +6,10 @@ import DocumentsStore from './documents/DocumentsStore';
 import LoadFilterSetStore from './documents/LoadFilterSetStore';
 import CreateDocumentStore from './documents/CreateDocumentStore';
 import EditDocumentStore from './documents/EditDocumentStore';
-import DeleteDocumentStore from './documents/DeleteDocumentStore';
 import ManageDocumentLabelsStore from './documents/ManageDocumentLabelsStore';
 import SpeakersStore from './speakers/SpeakersStore';
 import CreateSpeakerStore from './speakers/CreateSpeakerStore';
 import EditSpeakerStore from './speakers/EditSpeakerStore';
-import DeleteSpeakerStore from './speakers/DeleteSpeakerStore';
 import ManageSpeakerLabelsStore from './speakers/ManageSpeakerLabelsStore';
 import ReportsStore from './reports/ReportsStore';
 import CreateReportStore from './reports/CreateReportStore';
@@ -24,12 +22,10 @@ const documents = new DocumentsStore(notifications, filterSets);
 const loadFilterSet = new LoadFilterSetStore(filterSets, documents);
 const createDocument = new CreateDocumentStore(notifications, documents);
 const editDocument = new EditDocumentStore(notifications, documents);
-const deleteDocument = new DeleteDocumentStore(notifications, documents);
 const manageDocumentLabels = new ManageDocumentLabelsStore(notifications, documents);
 const speakers = new SpeakersStore(notifications);
 const createSpeaker = new CreateSpeakerStore(notifications, speakers);
 const editSpeaker = new EditSpeakerStore(notifications, speakers);
-const deleteSpeaker = new DeleteSpeakerStore(notifications, speakers);
 const manageSpeakerLabels = new ManageSpeakerLabelsStore(notifications, speakers);
 const reports = new ReportsStore(notifications);
 const createReport = new CreateReportStore(notifications, filterSets, reports);
@@ -42,13 +38,11 @@ const stores = {
     loadFilterSet,
     createDocument,
     editDocument,
-    deleteDocument,
     manageDocumentLabels,
     filterSets,
     speakers,
     createSpeaker,
     editSpeaker,
-    deleteSpeaker,
     manageSpeakerLabels,
     reports,
     createReport

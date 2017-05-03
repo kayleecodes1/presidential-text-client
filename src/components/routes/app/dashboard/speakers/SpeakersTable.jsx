@@ -4,13 +4,12 @@ import classNames from 'classnames';
 
 @inject('speakers')
 @inject('editSpeaker')
-@inject('deleteSpeaker')
 @observer
 class SpeakersTable extends Component {
 
     renderSpeakerRows() {
 
-        const { speakers, editSpeaker, deleteSpeaker } = this.props;
+        const { speakers, editSpeaker } = this.props;
         const { resultsPerPage, isLoading, currentPageSpeakers } = speakers;
 
         if (isLoading) {
@@ -36,12 +35,6 @@ class SpeakersTable extends Component {
                             <button className="button button--tiny" onClick={() => editSpeaker.show(speaker.id)}>
                                 <i className="button__icon button__icon--tiny fa fa-pencil" />
                                 <span>Edit</span>
-                            </button>
-                        </li>
-                        <li className="button-list__item button-list__item--tiny-spacing">
-                            <button className="button button--tiny" onClick={() => deleteSpeaker.show(speaker.id)}>
-                                <i className="button__icon button__icon--tiny fa fa-trash" />
-                                <span>Delete</span>
                             </button>
                         </li>
                     </ul>

@@ -39,4 +39,4 @@ export const createDocument = (data) => callApi('documents', 'POST', data, trans
 
 export const updateDocument = (documentId, data) => callApi(`documents/${documentId}`, 'PUT', data, transformDocumentSummary);
 
-export const deleteDocument = (documentId) => callApi(`documents/${documentId}`, 'DELETE');
+//export const deleteDocument = (documentId) => callApi(`documents/${documentId}`, 'DELETE');

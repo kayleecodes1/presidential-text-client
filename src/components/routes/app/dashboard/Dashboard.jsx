@@ -5,11 +5,9 @@ import classNames from 'classnames';
 import LoadFilterSetModal from './documents/LoadFilterSetModal';
 import CreateDocumentModal from './documents/CreateDocumentModal';
 import EditDocumentModal from './documents/EditDocumentModal';
-import DeleteDocumentModal from './documents/DeleteDocumentModal';
 import ManageDocumentLabelsModal from './documents/ManageDocumentLabelsModal';
 import CreateSpeakerModal from './speakers/CreateSpeakerModal';
 import EditSpeakerModal from './speakers/EditSpeakerModal';
-import DeleteSpeakerModal from './speakers/DeleteSpeakerModal';
 import ManageSpeakerLabelsModal from './speakers/ManageSpeakerLabelsModal';
 import CreateReportModal from './reports/CreateReportModal';
 
@@ -87,11 +85,9 @@ class Dashboard extends Component {
                 <LoadFilterSetModal />
                 <CreateDocumentModal />
                 <EditDocumentModal />
-                <DeleteDocumentModal />
                 <ManageDocumentLabelsModal />
                 <CreateSpeakerModal />
                 <EditSpeakerModal />
-                <DeleteSpeakerModal />
                 <ManageSpeakerLabelsModal />
                 <CreateReportModal />
             </div>

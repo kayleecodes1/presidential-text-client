@@ -4,13 +4,12 @@ import classNames from 'classnames';
 
 @inject('documents')
 @inject('editDocument')
-@inject('deleteDocument')
 @observer
 class DocumentsTable extends Component {
 
     renderDocumentRows() {
 
-        const { editDocument, deleteDocument } = this.props;
+        const { editDocument } = this.props;
         const { resultsPerPage, isLoading, textSearchIsLoading, currentPageDocuments, getSpeakerName } = this.props.documents;
 
         if (isLoading || textSearchIsLoading) {
@@ -38,12 +37,6 @@ class DocumentsTable extends Component {
                             <button className="button button--tiny" onClick={() => editDocument.show(document.id)}>
                                 <i className="button__icon button__icon--tiny fa fa-pencil" />
                                 <span>Edit</span>
-                            </button>
-                        </li>
-                        <li className="button-list__item button-list__item--tiny-spacing">
-                            <button className="button button--tiny" onClick={() => deleteDocument.show(document.id)}>
-                                <i className="button__icon button__icon--tiny fa fa-trash" />
-                                <span>Delete</span>
                             </button>
                         </li>
                     </ul>
