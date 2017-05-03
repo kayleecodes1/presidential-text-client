@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import * as d3 from 'd3';
 import cloud from 'd3-cloud';
-import * as d3Trans from 'd3-transition';
+
 
 const WIDTH = 600;
 const HEIGHT = 400;
