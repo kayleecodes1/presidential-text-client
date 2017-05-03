@@ -18,7 +18,7 @@ class SpeakersTable extends Component {
             for (let i = 0; i < resultsPerPage; i++) {
                 placeholderRows.push(
                     <tr key={`placeholder_${i}`} className="table__row">
-                        <td colSpan="2" className="table__cell">
+                        <td colSpan={app.currentUser !== null ? '2' : '1'} className="table__cell">
                             <div className="loading-placeholder table__content-placeholder"></div>
                         </td>
                     </tr>
@@ -30,25 +30,25 @@ class SpeakersTable extends Component {
         let rows = currentPageSpeakers.map((speaker, index) => (
             <tr key={speaker.id} className="table__row">
                 <td className="table__cell">{speaker.name}</td>
-                <td className="table__cell">
-                    <ul className="button-list">
-                        {app.currentUser !== null ? (
+                {app.currentUser !== null ? (
+                    <td className="table__cell">
+                        <ul className="button-list">
                             <li className="button-list__item button-list__item--tiny-spacing">
                                 <button className="button button--tiny" onClick={() => editSpeaker.show(speaker.id)}>
                                     <i className="button__icon button__icon--tiny fa fa-pencil" />
                                     <span>Edit</span>
                                 </button>
                             </li>
-                        ) : null}
-                    </ul>
-                </td>
+                        </ul>
+                    </td>
+                ) : null}
             </tr>
         ));
 
         if (rows.length === 0) {
             rows = (
                 <tr className="table__row">
-                    <td colSpan="2" className="table__cell table__cell--centered">No speakers to display.</td>
+                    <td colSpan={app.currentUser !== null ? '2' : '1'} className="table__cell table__cell--centered">No speakers to display.</td>
                 </tr>
             );
         }
@@ -58,6 +58,7 @@ class SpeakersTable extends Component {
 
     render() {
 
+        const { app } = this.props;
         const { sortAttribute, sortOrder, setSortAttribute } = this.props.speakers;
 
         return (
@@ -67,9 +68,11 @@ class SpeakersTable extends Component {
                     <th  className={classNames('table__head-cell', 'table__head-cell--sortable', { [`table__head-cell--sort-${sortOrder === 1 ? 'ascend' : 'descend'}`]: sortAttribute === 'name' })} onClick={() => setSortAttribute('name')}>
                         Name
                     </th>
-                    <th className="table__head-cell table__head-cell--centered table__head-cell--small">
-                        Actions
-                    </th>
+                    {app.currentUser !== null ? (
+                        <th className="table__head-cell table__head-cell--centered table__head-cell--small">
+                            Actions
+                        </th>
+                    ) : null}
                 </tr>
                 </thead>
                 <tbody className="table__body">

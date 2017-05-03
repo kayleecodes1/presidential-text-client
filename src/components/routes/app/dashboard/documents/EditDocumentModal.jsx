@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import Modal from '../../../../Modal.jsx';
 import Select from 'react-select';
 
+@inject('app')
 @inject('documents')
 @inject('editDocument')
 @observer
@@ -66,6 +67,7 @@ class EditDocumentModal extends Component {
 
     render() {
 
+        const { app } = this.props;
         const { documentLabelOptions, speakerOptions } = this.props.documents;
         const { isVisible, isLoading, formData, formErrors, isSubmitting, hide } = this.props.editDocument;
 
@@ -86,37 +88,39 @@ class EditDocumentModal extends Component {
                     {formErrors.title ? (
                         <span className="form__error">{formErrors.title}</span>
                     ) : null}
-                    <input className="form__text-input" type="text" name="title" value={formData.title} onChange={this.handleChange} />
+                    <input className="form__text-input" type="text" name="title" disabled={app.currentUser === null} value={formData.title} onChange={this.handleChange} />
                 </label>
                 <label className="form__label">
                     <span>Speaker</span>
                     {formErrors.speaker ? (
                         <span className="form__error">{formErrors.speaker}</span>
                     ) : null}
-                    <Select name="speaker" placeholder="" value={formData.speaker} options={speakerOptions} onChange={this.handleSpeakerChange} />
+                    <Select name="speaker" placeholder="" disabled={app.currentUser === null} value={formData.speaker} options={speakerOptions} onChange={this.handleSpeakerChange} />
                 </label>
                 <label className="form__label">
                     <span>Date</span>
                     {formErrors.date ? (
                         <span className="form__error">{formErrors.date}</span>
                     ) : null}
-                    <input className="form__text-input" type="text" name="date" placeholder="YYYY-MM-DD" value={formData.date} onChange={this.handleChange} />
+                    <input className="form__text-input" type="text" name="date" placeholder="YYYY-MM-DD" disabled={app.currentUser === null} value={formData.date} onChange={this.handleChange} />
                 </label>
                 <label className="form__label">
                     <span>Document Labels</span>
-                    <Select name="labels" placeholder="" multi={true} options={documentLabelOptions} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
+                    <Select name="labels" placeholder="" multi={true} options={documentLabelOptions} disabled={app.currentUser === null} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
                 </label>
                 <label className="form__label">
                     <span>Text Content</span>
                     {formErrors.textContent ? (
                         <span className="form__error">{formErrors.textContent}</span>
                     ) : null}
-                    <textarea className="form__textarea-input" name="textContent" rows="10" value={formData.textContent} onChange={this.handleChange} />
+                    <textarea className="form__textarea-input" name="textContent" rows="10" disabled={app.currentUser === null} value={formData.textContent} onChange={this.handleChange} />
                 </label>
-                <label className="form__label form__label--small">
-                    Import from File
-                    <input key={this.state.fileInputKey} className="form__file-select" type="file" accept="text/plain" onChange={this.handleFileInputChange} />
-                </label>
+                {app.currentUser !== null ? (
+                    <label className="form__label form__label--small">
+                        Import from File
+                        <input key={this.state.fileInputKey} className="form__file-select" type="file" accept="text/plain" onChange={this.handleFileInputChange} />
+                    </label>
+                ) : null}
             </form>
         );
 
@@ -134,9 +138,9 @@ class EditDocumentModal extends Component {
         return (
             <Modal
                 isVisible={isVisible}
-                title="Edit Document"
+                title={`${app.currentUser !== null ? 'Edit' : 'View'} Document`}
                 renderContent={renderContent}
-                renderFooter={renderFooter}
+                renderFooter={app.currentUser && renderFooter}
                 isLoading={isLoading || isSubmitting}
                 closeFunction={hide} />
         );

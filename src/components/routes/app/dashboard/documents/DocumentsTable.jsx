@@ -34,14 +34,12 @@ class DocumentsTable extends Component {
                 <td className="table__cell">{getSpeakerName(document.speakerId)}</td>
                 <td className="table__cell">
                     <ul className="button-list">
-                        {app.currentUser !== null ? (
-                            <li className="button-list__item button-list__item--tiny-spacing">
-                                <button className="button button--tiny" onClick={() => editDocument.show(document.id)}>
-                                    <i className="button__icon button__icon--tiny fa fa-pencil" />
-                                    <span>Edit</span>
-                                </button>
-                            </li>
-                        ) : null}
+                        <li className="button-list__item button-list__item--tiny-spacing">
+                            <button className="button button--tiny" onClick={() => editDocument.show(document.id)}>
+                                <i className="button__icon button__icon--tiny fa fa-pencil" />
+                                <span>{app.currentUser !== null ? 'Edit' : 'View'}</span>
+                            </button>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -60,6 +58,7 @@ class DocumentsTable extends Component {
 
     render() {
 
+        const { app } = this.props;
         const { sortAttribute, sortOrder, setSortAttribute } = this.props.documents;
 
         return (

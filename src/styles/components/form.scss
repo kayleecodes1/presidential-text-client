@@ -111,6 +111,14 @@
   }
 }
 
+.Select.is-disabled > .Select-control {
+  background: #FFF;
+}
+
+.Select.is-disabled .Select-arrow-zone {
+  display: none;
+}
+
 .is-focused:not(.is-open) > .Select-control {
   border-color: $color-border-light;
   box-shadow: none;
