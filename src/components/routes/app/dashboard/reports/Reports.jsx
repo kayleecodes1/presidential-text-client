@@ -29,7 +29,7 @@ class Reports extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="section__body">
+                <div className="section__body section__body--clear-bottom">
                     <div className="container">
                         <ViewReport />
                     </div>

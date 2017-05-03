@@ -72,7 +72,10 @@ class Dashboard extends Component {
                         </nav>
                         <div className="dashboard__user">
                             {app.currentUser ? (
-                                <div className="dashboard__user-name">{app.currentUser}</div>
+                                <div>
+                                    <div className="dashboard__user-name">{app.currentUser}</div>
+                                    <div className="dashboard__logout-button" onClick={app.logout}>Logout</div>
+                                </div>
                             ) : (
                                 <Link to="/login" className="dashboard__login-button">Login</Link>
                             )}

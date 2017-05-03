@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 
+@inject('app')
 @inject('documents')
 @inject('editDocument')
 @observer
@@ -9,7 +10,7 @@ class DocumentsTable extends Component {
 
     renderDocumentRows() {
 
-        const { editDocument } = this.props;
+        const { app, editDocument } = this.props;
         const { resultsPerPage, isLoading, textSearchIsLoading, currentPageDocuments, getSpeakerName } = this.props.documents;
 
         if (isLoading || textSearchIsLoading) {
@@ -33,12 +34,14 @@ class DocumentsTable extends Component {
                 <td className="table__cell">{getSpeakerName(document.speakerId)}</td>
                 <td className="table__cell">
                     <ul className="button-list">
-                        <li className="button-list__item button-list__item--tiny-spacing">
-                            <button className="button button--tiny" onClick={() => editDocument.show(document.id)}>
-                                <i className="button__icon button__icon--tiny fa fa-pencil" />
-                                <span>Edit</span>
-                            </button>
-                        </li>
+                        {app.currentUser !== null ? (
+                            <li className="button-list__item button-list__item--tiny-spacing">
+                                <button className="button button--tiny" onClick={() => editDocument.show(document.id)}>
+                                    <i className="button__icon button__icon--tiny fa fa-pencil" />
+                                    <span>Edit</span>
+                                </button>
+                            </li>
+                        ) : null}
                     </ul>
                 </td>
             </tr>

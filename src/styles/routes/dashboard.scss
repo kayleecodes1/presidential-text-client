@@ -85,9 +85,15 @@
     font-size: 13px;
     line-height: $header-height;
     color: $header-text-color;
+    &::after {
+      content: '|';
+      text-decoration: none;
+      margin: 8px;
+    }
   }
 
-  &__login-button {
+  &__login-button,
+  &__logout-button {
     float: left;
     font-weight: 400;
     font-size: 12px;

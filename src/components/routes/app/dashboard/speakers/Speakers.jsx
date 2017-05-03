@@ -5,6 +5,7 @@ import SpeakersFilters from './SpeakersFilters';
 import SpeakersTableControls from './SpeakersTableControls';
 import SpeakersTable from './SpeakersTable';
 
+@inject('app')
 @inject('speakers')
 @inject('createSpeaker')
 @inject('manageSpeakerLabels')
@@ -32,7 +33,7 @@ class Speakers extends Component {
 
     render() {
 
-        const { createSpeaker, manageSpeakerLabels } = this.props;
+        const { app, createSpeaker, manageSpeakerLabels } = this.props;
         const { filtersAreVisible } = this.state;
 
         return (
@@ -40,16 +41,18 @@ class Speakers extends Component {
                 <div className="section__header">
                     <div className="container">
                         <h1 className="section__heading">Speakers</h1>
-                        <div className="section__header-buttons">
-                            <button className="button" onClick={manageSpeakerLabels.show}>
-                                <i className="button__icon fa fa-tags" />
-                                <span>Manage Speaker Labels</span>
-                            </button>
-                            <button className="button" onClick={createSpeaker.show}>
-                                <i className="button__icon fa fa-plus" />
-                                <span>Create Speaker</span>
-                            </button>
-                        </div>
+                        {app.currentUser !== null ? (
+                            <div className="section__header-buttons">
+                                <button className="button" onClick={manageSpeakerLabels.show}>
+                                    <i className="button__icon fa fa-tags" />
+                                    <span>Manage Speaker Labels</span>
+                                </button>
+                                <button className="button" onClick={createSpeaker.show}>
+                                    <i className="button__icon fa fa-plus" />
+                                    <span>Create Speaker</span>
+                                </button>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
                 {filtersAreVisible ? (

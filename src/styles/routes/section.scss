@@ -48,6 +48,10 @@
   }
 
   &__body {
-    margin: $spacing-standard 0 150px 0;
+    margin: $spacing-standard 0;
+
+    &--clear-bottom {
+      margin-bottom: 150px;
+    }
   }
 }

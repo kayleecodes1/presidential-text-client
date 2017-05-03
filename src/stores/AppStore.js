@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { checkAuth, login } from '../services/api/authentication';
+import { checkAuth, login, logout } from '../services/api/authentication';
 
 class AppStore {
 
@@ -52,6 +52,12 @@ class AppStore {
             .then(() => {
                 this.isProcessingLogin = false;
             });
+    }
+
+    @action.bound
+    logout() {
+
+        logout();
     }
 }
 

@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { API_URL, checkStatus, parseJson, callApi } from './util.js';
+import { API_URL, callApi } from './util.js';
 
 //TODO: use biglongstring if present
 export const checkAuth = () => callApi('users', 'GET', null, () => {
@@ -43,6 +43,12 @@ export const login = (username, password) => {
                 reject(error);
             });
     });
+};
+
+export const logout = () => {
+    document.cookie = 'token=';
+    document.cookie = 'username=';
+    window.dispatchEvent(new Event('app.unauthorized'));
 };
 
 /*export const logout = () => callApi('logout', 'POST', null, () => {
