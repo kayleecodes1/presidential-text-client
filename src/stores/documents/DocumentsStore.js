@@ -353,12 +353,6 @@ class DocumentsStore {
     saveFilterSet() {
 
         const filters = toJS(this.filters);
-        if (filters.startDate !== null) {
-            filters.startDate = JSON.parse(JSON.stringify(filters.startDate));
-        }
-        if (filters.endDate !== null) {
-            filters.endDate = JSON.parse(JSON.stringify(filters.endDate));
-        }
         this.filterSetsStore.createOrUpdateFilterSet(this.filterSetName, filters);
     }
 
