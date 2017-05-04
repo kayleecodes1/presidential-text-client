@@ -150,17 +150,17 @@ class CreateReportStore {
             hasErrors = true;
             this.formErrors.classifyOption = 'Classify requires an integer of 1 or greater for k-folds.';
         }
-        if (filterSets.length === 0) {
-            hasErrors = true;
-            this.formErrors.filterSets = 'At least one filter set is required.';
-        }
-        else if (analytic === 'scorecard') {
+        if (analytic === 'scorecard' && filterSets.length < 2) {
             hasErrors = true;
             this.formErrors.filterSets = 'Scorecard requires at least two filter sets.';
         }
         else if (analytic === 'classify' && filterSets.length < 2) {
             hasErrors = true;
             this.formErrors.filterSets = 'Classify requires at least two filter sets.';
+        }
+        else if (filterSets.length === 0) {
+            hasErrors = true;
+            this.formErrors.filterSets = 'At least one filter set is required.';
         }
         if (hasErrors) {
             return;
