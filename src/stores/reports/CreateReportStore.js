@@ -148,7 +148,7 @@ class CreateReportStore {
         }
         if (analytic === 'classify' && (classifyOption === '' || classifyOption.search(/^[1-9][0-9]*$/) === -1)) {
             hasErrors = true;
-            this.formErrors.classifyOption = 'Classify requires an integer for k-folds.';
+            this.formErrors.classifyOption = 'Classify requires an integer of 1 or greater for k-folds.';
         }
         if (filterSets.length === 0) {
             hasErrors = true;
@@ -199,7 +199,19 @@ class CreateReportStore {
                     return;
                 }
 
-                //TODO: check k-folds for classify here?
+                if (analytic === 'classify') {
+                    const totalDocuments = collectionsData.reduce((total, collectionData) => {
+                        return total + collectionData.documentIds.length;
+                    }, 0);
+                    const n = parseInt(classifyOption, 10);
+                    if (n > totalDocuments) {
+                        runInAction(() => {
+                            this.formErrors.classifyOption = `Classify requires an integer of less than ${totalDocuments} k-folds (the number of documents being processed).`;
+                            this.isSubmitting = false;
+                            this.cancelLoading = null;
+                        });
+                    }
+                }
 
                 const collections = {};
                 for (const collectionData of collectionsData) {
