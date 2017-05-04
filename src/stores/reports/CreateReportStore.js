@@ -210,6 +210,7 @@ class CreateReportStore {
                             this.isSubmitting = false;
                             this.cancelLoading = null;
                         });
+                        return;
                     }
                 }
 
