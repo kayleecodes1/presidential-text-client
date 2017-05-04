@@ -44,6 +44,7 @@ class CreateReportModal extends Component {
         formData.classifyOption;
         formData.filterSets//TODO: required for update
         formErrors.analytic;
+        formErrors.classifyOption;
         formErrors.filterSets;
 
         const options = filterSets.currentFilterSets.map((filterSet) => ({ value: filterSet.name, label: filterSet.name }));
@@ -89,6 +90,9 @@ class CreateReportModal extends Component {
                 {formData.analytic === 'classify' ? (
                     <label className="form__label">
                         <span>Classify K-folds</span>
+                        {formErrors.classifyOption ? (
+                            <span className="form__error">{formErrors.classifyOption}</span>
+                        ) : null}
                         <input type="text" className="form__text-input" name="classifyOption" value={formData.classifyOption} onChange={this.handleChange} />
                     </label>
                 ) : null}

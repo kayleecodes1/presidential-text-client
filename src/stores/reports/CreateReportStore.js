@@ -82,6 +82,7 @@ class CreateReportStore {
     };
     @observable formErrors = {
         analytic: '',
+        classifyOption: '',
         filterSets: ''
     };
     @observable isSubmitting = false;
@@ -106,6 +107,7 @@ class CreateReportStore {
         };
         this.formErrors = {
             analytic: '',
+            classifyOption: '',
             filterSets: ''
         };
     }
@@ -138,10 +140,15 @@ class CreateReportStore {
 
         let hasErrors = false;
         this.formErrors.analytic = '';
+        this.formErrors.classifyOption = '';
         this.formErrors.filterSets = '';
         if (analytic === '') {
             hasErrors = true;
             this.formErrors.analytic = 'Report type is required.';
+        }
+        if (analytic === 'classify' && (classifyOption === '' || classifyOption.search(/^[1-9][0-9]*$/) === -1)) {
+            hasErrors = true;
+            this.formErrors.classifyOption = 'Classify requires an integer for k-folds.';
         }
         if (filterSets.length === 0) {
             hasErrors = true;
