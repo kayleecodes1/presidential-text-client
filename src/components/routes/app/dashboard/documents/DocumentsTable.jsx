@@ -58,7 +58,6 @@ class DocumentsTable extends Component {
 
     render() {
 
-        const { app } = this.props;
         const { sortAttribute, sortOrder, setSortAttribute } = this.props.documents;
 
         return (

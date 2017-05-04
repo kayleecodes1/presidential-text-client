@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import Modal from '../../../../Modal.jsx';
 import Select from 'react-select';
 
+@inject('app')
 @inject('speakers')
 @inject('editSpeaker')
 @observer
@@ -43,6 +44,7 @@ class EditSpeakerModal extends Component {
 
     render() {
 
+        const { app } = this.props;
         const { speakerLabelOptions } = this.props.speakers;
         const { isVisible, isLoading, formData, terms, formErrors, removeTerm, addTerm, isSubmitting, hide } = this.props.editSpeaker;
 
@@ -62,7 +64,7 @@ class EditSpeakerModal extends Component {
                     {formErrors.name ? (
                         <span className="form__error">{formErrors.name}</span>
                     ) : null}
-                    <input className="form__text-input" type="text" name="name" value={formData.name} onChange={this.handleChange} />
+                    <input className="form__text-input" type="text" name="name" disabled={app.currentUser === null} value={formData.name} onChange={this.handleChange} />
                 </label>
                 <label className="form__label">
                     <span>Terms</span>
@@ -73,24 +75,28 @@ class EditSpeakerModal extends Component {
                         <ul className="repeater__list">
                             {terms.map((term, index) => (
                                 <li key={index} className="repeater__item">
-                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="startDate" placeholder="YYYY-MM-DD" value={term.startDate} onChange={(event) => this.handleTermChange(event, index)} />
+                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="startDate" placeholder="YYYY-MM-DD" disabled={app.currentUser === null} value={term.startDate} onChange={(event) => this.handleTermChange(event, index)} />
                                     <span style={{ marginRight: '8px' }}>to</span>
-                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="endDate" placeholder="YYYY-MM-DD" value={term.endDate} onChange={(event) => this.handleTermChange(event, index)} />
-                                    <button className="repeater__remove-button" type="button" onClick={(event) => { event.preventDefault(); removeTerm(index); }}>
-                                        <i className="fa fa-minus-circle" />
-                                    </button>
+                                    <input className="form__text-input form__text-input--small form__text-input--inline form__text-input--no-clearance" type="text" name="endDate" placeholder="YYYY-MM-DD" disabled={app.currentUser === null} value={term.endDate} onChange={(event) => this.handleTermChange(event, index)} />
+                                    {app.currentUser !== null ? (
+                                        <button className="repeater__remove-button" type="button" onClick={(event) => { event.preventDefault(); removeTerm(index); }}>
+                                            <i className="fa fa-minus-circle" />
+                                        </button>
+                                    ) : null}
                                 </li>
                             ))}
                         </ul>
-                        <button className="button button--tiny repeater__add-button" type="button" onClick={addTerm}>
-                            <i className="button__icon fa fa-plus" />
-                            <span>Add Term</span>
-                        </button>
+                        {app.currentUser !== null ? (
+                            <button className="button button--tiny repeater__add-button" type="button" onClick={addTerm}>
+                                <i className="button__icon fa fa-plus" />
+                                <span>Add Term</span>
+                            </button>
+                        ) : null}
                     </div>
                 </label>
                 <label className="form__label">
                     <span>Speaker Labels</span>
-                    <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
+                    <Select name="labels" placeholder="" multi={true} options={speakerLabelOptions} disabled={app.currentUser === null} value={formData.labels.peek()} onChange={this.handleLabelsChange} />
                 </label>
             </form>
         );
@@ -111,7 +117,7 @@ class EditSpeakerModal extends Component {
                 isVisible={isVisible}
                 title="Edit Speaker"
                 renderContent={renderContent}
-                renderFooter={renderFooter}
+                renderFooter={app.currentUser && renderFooter}
                 isLoading={isLoading || isSubmitting}
                 closeFunction={hide} />
         );
