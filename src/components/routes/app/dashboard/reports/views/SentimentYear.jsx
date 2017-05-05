@@ -74,6 +74,7 @@ class SentimentYear extends Component {
          Set functions
          */
 
+        function pad(n) {return n < 10 ? "0"+n : n;}
 
         const tip = d3.tip()
             .attr('class', 'sentiment-year__tooltip')
@@ -82,7 +83,10 @@ class SentimentYear extends Component {
             .html((d) => {
                 const title = this.props.reports.getDocumentTitle(d.docId);
                 const sentiment = d.sentiment.toFixed(4);
+                const dateobj = d.date;
+                const dte = pad(dateobj.getMonth()+1)+"/"+pad(dateobj.getDate())+"/"+dateobj.getFullYear();
                 return `<span class='sentiment-year__tooltip-title'>${title}</span>` +
+                    `<span class='sentiment-year__tooltip-dte'>${dte}</span>` +
                     `<span class='sentiment-year__tooltip-sentiment'>${sentiment}</span>`;
             });
 
@@ -131,8 +135,6 @@ class SentimentYear extends Component {
 
         svg.append('g')
             .attr('class', 'brush')
-            //.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-            //.attr('width', (width - margin.left - margin.right))
             .call(brush)
             .append('g')
             .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
