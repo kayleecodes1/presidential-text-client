@@ -7,7 +7,7 @@
     margin: 0 auto;
   }
 
-  &__item {
+  &__chart {
 
     svg {
       font: 10px sans-serif;
@@ -16,23 +16,34 @@
     .axis path,
     .axis line {
       fill: none;
-      stroke: #000;
+      stroke: rgba(0, 0, 0, 0.1);
       shape-rendering: crispEdges;
     }
 
-    .svgLegend{
-      float:right;
-      width: 200px;
-      height: 500px;
+    .axisLine {
+      fill: none;
+      shape-rendering: crispEdges;
+      stroke: rgba(0, 0, 0, 0.5);
+      stroke-width: 2px;
     }
-    .legendTitle{
-      font-weight: bold;
+
+    .dot {
+      fill-opacity: .5;
     }
 
     .axis .label{
       fill: black;
     }
 
+    .zoom {
+      cursor: move;
+      fill: none;
+      pointer-events: all;
+    }
+
+    .view{
+      fill: transparent;
+    }
 
   }
 
