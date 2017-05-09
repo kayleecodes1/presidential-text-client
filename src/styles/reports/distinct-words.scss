@@ -3,12 +3,13 @@
   $item-spacing: 20px;
 
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-flow: row wrap;
+  align-items: flex-start;
   margin: 0 -($item-spacing / 2);
 
   &__item {
-    width: 50%;
+    box-sizing: border-box;
+    width: calc(50% - #{$item-spacing});
     border-radius: 3px;
     border: 1px solid $color-border-light;
     margin: ($item-spacing / 2);
